@@ -1,0 +1,28 @@
+{
+  "servers": {
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.83",
+        "--browser",
+        "chromium",
+        "--isolated",
+        "--viewport-size",
+        "1280x720",
+        "--test-id-attribute",
+        "data-testid",
+        "--timeout-action",
+        "10000",
+        "--timeout-navigation",
+        "30000",
+        "--output-dir",
+        "${workspaceFolder}/generated_tests/_mcp-artifacts",
+        "--save-session",
+        "--allowed-origins",
+        "http://localhost:4201;http://127.0.0.1:4201;http://localhost:9090;http://127.0.0.1:9090"
+      ]
+    }
+  }
+}
