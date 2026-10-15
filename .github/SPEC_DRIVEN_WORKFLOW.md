@@ -1,5 +1,7 @@
 # Spec-Driven Workflow
 
+Every stage is human-initiated. Each agent produces its output and stops; a human reviews it and manually runs the next agent. No stage starts automatically.
+
 ## Existing Documents Flow
 
 ```text

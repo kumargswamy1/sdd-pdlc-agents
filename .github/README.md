@@ -81,6 +81,8 @@ Step 10: Documentation & Traceability
 
 Compliance Reviewer gates stop the flow on Critical findings. Context Updater can run at any point to resync context with the project.
 
+**Human checkpoints:** Every agent is started manually. Each agent produces its output, stops, and reports `NEXT_STEP` naming the next agent; review the output and run that agent yourself.
+
 ### Design Evidence Rules
 
 | Situation | Spec | Plan and Implementation |

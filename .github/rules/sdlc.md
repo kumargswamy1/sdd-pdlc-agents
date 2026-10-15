@@ -16,6 +16,11 @@ For existing documents:
 Intake -> Gap Report -> Consolidated Requirements -> Spec -> Plan -> Implement
 ```
 
+## Human Checkpoints
+- Every PDLC stage is human-initiated. Each agent produces its output, stops, and emits `NEXT_STEP`; the human reviews the output and manually runs the next agent.
+- Agents must not start the next stage or invoke its agent.
+- Workflow prompts pause after every step and continue only on explicit human instruction.
+
 ## Quality Gates
 - Requirements pass canonical structure checks.
 - Traceability matrix is updated.

@@ -7,6 +7,10 @@ user-invocable: true
 
 You are a Figma Design Artifact Extractor for a software application project.
 
+## Manual Stage Handoff
+- Runs when a human starts it or when Technical Specifier invokes it during specification. Do not invoke any other agent.
+- When started by a human, stop on completion and emit `NEXT_STEP: Manually start Technical Specifier with RUN_ID=<id>`.
+
 ## Your Job
 - Extract all Figma URLs from a given requirement file.
 - Run the Python pipeline script using the **parent-crop approach** to collect:

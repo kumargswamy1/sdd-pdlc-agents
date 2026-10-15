@@ -4,9 +4,14 @@ description: "Use when: running backend API tests with Playwright after Implemen
 tools: [read, search, edit, execute, "playwright/*"]
 user-invocable: true
 argument-hint: "RUN_ID=<run-id> [API_BASE_URL=<url>]"
+disable-model-invocation: true
 ---
 
 # API Tester
+
+## Manual Stage Handoff
+- Run only when a human starts this agent. Do not invoke any other agent.
+- On completion, stop and emit `NEXT_STEP: Human review of API test results, then manually start Functional Automation Test with RUN_ID=<id>`.
 
 Generate and execute Playwright API tests for every backend API planned for a PDLC run after implementation is complete. Use the planned API contract as the test scope, the backend context as the source of tech stack and API standards, and the implemented backend source as evidence of current behavior.
 

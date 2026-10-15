@@ -54,6 +54,10 @@ Context Updater
   → updates `requirement/Traceability_Matrix.md`
 ```
 
+## Human-Initiated Stages
+- Every PDLC agent is started manually by a human. Each agent produces its output, stops, and emits `NEXT_STEP` naming the next agent; the human reviews the output and runs that agent.
+- No agent or prompt may start the next stage automatically. Agents have `disable-model-invocation: true` and must not be invoked as subagents. The only exception is Figma Extractor, which Technical Specifier may invoke within the specification stage.
+
 ## Required Flow
 For existing source requirement folders:
 
@@ -100,7 +104,7 @@ For new business problems:
 - Only a frontend story with no design evidence at all (`DESIGN_EVIDENCE_STATUS: PENDING_MANUAL_UPLOAD`) blocks planning and implementation until screenshots are added to `output/{RUN_ID}/specify/figma/png/screens/` and Technical Specifier is re-run.
 
 ## Parallel Context Updates
-**At any point in the PDLC, Context Updater may run automatically to:**
+**At any point in the PDLC, a human may run Context Updater to:**
 - Sync technology versions and dependencies
 - Sync changes from Confluence pages or attached Word/PDF sources
 - Update client industry/domain context and user-provided standards

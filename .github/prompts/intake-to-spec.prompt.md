@@ -1,5 +1,5 @@
 ---
-description: "Consolidate existing requirement docs and generate a technical spec."
+description: "Consolidate existing requirement docs and stop; the human then starts Technical Specifier."
 ---
 
 # Intake To Spec Workflow
@@ -23,8 +23,7 @@ Run this workflow:
    - `requirement/Traceability_Matrix.md`
 4. Stop if Critical gaps block specification.
 5. Act as `Traceability Manager` and validate `requirement/Traceability_Matrix.md`.
-6. Act as `Technical Specifier` and generate `output/{RUN_ID}/specify/spec.md`.
-7. Act as `Compliance Reviewer` and review the generated spec.
-8. Report generated files, Run ID, Critical/High gaps, and whether the spec is ready for planning.
+6. **STOP**: report intake outputs and `NEXT_STEP: Human review, then manually start Technical Specifier`. Do not generate the spec in this prompt.
+7. After the spec is generated, the human manually starts `Compliance Reviewer` for spec review, then `Implementation Planner`. This prompt never starts those agents.
 
 Follow `.github/copilot-instructions.md`.
