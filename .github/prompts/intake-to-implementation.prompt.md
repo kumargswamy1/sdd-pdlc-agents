@@ -20,8 +20,8 @@ This prompt is a runbook. Every step is a **HUMAN CHECKPOINT**: perform exactly 
 5. Planning & Tasks: human starts `Implementation Planner`.
 6. Plan review: human starts `Compliance Reviewer`; stop on Critical findings.
 7. Implementation: human starts `Implementation Builder`.
-8. Backend API testing: human starts `API Tester` using `output/{RUN_ID}/plan/contracts/backend-apis.json`.
-9. Component functional testing: human starts `Functional Automation Test` using `output/{RUN_ID}/plan/frontend/components.md`.
+8. Backend API testing: human starts `API Tester` using `output/{RUN_ID}/specify/spec.md`; the agent reports N/A when `API In Scope: NO`.
+9. Component functional testing: human starts `Functional Automation Test` using `output/{RUN_ID}/specify/spec.md`; the agent reports N/A when `UI In Scope: NO`.
 10. User-workflow testing: human starts `Quality Tester`.
 11. Code review: human starts `Compliance Reviewer`; stop on Critical findings.
 12. Documentation: human starts `Technical Documenter`.

@@ -55,8 +55,9 @@ Flag:
 - Requirements without specs.
 - Specs without tasks.
 - Tasks without code.
-- APIs listed in `output/{RUN_ID}/plan/contracts/backend-apis.json` without an `APT-*` result or explicit blocker.
-- Components listed in `output/{RUN_ID}/plan/frontend/components.md` without an `FT-*` result or explicit blocker.
+- APIs in `spec.md` when `API In Scope: YES` without an `APT-*` result or explicit blocker.
+- UI behavior in `spec.md` when `UI In Scope: YES` without an `FT-*` result or explicit blocker.
+- Entries in optional `backend-apis.json` or `components.md` that are not reconciled with the specification.
 - Requirements without tests.
 - Compliance requirements without review evidence.
 - Missing GitHub metadata when the repo is linked to GitHub.

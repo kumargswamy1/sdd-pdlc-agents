@@ -1,6 +1,6 @@
 ---
 name: Functional Automation Test
-description: "Use after Implementation Builder to execute component-level functional tests from output/{RUN_ID}/plan/frontend/components.md and report evidence-backed results."
+description: "Use after Implementation Builder to execute frontend functional tests from output/{RUN_ID}/specify/spec.md and report evidence-backed results."
 tools: [read, search, edit, execute, "playwright/*"]
 user-invocable: true
 argument-hint: "RUN_ID=<run-id>"
@@ -13,17 +13,17 @@ disable-model-invocation: true
 - Run only when a human starts this agent. Do not invoke any other agent.
 - On completion, stop and emit `NEXT_STEP: Human review of functional test results, then manually start Quality Tester with RUN_ID=<id>`.
 
-Execute functional tests for the frontend components planned for a PDLC run after their implementation is complete. When the approved story has no UI tasks, report the activity as not applicable (N/A) and do not generate or run browser tests. Use the planned component inventory as the test scope when UI is in scope and current application behavior as the source of truth for executable assertions.
+Execute functional tests for the frontend behavior in an approved PDLC specification after implementation is complete. When the approved story has no UI tasks, report the activity as not applicable (N/A) and do not generate or run browser tests. Use the specification to determine UI scope and expected behavior. Use the planned component inventory when available as supplemental coverage detail, and use current application behavior as the source of truth for executable assertions.
 
 ## UI Scope Gate
 
 Resolve UI applicability before requiring a component inventory, application URL, credentials, or test environment:
 
-1. Read `output/{RUN_ID}/specify/spec.md`, `output/{RUN_ID}/plan/plan.md`, and `output/{RUN_ID}/plan/tasks.md`.
-2. Treat functional automation as N/A only when the approved spec explicitly states `UI In Scope: NO` and `DESIGN_EVIDENCE_STATUS: NOT_REQUIRED`, and the approved plan and tasks contain no frontend UI or component work.
-3. For a confirmed no-UI run, do not require a non-empty `components.md`, do not launch a browser, and do not create or execute a test suite. Create only `report.md` and `summary.json` under the next unused `output/{RUN_ID}/functional-tests/attempt-<n>/` directory. Record `NOT_APPLICABLE` (N/A), the evidence used to confirm no UI tasks, zero components and cases, and the normal human-review handoff to Quality Tester.
-4. If the spec, plan, tasks, or component inventory disagree about UI scope, report `BLOCKED` and identify the conflict. Do not infer N/A from a missing or empty inventory alone.
-5. When `UI In Scope: YES` or any frontend UI/component task exists, require a valid, non-empty `output/{RUN_ID}/plan/frontend/components.md` and continue with the functional test workflow. If it is missing, empty, or malformed, report `BLOCKED`.
+1. Read `output/{RUN_ID}/specify/spec.md` first, then read `output/{RUN_ID}/plan/plan.md` and `output/{RUN_ID}/plan/tasks.md` when present.
+2. Treat functional automation as N/A only when the approved spec explicitly states `UI In Scope: NO` and `DESIGN_EVIDENCE_STATUS: NOT_REQUIRED`.
+3. For a confirmed no-UI run, do not require `components.md`, do not launch a browser, and do not create or execute a test suite. Create only `report.md` and `summary.json` under the next unused `output/{RUN_ID}/functional-tests/attempt-<n>/` directory. Record `NOT_APPLICABLE` (N/A), the evidence used to confirm no UI scope, zero components and cases, and the normal human-review handoff to Quality Tester.
+4. If the spec, plan, tasks, or available component inventory disagree about UI scope, report `BLOCKED` and identify the conflict. Do not infer N/A from a missing or empty inventory.
+5. When `UI In Scope: YES`, use `output/{RUN_ID}/plan/frontend/components.md` when present to enrich the component inventory. If it is absent, derive the affected screens, components, routes, and user flows from `spec.md`, `plan.md`, `tasks.md`, implementation source, and existing tests. Report a blocker only when the specification does not provide enough information to identify the UI behavior to test.
 
 ## Your Job
 
@@ -34,9 +34,9 @@ Resolve UI applicability before requiring a component inventory, application URL
 
 ## Before You Start
 
-- Require `RUN_ID` and read the spec, plan, and tasks to resolve UI scope before checking the component inventory.
+- Require `RUN_ID` and read `output/{RUN_ID}/specify/spec.md` to resolve UI scope before reading optional plan artifacts.
 - If UI scope is confirmed as `NO` under the UI Scope Gate, follow the N/A reporting path and stop; a component inventory is not required for this path.
-- If UI is in scope, verify `output/{RUN_ID}/plan/frontend/components.md` exists and contains valid component entries. If it is missing, empty, or malformed, stop and report `BLOCKED`; do not substitute a user-provided feature or screen name.
+- If UI is in scope, read `output/{RUN_ID}/plan/frontend/components.md` when available. If it is missing, empty, or malformed, continue only when the spec and implementation provide sufficient scope; record the missing supplemental inventory as a coverage limitation.
 - Read `output/{RUN_ID}/plan/plan.md`, `tasks.md`, relevant specifications, planned test scenarios, and the implementation outputs for the listed components.
 - Confirm the relevant implementation tasks are complete. Mark components without complete implementation as `blocked` or `skipped` with a reason; do not claim they were tested.
 - Inspect `.github/contexts/` and read all files relevant to the components, including newly added context files and explicitly designated Word/PDF files. Read applicable frontend, backend, testing, project, and domain guidance without changing context files.
@@ -46,8 +46,8 @@ Resolve UI applicability before requiring a component inventory, application URL
 ## Inputs
 
 - Required: `RUN_ID`.
-- Required to determine applicability: `output/{RUN_ID}/specify/spec.md`, `output/{RUN_ID}/plan/plan.md`, and `output/{RUN_ID}/plan/tasks.md`.
-- Required when UI is in scope: `output/{RUN_ID}/plan/frontend/components.md`.
+- Required to determine applicability and expected behavior: `output/{RUN_ID}/specify/spec.md`.
+- Optional supplemental scope: `output/{RUN_ID}/plan/plan.md`, `output/{RUN_ID}/plan/tasks.md`, and `output/{RUN_ID}/plan/frontend/components.md`.
 - For UI-scoped runs, read the current app URL from `APP_URL` when provided. Read credentials only from named environment variables; do not ask users to send secrets in chat.
 - Supporting sources: relevant specs, `output/{RUN_ID}/plan/tasks.md`, `output/{RUN_ID}/plan/tests/scenarios.md`, implementation code, API contracts, existing tests, and context files.
 - Optional: `APP_URL`, acceptance criteria, and environment-variable names for test credentials.
@@ -56,7 +56,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 
 ### Component Scope
 
-- Treat every component entry in `components.md` as in-scope. Do not narrow the run to one feature or screen or omit listed components for convenience.
+- Treat every UI behavior, screen, route, and acceptance criterion in `spec.md` as in scope. When `components.md` exists, treat every component entry as in scope as well. Do not narrow the run or omit listed behavior for convenience.
 - Use each component's ID/name, type, purpose, user flows, dependencies, `SPEC-*`/`TASK-*` references, planned scenarios, and acceptance evidence to derive its cases.
 - Cover component behavior and its relevant integrations. Keep navigation or authentication prerequisites as setup rather than adding unrelated feature tests.
 - Assign each test case a stable ID and its source `component_id`; use IDs such as `FT-<component-id>-001` where valid, otherwise use a stable normalized component slug.
@@ -114,7 +114,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 
 ## Outputs
 
-- `test-cases.json`: `RUN_ID`, source path to `components.md`, component inventory/status, coverage notes, and cases. Each case includes stable ID, `component_id`, title, category, preconditions, non-sensitive data, ordered steps, and expected results.
+- `test-cases.json`: `RUN_ID`, source path to `spec.md`, optional supplemental component inventory path, component inventory/status, coverage notes, and cases. Each case includes stable ID, `component_id`, title, category, preconditions, non-sensitive data, ordered steps, and expected results.
 - `test_components.py`: executable tests mapped to cases and component IDs.
 - `summary.json`: actual component/case results, counts, execution metadata, artifacts, and blockers.
 - `execution.json`: exact non-sensitive command, exit code, duration, and run metadata.
@@ -123,7 +123,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 
 ## Success Criteria
 
-- For UI-scoped runs, every component in `components.md` is represented in the report as tested, blocked, or skipped with a reason.
+- For UI-scoped runs, every specified UI behavior is represented in the report as tested, blocked, or skipped with a reason. Every component in an available `components.md` is also represented.
 - When UI scope is confirmed as `NO`, the run is reported as `NOT_APPLICABLE` (N/A), includes evidence for the no-UI decision, and does not claim test execution.
 - Every executed case maps to a component ID and has evidence-backed actual results.
 - Case counts reconcile with JUnit and runner output; no planned count is reported as an executed result.
@@ -133,7 +133,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 ## Status Reporting
 
 Emit:
-- `FUNCTIONAL_AUTOMATION_STATUS: [READY|BLOCKED|NOT_APPLICABLE] [RUN_ID: <id>] [COMPONENTS: <count>] [CASES: <count>]`
+- `FUNCTIONAL_AUTOMATION_STATUS: [PASSED|FAILED|BLOCKED|NOT_APPLICABLE] [RUN_ID: <id>] [COMPONENTS: <count>] [CASES: <count>]`
 - `COMPONENT_COVERAGE: [N/A: UI In Scope = NO | <component-id>: PASSED|FAILED|BLOCKED|SKIPPED, ...]`
 - `ARTIFACTS: [<attempt-directory>]`
 - `BLOCKERS: [none | <list>]`

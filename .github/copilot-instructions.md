@@ -70,8 +70,8 @@ For existing source requirement folders:
 -> Implementation Planner
 -> Compliance Reviewer
 -> Implementation Builder
--> API Tester (tests every API in output/{RUN_ID}/plan/contracts/backend-apis.json)
--> Functional Automation Test (tests every component in output/{RUN_ID}/plan/frontend/components.md)
+-> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
+-> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
 -> Quality Tester
 -> Compliance Reviewer
 -> Technical Documenter
@@ -89,8 +89,8 @@ For new business problems:
 -> Technical Specifier
 -> Implementation Planner
 -> Implementation Builder
--> API Tester (tests every API in output/{RUN_ID}/plan/contracts/backend-apis.json)
--> Functional Automation Test (tests every component in output/{RUN_ID}/plan/frontend/components.md)
+-> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
+-> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
 -> Quality Tester
 -> Compliance Reviewer
 -> Technical Documenter

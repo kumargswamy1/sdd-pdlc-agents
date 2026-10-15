@@ -14,8 +14,8 @@ Existing requirement folder
 -> Implementation Planner
 -> Compliance Reviewer
 -> Implementation Builder
--> API Tester (executes backend API tests from output/{RUN_ID}/plan/contracts/backend-apis.json)
--> Functional Automation Test (executes component tests from output/{RUN_ID}/plan/frontend/components.md)
+-> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
+-> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
 -> Quality Tester
 -> Compliance Reviewer
 -> Technical Documenter
@@ -33,8 +33,8 @@ Business problem
 -> Technical Specifier
 -> Implementation Planner
 -> Implementation Builder
--> API Tester (executes backend API tests from output/{RUN_ID}/plan/contracts/backend-apis.json)
--> Functional Automation Test (executes component tests from output/{RUN_ID}/plan/frontend/components.md)
+-> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
+-> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
 -> Quality Tester
 -> Compliance Reviewer
 -> Technical Documenter

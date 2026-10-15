@@ -16,8 +16,8 @@ The agents are organized into a sequential SDLC workflow that transforms busines
 | 4 | Technical Specifier | `specify.agent.md` | Specification | Jira key or requirement file | `output/{RUN_ID}/specify/` |
 | 5 | Implementation Planner | `planner.agent.md` | Planning | `output/{RUN_ID}/specify/` | `output/{RUN_ID}/plan/` |
 | 6 | Implementation Builder | `implement.agent.md` | Implementation | `output/{RUN_ID}/plan/tasks.md` | Source code, unit tests, `output/{RUN_ID}/implement/` |
-| 7 | API Tester | `api-tester.agent.md` | Backend API testing | `output/{RUN_ID}/plan/contracts/backend-apis.json` | `<backend-root>/test/api/`, `output/{RUN_ID}/api-tests/` |
-| 8 | Functional Automation Test | `functional-automation-test.agent.md` | Component functional testing | `output/{RUN_ID}/plan/frontend/components.md` | `output/{RUN_ID}/functional-tests/` |
+| 7 | API Tester | `api-tester.agent.md` | Backend API testing | `output/{RUN_ID}/specify/spec.md` | `<backend-root>/test/api/`, `output/{RUN_ID}/api-tests/` |
+| 8 | Functional Automation Test | `functional-automation-test.agent.md` | Frontend functional testing | `output/{RUN_ID}/specify/spec.md` | `output/{RUN_ID}/functional-tests/` |
 | 9 | Quality Tester | `tester.agent.md` | User-workflow QA | Spec, `output/{RUN_ID}/plan/tests/scenarios.md` | `TEST-*` suites and reports |
 | 10 | Compliance Reviewer | `reviewer.agent.md` | Review (gates) | Specs, plans, code, tests, docs | `REVIEW-*` findings and status |
 | 11 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation | `DOC-*` documentation |
@@ -59,11 +59,11 @@ Step 5: Implementation
    ↓
 Step 6: Backend API Testing
    ↓
-   API Tester (every API in plan/contracts/backend-apis.json)
+   API Tester (every API in spec.md when `API In Scope: YES`)
    ↓
 Step 7: Component Functional Automation
    ↓
-   Functional Automation Test (every component in plan/frontend/components.md)
+   Functional Automation Test (every UI behavior in spec.md when `UI In Scope: YES`)
    ↓
 Step 8: Quality Assurance
    ↓
@@ -255,8 +255,8 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 - `output/{RUN_ID}/plan/plan.md` and `tasks.md` (with `## Pre-submit checks`)
 - `output/{RUN_ID}/plan/data-model.md`
 - `output/{RUN_ID}/plan/contracts/frontend-integrations.json`
-- `output/{RUN_ID}/plan/contracts/backend-apis.json` (input for API Tester)
-- `output/{RUN_ID}/plan/frontend/components.md` (input for Functional Automation Test)
+- `output/{RUN_ID}/specify/spec.md` (required input for API Tester and Functional Automation Test)
+- `output/{RUN_ID}/plan/contracts/backend-apis.json` and `output/{RUN_ID}/plan/frontend/components.md` (optional supplemental test scope)
 - `output/{RUN_ID}/plan/tests/scenarios.md`
 - Updated `requirement/Traceability_Matrix.md`
 
@@ -307,7 +307,7 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 
 **When to use:**
 - After backend implementation is complete
-- Running API tests for the APIs listed in `output/{RUN_ID}/plan/contracts/backend-apis.json`
+- Running API tests for the APIs listed in `output/{RUN_ID}/specify/spec.md` when `API In Scope: YES`
 
 **What it does:**
 - Reads backend tech stack and API standards from `backend-context.md`
@@ -317,7 +317,7 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 
 **Inputs:**
 - `RUN_ID`
-- `output/{RUN_ID}/plan/contracts/backend-apis.json`
+- `output/{RUN_ID}/specify/spec.md`
 - Implemented backend code and related requirements
 
 **Output:**
@@ -336,7 +336,7 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 
 **When to use:**
 - After implementation is complete
-- Running functional tests for the components listed in `output/{RUN_ID}/plan/frontend/components.md`
+- Running functional tests for the UI behavior specified in `output/{RUN_ID}/specify/spec.md` when `UI In Scope: YES`
 
 **What it does:**
 - Reads the planner's component inventory and tests each implemented component
@@ -346,7 +346,7 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 
 **Inputs:**
 - `RUN_ID`
-- `output/{RUN_ID}/plan/frontend/components.md`
+- `output/{RUN_ID}/specify/spec.md`
 - Implemented frontend/backend code and related requirements
 
 **Output:**
@@ -697,4 +697,3 @@ All agents read from and respect these standards during their work.
 - `.github/scripts/` - Figma pipeline and agent token-estimation scripts
 - `.vscode/mcp.json` - Playwright MCP server configuration
 - `requirement/Traceability_Matrix.md` - Live traceability matrix
-

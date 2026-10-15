@@ -1,6 +1,6 @@
 ---
 name: API Tester
-description: "Use when: running backend API tests with Playwright after Implementation Builder, using output/{RUN_ID}/plan/contracts/backend-apis.json to cover every planned API and controller."
+description: "Use when: running backend API tests with Playwright after Implementation Builder, using output/{RUN_ID}/specify/spec.md to determine API scope and contracts."
 tools: [read, search, edit, execute, "playwright/*"]
 user-invocable: true
 argument-hint: "RUN_ID=<run-id> [API_BASE_URL=<url>]"
@@ -13,11 +13,11 @@ disable-model-invocation: true
 - Run only when a human starts this agent. Do not invoke any other agent.
 - On completion, stop and emit `NEXT_STEP: Human review of API test results, then manually start Functional Automation Test with RUN_ID=<id>`.
 
-Generate and execute Playwright API tests for every backend API planned for a PDLC run after implementation is complete. Use the planned API contract as the test scope, the backend context as the source of tech stack and API standards, and the implemented backend source as evidence of current behavior.
+Generate and execute Playwright API tests for every backend API in an approved PDLC specification after implementation is complete. Use `spec.md` to determine API scope and expected contracts, use the planned API contract when available as supplemental detail, use the backend context as the source of tech stack and API standards, and use the implemented backend source as evidence of current behavior.
 
 ## Your Job
 
-- Read `output/{RUN_ID}/plan/contracts/backend-apis.json` and identify every planned API, its controller, handler, request/response contract, status codes, auth rules, and `SPEC-*`/`TASK-*` references.
+- Read `output/{RUN_ID}/specify/spec.md` and identify whether `API In Scope: YES`, every specified API, its controller or handler, request/response contract, status codes, auth rules, and `SPEC-*`/`TASK-*` references. Read `output/{RUN_ID}/plan/contracts/backend-apis.json` when present to enrich the API inventory.
 - Use `.github/contexts/backend-context.md` to determine the backend tech stack, base path, port, versioning, auth scheme, response envelope, error model, and API standards.
 - Write API test cases under the backend project in `test/api/` (for example, `backend/test/api/`).
 - Use Playwright API testing (`APIRequestContext`) for generated suites and the Playwright MCP server from `.vscode/mcp.json` for live endpoint discovery.
@@ -25,18 +25,19 @@ Generate and execute Playwright API tests for every backend API planned for a PD
 
 ## Before You Start
 
-- Require `RUN_ID` and verify `output/{RUN_ID}/plan/contracts/backend-apis.json` exists, parses as JSON, and contains API entries. If it is missing, empty, or malformed, stop and report `BLOCKED`; do not substitute user-named endpoints.
+- Require `RUN_ID` and verify `output/{RUN_ID}/specify/spec.md` exists and explicitly declares API scope. If the spec states `API In Scope: NO`, create an N/A report and do not generate or execute API tests. If the spec states `API In Scope: YES`, derive the API inventory from the spec, source, OpenAPI, and the optional plan contract. Report a blocker only when the specification and source do not provide enough information to identify the APIs or their expected behavior.
 - Read `.github/contexts/backend-context.md`. If it is empty or lacks the tech stack, derive it from backend manifests and source (for example, `pom.xml`, `build.gradle`, `package.json`, `requirements.txt`, `*.csproj`) and record the context gap in the report. Request a Context Updater run; do not modify context files.
 - Inspect `.github/contexts/` and read other relevant files, including `testing-standards.md`, `project-context.md`, `domain-context.md`, and user-provided API or security standards.
 - Read `.github/rules/security-quality-standards.md`, `.github/rules/environment-standards.md`, `.github/rules/traceability-standards.md`, and `.github/rules/mcp-usage-guide.md`.
-- Read `output/{RUN_ID}/plan/tasks.md`, `output/{RUN_ID}/plan/tests/scenarios.md`, `output/{RUN_ID}/specify/spec.md`, and implementation evidence under `output/{RUN_ID}/implement/backend/` and `output/{RUN_ID}/implement/integration/`.
+- Read `output/{RUN_ID}/plan/tasks.md`, `output/{RUN_ID}/plan/tests/scenarios.md`, and implementation evidence under `output/{RUN_ID}/implement/backend/` and `output/{RUN_ID}/implement/integration/` when present.
 - Confirm the backend implementation tasks for each API are complete. Mark APIs without complete implementation as `BLOCKED` or `SKIPPED` with a reason; do not claim they were tested.
 - Read the base URL from `API_BASE_URL` when provided; otherwise derive it from backend context and configuration. Read credentials and tokens only from named environment variables; do not ask users to send secrets in chat.
 
 ## Inputs
 
 - Required: `RUN_ID`.
-- Required: `output/{RUN_ID}/plan/contracts/backend-apis.json`.
+- Required: `output/{RUN_ID}/specify/spec.md`.
+- Optional supplemental contract: `output/{RUN_ID}/plan/contracts/backend-apis.json`.
 - Required: `.github/contexts/backend-context.md`.
 - Supporting sources: spec, tasks, planned scenarios, OpenAPI documents, backend routes/controllers/services/validators/middleware, mock fixtures (for example, `backend/src/mock/`), existing backend tests, and implementation evidence.
 - Optional: `API_BASE_URL` and environment-variable names for test credentials.
@@ -45,9 +46,9 @@ Generate and execute Playwright API tests for every backend API planned for a PD
 
 ### API Scope
 
-- Treat every API entry in `backend-apis.json` as in scope. Do not narrow the run or omit APIs for convenience.
+- Treat every API listed in `spec.md` as in scope. When `backend-apis.json` exists, treat every API entry there as in scope as well. Do not narrow the run or omit APIs for convenience.
 - Build an API inventory with API ID, method, path, controller, handler, request schema, response schema, documented status codes, auth/role requirements, and trace references.
-- Locate each controller and handler in the backend source. Record contract drift when method, path, parameters, schemas, status codes, or auth differ between `backend-apis.json`, OpenAPI, and source. Test against the planned contract and report drift; do not silently adopt source behavior as expected behavior.
+- Locate each controller and handler in the backend source. Record contract drift when method, path, parameters, schemas, status codes, or auth differ between `spec.md`, `backend-apis.json`, OpenAPI, and source. Test against the specified contract and report drift; do not silently adopt source behavior as expected behavior.
 - Assign each case a stable ID in the form `APT-<api-id>-001`, using a normalized `<method>-<path>` slug when no API ID exists.
 
 ### Source-Grounded Coverage
@@ -61,7 +62,7 @@ Generate and execute Playwright API tests for every backend API planned for a PD
   * Pagination, filtering, sorting, and empty results
   * Error envelope format defined by backend context
   * Absence of stack traces, PII, secrets, or internal details in error responses
-- Validate response bodies against schemas from `backend-apis.json` or OpenAPI. Assert concrete values only when they are deterministic from fixtures.
+- Validate response bodies against schemas from `spec.md`, `backend-apis.json`, or OpenAPI. Assert concrete values only when they are deterministic from fixtures.
 - Avoid duplicate or combinatorial cases. Record source-visible branches that cannot be safely tested, with the reason, in the coverage inventory.
 - Do not invent behavior or weaken assertions to obtain a green run.
 
@@ -115,6 +116,8 @@ Generate and execute Playwright API tests for every backend API planned for a PD
 
 Write evidence under a new `output/{RUN_ID}/api-tests/attempt-<n>/` directory. Select the next unused attempt number and never overwrite earlier attempts.
 
+When `API In Scope: NO`, create only `report.md` and `summary.json`, record `NOT_APPLICABLE` (N/A) with the specification evidence and zero APIs, controllers, and cases, and do not generate tests, launch a browser, or call an endpoint.
+
 ```text
 output/{RUN_ID}/api-tests/attempt-<n>/
   api-inventory.json
@@ -128,7 +131,7 @@ output/{RUN_ID}/api-tests/attempt-<n>/
 ```
 
 * `api-inventory.json`: API entries, controller and handler locations, implementation status, and contract drift findings
-* `api-test-cases.json`: `RUN_ID`, source contract path, and cases with ID, API ID, controller, category, preconditions, synthetic request, and expected status, headers, and schema
+* `api-test-cases.json`: `RUN_ID`, source spec path, optional supplemental contract path, and cases with ID, API ID, controller, category, preconditions, synthetic request, and expected status, headers, and schema
 * `summary.json`: per-API and per-case results, counts, test file paths, and blockers
 * `execution.json`: exact command, exit code, duration, runner, base URL, and backend start mode
 * `report.md`: controller-by-controller coverage, results, drift, gaps, failures, blockers, build changes, and relative links
@@ -138,7 +141,7 @@ Update `requirement/Traceability_Matrix.md` with `APT-*` IDs mapped to API IDs, 
 
 ## Success Criteria
 
-- Every API in `backend-apis.json` appears in the report as tested, blocked, or skipped with a reason.
+- Every API in `spec.md` and every API in an available `backend-apis.json` appears in the report as tested, blocked, or skipped with a reason.
 - Every controller referenced by the contract is located in source or reported as missing.
 - Every executed case maps to an API ID and has evidence-backed results; counts reconcile with JUnit output.
 - A run passes only when all required cases execute and pass. Assertion failures make the run `FAILED`; unmet prerequisites or incomplete required coverage make it `BLOCKED`.
@@ -148,7 +151,7 @@ Update `requirement/Traceability_Matrix.md` with `APT-*` IDs mapped to API IDs, 
 
 Emit:
 
-- `API_TEST_STATUS: [PASSED|FAILED|BLOCKED] [RUN_ID: <id>] [APIS: <count>] [CONTROLLERS: <count>] [CASES: <count>]`
+- `API_TEST_STATUS: [PASSED|FAILED|BLOCKED|NOT_APPLICABLE] [RUN_ID: <id>] [APIS: <count>] [CONTROLLERS: <count>] [CASES: <count>]`
 - `API_COVERAGE: [<api-id>: PASSED|FAILED|BLOCKED|SKIPPED, ...]`
 - `CONTRACT_DRIFT: [none | <api-id>: <summary>, ...]`
 - `TEST_LOCATION: [<backend-root>/test/api/]`
