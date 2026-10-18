@@ -46,12 +46,12 @@ Step 3: Specification
    ↓
    Figma Extractor (when the requirement has Figma links)
    Technical Specifier
-   Compliance Reviewer (spec gate)
+   Technical Specifier automatically invokes Compliance Reviewer (spec gate)
    ↓
 Step 4: Planning
    ↓
    Implementation Planner
-   Compliance Reviewer (plan gate)
+   Implementation Planner automatically invokes Compliance Reviewer (plan gate)
    ↓
 Step 5: Implementation
    ↓
@@ -71,17 +71,17 @@ Step 8: Quality Assurance
    ↓
 Step 9: Review & Compliance
    ↓
-   Compliance Reviewer (code gate)
+   Technical Documenter invokes Compliance Reviewer automatically before final documentation
    ↓
 Step 10: Documentation & Traceability
    ↓
-   Technical Documenter
+   Technical Documenter (continues after a successful review)
    Traceability Manager (final reconciliation)
 ```
 
 Compliance Reviewer gates stop the flow on Critical findings. Context Updater can run at any point to resync context with the project.
 
-**Human checkpoints:** Every agent is started manually. Each agent produces its output, stops, and reports `NEXT_STEP` naming the next agent; review the output and run that agent yourself.
+**Human checkpoints:** Every PDLC stage is started manually. The Specifier, Planner, and final Documenter invoke Compliance Reviewer automatically at the spec, plan, and post-test code gates. The reviewer does not start the next stage. Critical findings block the handoff; otherwise, review the results and manually start the named next stage.
 
 ### Design Evidence Rules
 
@@ -392,6 +392,8 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 #### **Compliance Reviewer**
 **File:** `reviewer.agent.md`
 
+The reviewer runs automatically as a bounded subagent at the spec, plan, and post-test code gates. It may also be started manually for reviews outside those checkpoints.
+
 **When to use:**
 - Reviewing any artifact (specs, plans, code, tests, docs)
 - Validating compliance with standards and regulations
@@ -577,15 +579,14 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 -> Requirement Intake Consolidator
 -> Traceability Manager
 -> Technical Specifier
--> Compliance Reviewer
+-> Technical Specifier automatically invokes Compliance Reviewer
 -> Implementation Planner
--> Compliance Reviewer
+-> Implementation Planner automatically invokes Compliance Reviewer
 -> Implementation Builder
 -> API Tester
 -> Functional Automation Test
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 
@@ -597,13 +598,14 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 -> Requirements Expander
 -> User Story Generator
 -> Technical Specifier
+-> Technical Specifier automatically invokes Compliance Reviewer
 -> Implementation Planner
+-> Implementation Planner automatically invokes Compliance Reviewer
 -> Implementation Builder
 -> API Tester
 -> Functional Automation Test
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 

@@ -24,6 +24,6 @@ Run this workflow:
 4. Stop if Critical gaps block specification.
 5. Act as `Traceability Manager` and validate `requirement/Traceability_Matrix.md`.
 6. **STOP**: report intake outputs and `NEXT_STEP: Human review, then manually start Technical Specifier`. Do not generate the spec in this prompt.
-7. After the spec is generated, the human manually starts `Compliance Reviewer` for spec review, then `Implementation Planner`. This prompt never starts those agents.
+7. After the spec is generated, Technical Specifier automatically invokes `Compliance Reviewer` for the spec gate. Critical findings block the handoff. After reviewing the spec and review results, the human manually starts `Implementation Planner`.
 
 Follow `.github/copilot-instructions.md`.

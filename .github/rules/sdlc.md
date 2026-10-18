@@ -17,8 +17,9 @@ Intake -> Gap Report -> Consolidated Requirements -> Spec -> Plan -> Implement
 ```
 
 ## Human Checkpoints
-- Every PDLC stage is human-initiated. Each agent produces its output, stops, and emits `NEXT_STEP`; the human reviews the output and manually runs the next agent.
-- Agents must not start the next stage or invoke its agent.
+- Every PDLC stage is human-initiated. Each stage agent produces its output, stops, and emits `NEXT_STEP`; the human reviews the output and manually starts the next stage.
+- Technical Specifier, Implementation Planner, and Technical Documenter automatically invoke Compliance Reviewer at the spec, plan, and post-test code gates, respectively. These bounded reviews do not start the next stage.
+- Critical review findings block the handoff until a human resolves them and the artifact is reviewed again.
 - Workflow prompts pause after every step and continue only on explicit human instruction.
 
 ## Quality Gates

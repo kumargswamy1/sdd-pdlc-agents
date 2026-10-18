@@ -1,6 +1,6 @@
 # Spec-Driven Workflow
 
-Every stage is human-initiated. Each agent produces its output and stops; a human reviews it and manually runs the next agent. No stage starts automatically.
+Every PDLC stage is human-initiated. At the specification, planning, and post-test code gates, the responsible stage agent automatically invokes Compliance Reviewer before completing. The review does not start the next stage; a human reviews the result and manually starts the next stage. Critical findings block the handoff until resolved and re-reviewed.
 
 ## Existing Documents Flow
 
@@ -10,15 +10,14 @@ Existing requirement folder
 -> Context, BRD, Requirements, Gap Report, Traceability Matrix
 -> Traceability Manager
 -> Technical Specifier
--> Compliance Reviewer
+-> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
 -> Implementation Planner
--> Compliance Reviewer
+-> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
 -> Implementation Builder
 -> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
 -> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 
@@ -31,13 +30,14 @@ Business problem
 -> Requirements Expander
 -> User Story Generator
 -> Technical Specifier
+-> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
 -> Implementation Planner
+-> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
 -> Implementation Builder
 -> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
 -> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 

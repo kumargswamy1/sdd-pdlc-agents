@@ -55,8 +55,9 @@ Context Updater
 ```
 
 ## Human-Initiated Stages
-- Every PDLC agent is started manually by a human. Each agent produces its output, stops, and emits `NEXT_STEP` naming the next agent; the human reviews the output and runs that agent.
-- No agent or prompt may start the next stage automatically. Agents have `disable-model-invocation: true` and must not be invoked as subagents. The only exception is Figma Extractor, which Technical Specifier may invoke within the specification stage.
+- Every PDLC stage is started manually by a human. At the specification, planning, and post-test code gates, the stage agent automatically invokes Compliance Reviewer as a bounded subagent before completing. This review does not start the next PDLC stage.
+- Critical review findings stop the handoff until a human resolves them and the artifact is reviewed again. Otherwise, the stage reports the review result and names the next human-started stage.
+- Stage agents remain unavailable as subagents unless explicitly allowlisted for a documented exception. Technical Specifier may invoke Figma Extractor during specification; Technical Specifier, Implementation Planner, and Technical Documenter may invoke Compliance Reviewer only at their respective review gates.
 
 ## Required Flow
 For existing source requirement folders:
@@ -66,15 +67,14 @@ For existing source requirement folders:
 -> Requirement Intake Consolidator
 -> Traceability Manager
 -> Technical Specifier
--> Compliance Reviewer
+-> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
 -> Implementation Planner
--> Compliance Reviewer
+-> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
 -> Implementation Builder
 -> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
 -> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 
@@ -87,13 +87,14 @@ For new business problems:
 -> Requirements Expander
 -> User Story Generator
 -> Technical Specifier
+-> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
 -> Implementation Planner
+-> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
 -> Implementation Builder
 -> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
 -> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
 -> Quality Tester
--> Compliance Reviewer
--> Technical Documenter
+-> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 

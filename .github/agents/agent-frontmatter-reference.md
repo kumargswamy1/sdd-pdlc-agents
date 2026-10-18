@@ -228,4 +228,4 @@ disable-model-invocation: false
 7. Add hooks only for deterministic and quick checks.
 8. Test one real invocation after each frontmatter change.
 9. Reference actual agents in your `agents` allowlist (e.g., "Technical Specifier", "Compliance Reviewer").
-10. For spec-driven workflows, chain: Specifier → Compliance Reviewer → Planner → Builder → Tester → Documenter.
+10. In the spec-driven workflow, Specifier, Planner, and final Documenter invoke Compliance Reviewer as a bounded subagent at their review gates; a human starts each next PDLC stage.
