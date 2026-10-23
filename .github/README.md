@@ -4,14 +4,14 @@ This document describes all available agents in the spec-driven development life
 
 ## Overview
 
-The agents are organized into a sequential SDLC workflow that transforms business requirements into implemented, tested, and documented code. Each agent is specialized for a specific phase and reads/writes standardized artifacts with trace IDs. Run artifacts are written under `output/{RUN_ID}/`.
+The agents support a human-controlled, spec-driven PDLC workflow that transforms business requirements into implemented, tested, and documented code. Each agent is specialized for a specific phase and reads/writes standardized artifacts with trace IDs. Run artifacts are written under `output/{RUN_ID}/`. Every PDLC stage is started manually and stops for human review; workflow prompts are runbooks, not autonomous end-to-end chains.
 
 ## Agent Inventory
 
 | # | Agent | File | Phase | Primary Input | Primary Output |
 |---|-------|------|-------|---------------|----------------|
 | 1 | Context Builder | `context-builder.agent.md` | Context | Confluence, Word/PDF, source code | `.github/contexts/*`, `requirement/Context_{ProjectName}.md` |
-| 2 | Context Updater | `context-updater.agent.md` | Context (continuous) | Source/doc/dependency changes | Updated `.github/contexts/*`, `CTX-UPDATE-*` |
+| 2 | Context Updater | `context-updater.agent.md` | Context (on demand) | Source/doc/dependency changes | Updated existing `.github/contexts/*`, `CTX-UPDATE-*` |
 | 3 | Figma Extractor | `figma-extractor.agent.md` | Design support | Requirement file with Figma links, `RUN_ID` | `output/{RUN_ID}/specify/figma/` |
 | 4 | Technical Specifier | `specify.agent.md` | Specification | Jira key or requirement file | `output/{RUN_ID}/specify/` |
 | 5 | Implementation Planner | `planner.agent.md` | Planning | `output/{RUN_ID}/specify/` | `output/{RUN_ID}/plan/` |
@@ -22,7 +22,7 @@ The agents are organized into a sequential SDLC workflow that transforms busines
 | 10 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation, test evidence | `DOC-*` documentation |
 | 11 | Traceability Manager | `traceability-manager.agent.md` | Traceability | All artifacts | `requirement/Traceability_Matrix.md` |
 
-All agents are user-invocable. The Playwright-based testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
+All listed agents are user-invocable. Stage agents are not invoked as subagents, except for the explicitly allowed Figma Extractor call during specification. Compliance Reviewer is also invoked as a bounded subagent only at the spec, plan, and post-test code gates; it does not start the next stage. The Playwright-based testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
 
 ## Agent Workflow Architecture
 
@@ -31,52 +31,51 @@ All agents are user-invocable. The Playwright-based testing agents (API Tester, 
 │                      SPEC-DRIVEN DEVELOPMENT FLOW                   │
 └─────────────────────────────────────────────────────────────────────┘
 
-Step 1: Context Foundation (prerequisite)
+Step 1: Context Foundation (human-started prerequisite when context is missing)
    ↓
    Context Builder
-   Context Updater (runs continuously)
+   Context Updater (human-started on demand at any phase)
    ↓
-Step 2: Requirement Intake
+Step 2: Requirement Intake (workflow prompt; human reviews and starts the next stage)
    ↓
    Requirement Intake Consolidator (role, see intake prompts)
    Traceability Manager (intake gate)
    ↓
-Step 3: Specification
+Step 3: Specification (human starts Technical Specifier)
    ↓
-   Figma Extractor (when the requirement has Figma links)
+   Figma Extractor (Specifier invokes it when applicable)
    Technical Specifier
    Technical Specifier automatically invokes Compliance Reviewer (spec gate)
    ↓
-Step 4: Planning
+Step 4: Planning (human starts Implementation Planner)
    ↓
    Implementation Planner
    Implementation Planner automatically invokes Compliance Reviewer (plan gate)
    ↓
-Step 5: Implementation
+Step 5: Implementation (human starts Implementation Builder)
    ↓
    Implementation Builder (code + unit tests)
    ↓
-Step 6: Backend API Testing
+Step 6: Backend API Testing (human starts; agent reports N/A when API scope is absent)
    ↓
    API Tester (every API in spec.md when `API In Scope: YES`)
    ↓
-Step 7: Component Functional Automation
+Step 7: Component Functional Automation (human starts; agent reports N/A when UI scope is absent)
    ↓
    Functional Automation Test (every UI behavior in spec.md when `UI In Scope: YES`)
    ↓
-Step 8: Review & Compliance
+Step 8: Post-test code review and documentation (human starts Technical Documenter)
    ↓
    Technical Documenter invokes Compliance Reviewer automatically before final documentation
    ↓
-Step 9: Documentation & Traceability
+Step 9: Final traceability (human starts Traceability Manager)
    ↓
-   Technical Documenter (continues if no Critical/High/Medium findings and no independent hard-gate blockers)
    Traceability Manager (final reconciliation)
 ```
 
-Compliance Reviewer gates stop the flow on Critical, High, or Medium findings until human remediation and re-review or explicit acceptance. Low-only `FAIL` results emit a warning and may continue. Context Updater can run at any point to resync context with the project.
+These arrows show the recommended order, not automatic execution. Each numbered stage requires a human start and review before the next stage. The intake prompt performs intake and the intake traceability gate, then stops before specification. User Story Generator and Requirement Intake Consolidator are workflow roles, not standalone agents.
 
-**Human checkpoints:** Every PDLC stage is started manually. The Specifier, Planner, and final Documenter invoke Compliance Reviewer automatically at the spec, plan, and post-test code gates. The reviewer does not start the next stage. Critical, High, or Medium findings block the handoff until resolved and re-reviewed or explicitly accepted; Low-only `FAIL` results warn but do not automatically block.
+**Review gates:** The Technical Specifier, Implementation Planner, and final Technical Documenter invoke Compliance Reviewer at the spec, plan, and post-test code gates. A failed review remains `FAIL` regardless of finding severity. Any Critical, High, or Medium finding blocks the handoff until a human records remediation or explicit acceptance, and remediation requires re-review. A `FAIL` with only Low findings emits `REVIEW_GATE_WARNING` and does not automatically block; findings remain visible for human disposition. Independent stage hard gates (including required unit tests and coverage) still block completion. See [PDLC policy](rules/pdlc.md).
 
 ### Design Evidence Rules
 
@@ -106,7 +105,8 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Inspects available legacy project documentation, source code, configuration, and tests
 - Gathers business, client-domain, stakeholder, and compliance context
 - For greenfield projects: prompts user for tech stack and business overview
-- Generates tech-specific standards files with best practices
+- Creates missing or objectively empty canonical context files; preserves substantive context and user-authored standards
+- Applies stack-specific implementation and testing guidance based on verified project evidence
 - Preserves and indexes additional user-provided standards under `.github/contexts/`
 - Creates unified project context with CTX-* trace IDs
 
@@ -140,12 +140,7 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Creates CTX-UPDATE-* IDs for change tracking
 - Alerts on MAJOR impact changes
 
-**Triggers automatically on:**
-- `package.json`, `pubspec.yaml`, `requirements.txt` changes
-- Folder structure reorganization
-- Framework version changes
-- Confluence or attached-document changes, when detected
-- Domain guidance or `.github/contexts/` standards changes
+**Invocation:** Human-started on demand; it does not run automatically when files or dependencies change. It updates existing context only, does not create missing context documents, and reports missing/empty context for Context Builder.
 
 **User-invocable:** Yes
 
@@ -192,8 +187,11 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Fetches issue details and extracts requirements
 - Creates canonical requirement markdown files
 - Generates implementation-ready technical specifications
+- Assesses frontend and backend scope independently and records unit-test applicability for each surface
+- Logs unresolved decisions as `CLAR-*`; unresolved clarifications block a successful spec handoff
 - Maps FR-* (Functional) and NFR-* (Non-Functional) to SPEC-* IDs
 - Documents data models, API contracts, interface designs
+- Automatically invokes Compliance Reviewer as the spec gate; does not start planning
 
 **Input options:**
 - Jira key: `ABCAPP-123`
@@ -236,9 +234,10 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Generates task DAGs showing dependencies
 - Assigns effort estimates and sequencing
 - Maps tasks to TASK-* IDs
-- Identifies frontend/backend/testing/documentation tasks
-- Plans unit test tasks alongside each implementation task
+- Plans frontend/backend changes independently, including unit-test tasks only for changed surfaces
+- Requires resolved spec clarifications before creating final planning tasks
 - Inventories frontend components and backend APIs for downstream testing agents
+- Automatically invokes Compliance Reviewer as the plan gate; does not start implementation
 
 **Reads from:**
 - `output/{RUN_ID}/specify/`
@@ -276,7 +275,7 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Follows tech-stack-specific standards
 - Reuses approved components and libraries
 - Creates unit tests as part of implementation
-- Executes required frontend/backend unit suites separately before handoff, applies an 80% gate to every supported metric and layer, and displays measured test counts and coverage with report links
+- Executes required frontend/backend unit suites separately before handoff; requires at least 80% for each supported coverage metric and reports measured test counts, coverage, and report links
 - Skips unit-test creation/execution and coverage for a surface when the story requires no changes to it; reports `NOT_APPLICABLE` with `N/A` metrics and scope evidence instead of requiring tests or coverage reports for unchanged code
 - Matches UI to referenced screenshots/Figma designs using the project theme
 - Documents code inline with standards
@@ -309,9 +308,10 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 
 **What it does:**
 - Reads backend tech stack and API standards from `backend-context.md`
-- Tests each planned API and controller with Playwright API testing
+- Tests every API in the approved spec (and supplemental planned API contract, when present) with Playwright API testing
 - Uses the `playwright` MCP server from `.vscode/mcp.json` for live endpoint discovery
-- Reports pass/fail/blocked status, contract drift, and coverage gaps
+- Reports pass/fail/blocked or evidence-backed `NOT_APPLICABLE` status, contract drift, and coverage gaps
+- Stops after the test report and hands off to human review; does not invoke the next agent
 
 **Inputs:**
 - `RUN_ID`
@@ -337,10 +337,12 @@ Compliance Reviewer gates stop the flow on Critical, High, or Medium findings un
 - Running functional tests for the UI behavior specified in `output/{RUN_ID}/specify/spec.md` when `UI In Scope: YES`
 
 **What it does:**
-- Reads the planner's component inventory and tests each implemented component
+- Tests every specified UI behavior and every planned component when the component inventory exists; derives scope from the spec and plan if it does not
 - Generates and runs Playwright tests using the `playwright` MCP server
 - Maps functional test cases and evidence to component IDs
-- Reports pass/fail/blocked status and component coverage gaps
+- Reports pass/fail/blocked or evidence-backed `NOT_APPLICABLE` status and component coverage gaps
+- Includes applicable user-workflow scenarios; acceptance checks outside API/UI automation remain human-verification gaps
+- Stops after the test report and hands off to human review; does not invoke the next agent
 
 **Inputs:**
 - `RUN_ID`
@@ -418,6 +420,7 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 - Generates final project documentation
 - Automatically invokes the code compliance review after API/UI test results or evidence-backed N/A reports, before final documentation
 - Records outstanding acceptance checks and review findings without inventing a separate QA result
+- Blocks final documentation when applicable test-stage evidence is missing, review status/findings are unusable, or independent implementation gates are unmet
 
 **Reads from:**
 - `output/{RUN_ID}/specify/spec.md` (initial documentation)
@@ -511,12 +514,12 @@ Functional Automation Test: RUN_ID=ABCAPP-123_20261013
 
 ### Workflow Prompts
 
-Prompt files in `.github/prompts/` run multi-agent workflows end to end:
+Prompt files in `.github/prompts/` provide human-checkpoint workflow runbooks:
 
 | Prompt | Purpose |
 |--------|---------|
-| `intake-to-spec.prompt.md` | Consolidate existing requirement docs, validate traceability, generate and review the spec |
-| `intake-to-implementation.prompt.md` | Full flow from intake through implementation, API testing, functional testing, QA, review, docs, and traceability |
+| `intake-to-spec.prompt.md` | Consolidate existing requirement docs, validate traceability, then stop for human review and manual specifier start |
+| `intake-to-implementation.prompt.md` | Human-checkpoint runbook from intake through traceability; each invocation performs one stage and stops for review |
 
 ---
 
@@ -536,11 +539,11 @@ Each phase generates unique trace IDs for linking:
 | Implementation | CODE-* | CODE-001 | Code artifact |
 | Backend API Testing | APT-* | APT-GET-accounts-001 | API test case |
 | Component Functional Testing | FT-* | FT-COMP-001-001 | Component functional test |
-| Quality Assurance | TEST-* | TEST-001 | User-workflow test case/suite |
+| Acceptance/test evidence | TEST-* | TEST-001 | User-workflow or acceptance test evidence; not a separate Quality Tester stage |
 | Review | REVIEW-* | REVIEW-001 | Compliance review finding |
 | Documentation | DOC-* | DOC-001 | Documentation artifact |
 
-Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TEST → REVIEW → DOC` (see `.github/rules/traceability-standards.md`).
+Traceability links each applicable artifact to its evidence and upstream requirements; not every run uses every ID prefix. `APT-*` tracks API tests, `FT-*` tracks UI/component functional tests, and `TEST-*` may track user-workflow or other acceptance test evidence. There is no separate Quality Tester stage; acceptance checks outside API/UI automation remain human-verification gaps. See `.github/rules/traceability-standards.md`.
 
 ---
 
@@ -551,48 +554,47 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 [Context exists per Context Builder]
 -> Requirement Intake Consolidator
 -> Traceability Manager
--> Technical Specifier
+-> [Human review, then manually start Technical Specifier]
 -> Technical Specifier automatically invokes Compliance Reviewer
--> Implementation Planner
+-> [Human review and permitted handoff, then manually start Implementation Planner]
 -> Implementation Planner automatically invokes Compliance Reviewer
--> Implementation Builder
--> API Tester
--> Functional Automation Test
+-> [Human review and permitted handoff, then manually start Implementation Builder]
+-> [Human review, then manually start API Tester; it reports N/A when API scope is absent]
+-> [Human review, then manually start Functional Automation Test; it reports N/A when UI scope is absent]
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
--> Traceability Manager
+-> [Human review, then manually start Traceability Manager]
 ```
 
 ### New Business Problem
 ```
 [Context exists per Context Builder]
--> User Story Generator
--> Technical Specifier
+-> User Story Generator (workflow role, not a standalone agent)
+-> [Human review, then manually start Technical Specifier]
 -> Technical Specifier automatically invokes Compliance Reviewer
--> Implementation Planner
+-> [Human review and permitted handoff, then manually start Implementation Planner]
 -> Implementation Planner automatically invokes Compliance Reviewer
--> Implementation Builder
--> API Tester
--> Functional Automation Test
+-> [Human review and permitted handoff, then manually start Implementation Builder]
+-> [Human review, then manually start API Tester; it reports N/A when API scope is absent]
+-> [Human review, then manually start Functional Automation Test; it reports N/A when UI scope is absent]
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
--> Traceability Manager
+-> [Human review, then manually start Traceability Manager]
 ```
 
 The intake prompt consolidates source requirements and produces the BRD and detailed
-requirements artifacts. User-story generation is a workflow activity, not a standalone
-agent.
+requirements artifacts before stopping for human review. User-story generation is a workflow activity, not a standalone agent.
 
-There is no separate Quality Tester stage. API Tester covers specified APIs; Functional Automation Test covers UI behaviors and planned user workflows. Both report executed results or scope-backed `NOT_APPLICABLE`. Technical Documenter consumes those reports and implementation/unit coverage evidence for the automatic code-review gate. Acceptance checks outside API/UI automation remain explicit human-verification gaps.
+There is no separate Quality Tester stage. API Tester covers specified APIs; Functional Automation Test covers UI behaviors and applicable planned user workflows. Both report executed results or scope-backed `NOT_APPLICABLE`. Technical Documenter consumes those reports and implementation/unit coverage evidence for the automatic code-review gate. Acceptance checks outside API/UI automation remain explicit human-verification gaps.
 
 Every story must assess both frontend and backend. Implementation and unit-test tasks are required only for surfaces that change; unchanged dependencies are documented, not ignored. API/UI functional verification is scoped separately from unit coverage.
 
-### Continuous Updates
+### On-demand Updates and Re-runs
 ```
-• Code, dependency, or document changes → Context Updater
+• Code, dependency, or document changes → human may start Context Updater
 • New requirement → Technical Specifier
 • Specification change → Implementation Planner (re-plan)
-• Backend change → API Tester (re-run)
-• Frontend change → Functional Automation Test (re-run)
-• Traceability Manager (runs between phases)
+• Backend change → human re-runs API Tester when API scope applies
+• Frontend change → human re-runs Functional Automation Test when UI scope applies
+• Human starts Traceability Manager at intake/final reconciliation as needed
 ```
 
 ---
