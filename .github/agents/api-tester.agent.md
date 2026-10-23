@@ -147,6 +147,19 @@ Update `requirement/Traceability_Matrix.md` with `APT-*` IDs mapped to API IDs, 
 - A run passes only when all required cases execute and pass. Assertion failures make the run `FAILED`; unmet prerequisites or incomplete required coverage make it `BLOCKED`.
 - No secrets, PII, or production data appear in tests or artifacts, and no earlier attempt is overwritten.
 
+## Report And Test Code Delivery
+
+After writing and executing the API tests, present the results and source code in the final response without waiting for the user to ask where they are:
+
+* Start with the overall status and executed, passed, failed, and skipped case totals, plus API and controller totals. Reconcile these counts with the attempt's JUnit XML.
+* Include an API coverage table with API ID, method/path, case count, and result.
+* Under `API Test Results Report`, provide a direct Markdown link to the latest attempt's `report.md`, followed by links to `api-test-cases.json`, `api-inventory.json`, `summary.json`, `results/junit.xml`, and `logs/attempt.log`. A JSON summary or folder path alone is not the readable report.
+* Under `API Test Code`, link to every executable API test file, shared schema/assertion helpers, and the runner/configuration needed to reproduce the run. Briefly describe what each file tests or supports. Persist runnable source under `<backend-root>/test/api/`; an in-memory script or chat-only code block does not satisfy code delivery.
+* Use absolute workspace paths for links in the chat response so the user can open files in VS Code. Use relative links inside the saved Markdown report. Verify linked files exist before responding.
+* State the actual tested base URL, whether execution used the running local backend or an isolated test server, and an exact rerun command with required non-secret environment-variable names and runtime prerequisites.
+* Clearly identify failures, contract drift, untested branches, and blockers. For blocked or N/A runs, link only artifacts actually created, explain missing code/results, and never fabricate JUnit or execution evidence.
+* Identify the attempt number and distinguish this execution from earlier builder rechecks or superseded attempts. Preserve the status fields below and end with the manual `NEXT_STEP` handoff; do not start another agent.
+
 ## Status Reporting
 
 Emit:

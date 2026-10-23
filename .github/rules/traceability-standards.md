@@ -24,17 +24,17 @@ Required columns:
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 
 ## Agent Responsibilities
-- `Requirement Intake Consolidator`: Create canonical IDs from existing source docs.
-- `Context Clarifier`: Create `CTX-*`.
-- `BRD Generator`: Create `BRD-*`.
-- `Requirements Expander`: Create `FR-*`, `NFR-*`, `AC-*`, `BR-*`, `INT-*`, and `ERR-*`.
+- `Requirement Intake Consolidator`: Consolidate existing source documents and create
+  canonical IDs for the BRD and detailed requirements, including `BRD-*`, `FR-*`,
+  `NFR-*`, `AC-*`, `BR-*`, `INT-*`, and `ERR-*`.
+- `Context Builder`: Create `CTX-*` from verified project context and map them to
+  related `BRD-*` entries when a BRD exists.
 - `User Story Generator`: Create `US-*`.
 - `Technical Specifier`: Create `SPEC-*`.
 - `Implementation Planner`: Create `TASK-*`.
-- `Implementation Builder`: Create `CODE-*` references.
+- `Implementation Builder`: Create `CODE-*` and unit-test `TEST-*` references with applicability and measured coverage evidence.
 - `API Tester`: Create API-level `APT-*` execution records mapped to API IDs, controllers, and related `TASK-*`/`SPEC-*`/`CODE-*` IDs.
 - `Functional Automation Test`: Create component-level `FT-*` execution records mapped to component IDs and related `TASK-*`/`SPEC-*` IDs.
-- `Quality Tester`: Create `TEST-*`.
 - `Compliance Reviewer`: Create `REVIEW-*`.
 - `Technical Documenter`: Create `DOC-*`.
 - `Traceability Manager`: Reconcile all IDs and flag gaps.

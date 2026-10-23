@@ -12,10 +12,10 @@ ms.topic: guide
 
 The Context Management System provides a foundational layer for all PDLC workflows in your organization. It consists of two specialized agents:
 
-1. **Context Builder** - Initializes comprehensive project context, technology standards, and traceability documents
+1. **Context Builder** - Initializes the canonical business context, separated technical contexts, and traceability documents
 2. **Context Updater** - Maintains context alignment as the project evolves
 
-These agents work together to ensure all downstream agents (Specifier, Planner, Builder, Tester) operate from a single source of truth about business drivers, technology choices, and architectural standards.
+These agents work together to ensure downstream agents use one canonical business context and separate, detailed frontend, backend, and testing contexts. Technical contexts reference business requirement IDs rather than duplicating or redefining requirements.
 
 ## Architecture
 
@@ -31,11 +31,11 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌─────────────────────────────────────────────────────────┐
-│      Technology Context Layer                           │
-│  (.github/contexts/project-context.md)                      │
-│  - Technology baseline (versions, dependencies)        │
-│  - Repository architecture, design system             │
-│  - Links to domain and user-provided context           │
+│      Business Context                                   │
+│  (.github/contexts/project-context.md)                  │
+│  - All business requirements and business logic         │
+│  - Rules, constraints, design intent, acceptance        │
+│  - Links to separate technical contexts                 │
 └─────────────────────────────────────────────────────────┘
                           ↓
 ┌──────────────────┬──────────────────┬──────────────────┬──────────────────┐
@@ -43,11 +43,11 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
 │ Context          │ Context          │ Context          │ Standards        │
 │ (contexts/)      │ (contexts/)      │ (contexts/)      │ (contexts/)      │
 ├──────────────────┼──────────────────┼──────────────────┼──────────────────┤
-│ - Industry       │ - Architecture   │ - API design     │ - Unit testing   │
-│ - Terminology    │ - Components     │ - Services       │ - Integration    │
-│ - Business rules │ - State mgmt     │ - Persistence    │ - BDD/Gherkin    │
-│ - Regulations    │ - Routing        │ - Auth/Authz     │ - Coverage       │
-│ - Constraints    │ - HTTP client    │ - Middleware     │ - Fixtures       │
+│ - Domain refs    │ - UI/design      │ - APIs/services  │ - Unit testing   │
+│ - Terminology    │ - Themes/fonts   │ - Data/storage   │ - Integration    │
+│ - Sources        │ - Styles/assets  │ - Auth/config    │ - BDD/Gherkin    │
+│ - No duplicated  │ - Routing/state  │ - Operations     │ - Coverage       │
+│   requirements   │ - Components     │ - Deployment     │ - Fixtures       │
 └──────────────────┴──────────────────┴──────────────────┴──────────────────┘
 ```
 
@@ -64,14 +64,14 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
    ├─ Create CTX-* IDs for traceability
    └─ Document findings
 
-2. Create Technology-Specific Standards Files
+2. Create Separated Technical Context Files
    ├─ frontend-context.md (based on detected frontend tech)
    ├─ backend-context.md (based on detected backend tech)
    └─ testing-standards.md (based on detected test frameworks)
 
-3. Create Unified Context Document
-   ├─ .github/contexts/project-context.md
-   ├─ .github/contexts/domain-context.md (client industry/domain and business rules)
+3. Create Business Context and Index
+   ├─ .github/contexts/project-context.md (all requirements, business logic, rules, constraints, design intent)
+   ├─ .github/contexts/domain-context.md (supplemental industry/domain references; link to requirements)
    ├─ Index additional user-provided standards under .github/contexts/
    └─ Link source evidence and guidance for downstream agents
 
@@ -97,12 +97,12 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
    └─ Identify implications for active specs/plans
 
 3. Update Context Files
-   ├─ Sync .github/contexts/project-context.md
-   ├─ Sync .github/contexts/domain-context.md
+   ├─ Update project-context.md for business requirement/rule/constraint changes and domain-context.md for supplemental industry references
    ├─ Update frontend-context.md (if frontend changes)
    ├─ Update backend-context.md (if backend changes)
-   └─ Update testing-standards.md (if testing changes)
-   └─ Preserve and update affected user-provided standards when warranted
+   ├─ Update testing-standards.md (if testing changes)
+   ├─ Update affected user-provided Markdown context/standards while preserving unrelated authored content
+   └─ Hand off missing or empty initial context documents to Context Builder; Updater does not create them
 
 4. Track Changes in Traceability
    ├─ Create CTX-UPDATE-* IDs for tracked changes
@@ -116,15 +116,18 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
 
 #### Technical Specifier
 **Reads from context:**
-- `.github/contexts/project-context.md` - Technology baseline, architecture patterns
-- `.github/contexts/frontend-context.md` - Frontend patterns, component library, architectural layers
-- `.github/contexts/backend-context.md` - API design, validation patterns, persistence approaches
+- `.github/contexts/project-context.md` - Complete business requirements, business logic/rules, constraints, product design intent, and acceptance criteria
+- `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
+- `.github/contexts/frontend-context.md` - Frontend implementation, screen/UI design evidence, theme/style details, and conventions
+- `.github/contexts/backend-context.md` - Backend APIs/services, data, integrations, security/configuration, and operational implementation
+- `.github/contexts/testing-standards.md` - Test frameworks, strategy, execution, and coverage standards
 
 **Impact:** Specifier uses tech standards to validate frontend/backend design choices, recommend existing components, and ensure specs align with project conventions.
 
 #### Implementation Planner
 **Reads from context:**
-- `.github/contexts/project-context.md` - Technology baseline, approved patterns
+- `.github/contexts/project-context.md` - Business requirements, business rules/constraints, design intent, and acceptance criteria
+- `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - `.github/contexts/frontend-context.md` - Frontend folder structure, layer boundaries
 - `.github/contexts/backend-context.md` - Backend service layers, API versioning
 - `.github/contexts/testing-standards.md` - Test structure, coverage requirements
@@ -139,7 +142,7 @@ These agents work together to ensure all downstream agents (Specifier, Planner, 
 
 **Impact:** Builder follows tech standards to create consistent implementation, reuse existing components, and generate tests matching project patterns.
 
-#### Quality Tester
+#### API Tester and Functional Automation Test
 **Reads from context:**
 - `.github/contexts/testing-standards.md` - Test frameworks, coverage targets, fixture strategies
 - `.github/contexts/frontend-context.md` - Frontend testing patterns, component testing approaches
@@ -167,9 +170,11 @@ requirement/Context_{ProjectName}.md
    ↓
 requirement/Traceability_Matrix.md (maps CTX-* to BRD/FR/NFR)
    ↓
-.github/contexts/project-context.md (business + tech)
+.github/contexts/project-context.md (business requirements and business logic)
    ↓
-frontend/backend/testing-standards.md (tech-specific patterns)
+.github/contexts/frontend-context.md (frontend/UI/design implementation)
+.github/contexts/backend-context.md (backend implementation and contracts)
+.github/contexts/testing-standards.md (test strategy and verification)
    ↓
 SPEC-* (specification phase reads standards)
    ↓
@@ -186,11 +191,11 @@ TEST-* (tester reads standards)
 
 ```
 .github/contexts/
-├─ project-context.md             # Unified business + tech baseline
-├─ domain-context.md              # Client industry/domain and business rules
-├─ frontend-context.md            # Frontend application patterns
-├─ backend-context.md             # Backend application patterns
-├─ testing-standards.md           # Testing tech patterns
+├─ project-context.md             # Canonical business requirements, logic, rules, constraints, design intent
+├─ domain-context.md              # Supplemental industry/domain reference material
+├─ frontend-context.md            # Frontend implementation, UI, design, theme, fonts, styles
+├─ backend-context.md             # Backend implementation, APIs, data, integrations, operations
+├─ testing-standards.md           # Testing and verification strategy, frameworks, coverage
 └─ <user-provided-context>.md    # Additional standards/context when applicable
 
 requirement/
@@ -249,7 +254,7 @@ Context updates also maintain a changelog:
 
 1. **Project changes** folder structure (e.g., split services into modules)
 2. **Context Updater** detects structure change
-3. **Updates** backend-context.md and project-context.md with new architecture
+3. **Updates** the owning technical context with architecture changes; project-context.md is changed only when business requirements, rules, constraints, or decisions change
 4. **Traceability Manager** assesses impact on active implementations
 5. **Affected implementations** are re-validated against new standards
 
@@ -363,7 +368,7 @@ Backend: Node.js/Python, API framework. Testing: Jest/pytest. Compliance: GDPR, 
 
 The Context Management System provides:
 
-✅ **Single source of truth** for business drivers, technology decisions, and architectural standards  
+✅ **Single source of truth** for business requirements and business logic, with detailed technology guidance separated by frontend, backend, and testing
 ✅ **Automatic detection** of tech stack and project structure  
 ✅ **Synchronized standards** across frontend, backend, and testing  
 ✅ **End-to-end traceability** from business context through implementation  

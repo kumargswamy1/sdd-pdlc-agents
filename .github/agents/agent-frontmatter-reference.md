@@ -191,7 +191,7 @@ description: "Use when: implementing code from approved plans and task files."
 name: "Implementation Builder"
 tools: [read, search, execute, edit]
 user-invocable: true
-agents: ["Compliance Reviewer", "Quality Tester", "Traceability Manager"]
+agents: ["Compliance Reviewer"]
 ---
 ```
 

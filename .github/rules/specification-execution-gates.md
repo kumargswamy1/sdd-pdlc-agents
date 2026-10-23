@@ -29,6 +29,10 @@ Before writing spec content, determine change type using mandatory evidence inpu
 - `Impacted Existing Nodes`
 - `New Nodes Required`: YES/NO
 - `Inherited Existing Behavior` list
+- `Frontend Changes Required`: YES/NO
+- `Backend Changes Required`: YES/NO
+
+Determine change scope from requirements, trace history, and the implementation footprint, not merely from the presence of a screen or API. Backend internal changes may be required without an API contract change; frontend service/state changes may be required without a new screen.
 
 ## Validation Checkpoints
 - All `FR-*` and `NFR-*` are mapped to `SPEC-*`.
@@ -53,6 +57,18 @@ Before writing spec content, determine change type using mandatory evidence inpu
 - Status-transition matrix (source status, condition, target status).
 - Exceptional-case behavior.
 - API change assessment (impact type, contract delta, backward compatibility).
+- `## Unit Test Applicability`
+
+`Unit Test Applicability` MUST contain one row each for frontend and backend:
+
+| Surface | Changes Required | Unit Tests | Coverage Gate | Requirement/SPEC References | Evidence and Rationale | Test Acceptance Criteria |
+|---------|------------------|------------|---------------|----------------------------|------------------------|--------------------------|
+
+- Set `Changes Required` to `YES` or `NO`, consistently with the change scope declaration.
+- For `YES`, set `Unit Tests` to `REQUIRED`. Define an 80% passing threshold for lines, statements, branches, and functions where supported by the native tool (Flutter executable lines), consistently across all layers. Define positive, negative, boundary, and error-path scenarios appropriate to the changed behavior.
+- For `NO`, set both `Unit Tests` and `Coverage Gate` to `NOT_APPLICABLE`. Cite evidence that no changes are needed to that surface. Unchanged API/screen reuse alone does not require that surface's unit-test creation, execution, or coverage reports.
+- Reference `.github/rules/implementation-execution-gates.md` for the required implementation-stage test counts, coverage metrics, commands, and native report evidence. Do not invent measured results or block specification on tests that will only exist after implementation.
+- Preserve separately required API, integration, and functional testing. Missing evidence or ambiguous/conflicting change scope requires clarification, not an exemption.
 
 `Requirement-to-SPEC Logic Coverage` MUST include columns:
 - `REQ_REF`
@@ -85,6 +101,7 @@ Before writing spec content, determine change type using mandatory evidence inpu
 - If `Logic In Scope = YES`: full requirement-to-spec logic coverage is mandatory.
 - If `API In Scope = YES` or `API Impact Type` is `EXISTING_API_CHANGE`/`NEW_API_REQUIRED`: API contract delta definition is mandatory.
 - If classification remains ambiguous, mark run `BLOCKED`.
+- Verify that both unit-test applicability rows agree with frontend/backend change scope and include evidence and acceptance criteria. Do not declare success with missing or contradictory applicability decisions.
 
 ### No-Assumption Policy Required
 - Do not declare success when any UI, logic, or API decision depends on unstated assumptions.
@@ -119,7 +136,7 @@ Include these one-line fields in final output:
 
 **REQUIRED ONLY IF**: `UI In Scope = YES` and design evidence is available (Figma JSON/PNG, user story/Confluence screenshots, or manual uploads).
 
-**PURPOSE**: Technical Specifier is the **only agent** that reads Figma JSON/PNG files or screenshots. This section documents how design details are extracted and incorporated into spec.md so downstream agents (Plan, Implementation) never need to re-parse design artifacts.
+Technical Specifier owns extraction of Figma JSON and screenshot details into the self-contained spec. Planner reads that documentation and preserves PNG references without opening design artifacts. Builder reads spec, approved plan/tasks, and the referenced screenshots for visual verification, but never re-parses Figma JSON.
 
 **Screenshot-based screens (no Figma link)**: Use `Screen ID: SCR-<nnn>` in place of `Node ID`, reference the screenshot path as stored in `png/screens/`, add `Design Source: Manual upload (no Figma link)` to the section, and extract components, layout, and states visually from the screenshot. Mark visual values that cannot be measured exactly (for example, exact hex colors or pixel spacing) as `APPROXIMATE_FROM_SCREENSHOT` and map them to the nearest project design token; this is not a blocker.
 
@@ -133,7 +150,7 @@ For each effective screen in `figma_report.md`, create a dedicated section in `s
 **Overview**: [2-3 sentence description of purpose, context in user flow]
 
 **Visual Reference**: 
-![{screen_name}](../figma/png/screens/{screen_name}__{node_id}.png)
+![{screen_name}](figma/png/screens/{screen_name}__{node_id}.png)
 
 **Components**:
 | Component | Type | Variant | Label | Action/Property |
@@ -166,7 +183,7 @@ For each effective screen in `figma_report.md`, create a dedicated section in `s
 
 ### Component Detail Extraction Checklist
 
-For each component in the JSON file (`output/{RUN_ID}/specify/figma/json/screens/{screen_name}__{node_id}.json`), extract:
+For each screen, locate its node ID in the parent JSON identified by the corresponding `summary.json` result's `nodeJson` path under `output/{RUN_ID}/specify/figma/json/`. Parent filenames use the parent node ID with colons replaced by hyphens; there is no per-screen JSON directory. Extract the following from that subtree, supplementing unavailable/deeper data with screenshots or clarification rather than inventing values:
 
 - ✓ **Name**: Exact component name from Figma
 - ✓ **Type**: Interactive (Button, TextField, etc.) or Display (Icon, Text, Image, etc.)
@@ -180,18 +197,18 @@ For each component in the JSON file (`output/{RUN_ID}/specify/figma/json/screens
 
 When referencing extracted artifacts in spec.md:
 
-- **Full-page flow diagram**: Reference `output/{RUN_ID}/specify/figma/png/0-*.png` early in spec (e.g., under "User Journey" section)
+- Reference parent PNGs using the `screenshotPng` paths in `summary.json` early in spec (for example, under "User Journey").
 - **Per-screen visual**: Reference `output/{RUN_ID}/specify/figma/png/screens/{screen_name}__{node_id}.png` in each screen section
-- **Component details source**: Internal extraction from `output/{RUN_ID}/specify/figma/json/screens/{screen_name}__{node_id}.json` (do NOT reference the JSON file path in final spec.md; all details should be documented inline)
+- Extract component details from the screen subtree of the parent JSON identified by `nodeJson` in `summary.json`. Document all details inline; downstream stages must not depend on JSON paths in spec.md.
 
 ### Data Flow Guarantee
 
 Once spec.md is complete with all per-screen design sections:
 
 - **Spec.md is self-contained**: All design information is explicitly documented in the spec sections
-- **Plan Agent reads only spec.md**: Not the JSON or PNG files
-- **Implementation Agent reads only plan.md**: Not the JSON or PNG files
-- **No downstream re-parsing**: Design artifacts are consumed only by Technical Specifier
+- Planner derives tasks from spec.md and context without opening JSON/PNG artifacts.
+- Builder uses spec.md, approved plan/tasks, and PNG references for visual verification.
+- No downstream re-parsing of Figma JSON; all design intent must be documented in spec.md.
 
 ### Validation Checklist for Per-Screen Design Documentation
 
@@ -201,8 +218,7 @@ Once spec.md is complete with all per-screen design sections:
 4. **States Covered**: All supported states (default, error, disabled, loading, etc.) are documented
 5. **Interactive Actions Clear**: Each user action maps to a documented outcome or API call
 6. **Visual References Correct**: PNG paths are valid and screenshots exist
-7. **No JSON References**: Final spec.md contains no references to `json/screens/*.json`—all information is extracted and documented inline
+7. Final spec.md documents design details inline rather than requiring downstream JSON parsing.
 8. **Design Tokens Used**: Colors, sizes, and styles reference project design tokens where applicable
 9. **Traceability**: Each screen section links to relevant `SPEC-*` IDs and `FR-*` references
 10. **No Ambiguity**: Component interactions, validations, and error states are explicit (no "as designed" or "TBD" placeholders)
-

@@ -6,35 +6,35 @@ This folder defines GitHub Copilot agents for a generic spec-driven PDLC workflo
 ## Agent Files
 
 ```text
-.github/agents/requirement-intake-consolidator.agent.md
-.github/agents/context-clarifier.agent.md
-.github/agents/brd-generator.agent.md
-.github/agents/requirements-expander.agent.md
-.github/agents/user-story-generator.agent.md
-.github/agents/specify.agent.md
-.github/agents/planner.agent.md
+.github/agents/api-tester.agent.md
+.github/agents/context-builder.agent.md
+.github/agents/context-updater.agent.md
+.github/agents/figma-extractor.agent.md
+.github/agents/functional-automation-test.agent.md
 .github/agents/implement.agent.md
+.github/agents/planner.agent.md
 .github/agents/reviewer.agent.md
-.github/agents/tester.agent.md
+.github/agents/specify.agent.md
 .github/agents/technical-documenter.agent.md
 .github/agents/traceability-manager.agent.md
-.github/agents/context-standards-builder.agent.md
 ```
 
 ## How To Use
 Open GitHub Copilot Chat and select the relevant agent from the agent picker.
 
-For existing docs, start with:
+For existing requirement documents, use the intake prompt:
 
 ```text
-Requirement Intake Consolidator
+.github/prompts/intake-to-spec.prompt.md
 ```
 
-For a new business problem, start with:
+For a new project or missing project context, start with:
 
 ```text
-Context Clarifier
+Context Builder
 ```
+
+The intake workflow produces the BRD and detailed requirements artifacts.
 
 ## Reusable Prompt Workflows
 

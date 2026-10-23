@@ -25,7 +25,7 @@ Read and apply:
 - `.github/rules/traceability-standards.md`
 - `.github/rules/environment-standards.md`
 - `.github/rules/versioning-standards.md`
-- `.github/rules/sdlc.md`
+- `.github/rules/pdlc.md`
 
 ## Input
 Any file or directory:
@@ -41,6 +41,7 @@ Create or report:
 - `REVIEW-*` IDs.
 - Findings mapped to affected `FR-*`, `NFR-*`, `SPEC-*`, `TASK-*`, `CODE-*`, or `TEST-*`.
 - Overall status: `PASS`, `FAIL`, or `PASS_WITH_WARNINGS`.
+- A finding that causes review failure must remain `FAIL` regardless of severity; severity controls blocking, not the reported status. Make all findings visible. Critical, High, or Medium findings block the handoff; Low-only findings do not automatically block and require the exact `REVIEW_GATE_WARNING` defined in `.github/rules/pdlc.md`. For mixed severities, apply the highest-severity outcome. Never suppress or downgrade a failure; independent stage hard gates remain binding.
 
 ## Required Checks
 - Authentication and authorization.
@@ -50,4 +51,5 @@ Create or report:
 - Frontend integration versioning and error contract consistency.
 - Secrets and environment configuration.
 - Test coverage and evidence.
-- Enforce the minimum 80% unit-test coverage gate: backend statements, branches, functions, and lines; Flutter executable lines. Verify the report and command output, and raise a finding when any metric is below threshold or coverage evidence is missing.
+- Verify frontend/backend applicability independently against the approved story/spec, plan/tasks, and actual changes. Accept `NOT_APPLICABLE` for an unchanged surface and do not demand its unit tests or coverage reports. Require `N/A` metrics and scope evidence; reject exemptions based only on missing tasks/tooling or conflicting scope. Apply the coverage gate below only to required surfaces, while preserving separately required integration/API/functional verification.
+- Enforce the independent frontend/backend unit-test gates in `.github/rules/implementation-execution-gates.md`: an 80% passing threshold for lines, statements, branches, and functions where supported (Flutter executable lines). For spec/plan review, verify these gates are planned; for code review, verify actual execution, scope including untested files, native reports, and the results table. Failed tests, missing evidence, or a below-threshold required metric block implementation completion; reject combined averages and integration/end-to-end substitutes.

@@ -27,11 +27,11 @@ Context Builder (Unified - Merged)
   → Extracts tech stack from source code (package.json, config files, folder structure)
   → Gathers business and client-domain context from supplied sources
   → Applies standards DURING context creation (integrated, not separate)
-  → Creates `.github/contexts/project-context.md` (business + tech baseline with standards refs)
-  → Creates `.github/contexts/domain-context.md` (industry/domain context and business rules)
-  → Creates `.github/contexts/frontend-context.md` (patterns extracted from code)
-  → Creates `.github/contexts/backend-context.md` (patterns extracted from code)
-  → Creates `.github/contexts/testing-standards.md` (patterns extracted from code)
+  → Creates `.github/contexts/project-context.md` (all business requirements, logic, rules, constraints, design intent, and acceptance criteria)
+  → Creates `.github/contexts/domain-context.md` (supplemental industry/domain references; links to business requirements)
+  → Creates `.github/contexts/frontend-context.md` (frontend/UI implementation and detailed design: screens, themes, fonts, styles)
+  → Creates `.github/contexts/backend-context.md` (backend implementation, APIs, data, integrations, and operations)
+  → Creates `.github/contexts/testing-standards.md` (testing and verification strategy, frameworks, coverage)
   → Preserves and indexes additional user-provided standards under `.github/contexts/`
   → Creates `requirement/Context_{ProjectName}.md` (detailed context with CTX-* IDs)
   → Updates `requirement/Traceability_Matrix.md` with CTX-* IDs
@@ -56,7 +56,8 @@ Context Updater
 
 ## Human-Initiated Stages
 - Every PDLC stage is started manually by a human. At the specification, planning, and post-test code gates, the stage agent automatically invokes Compliance Reviewer as a bounded subagent before completing. This review does not start the next PDLC stage.
-- Critical review findings stop the handoff until a human resolves them and the artifact is reviewed again. Otherwise, the stage reports the review result and names the next human-started stage.
+- Critical, High, and Medium review findings stop the handoff until a human records remediation or explicit acceptance; remediation requires re-review. Keep the `FAIL` status and every finding visible.
+- Follow `.github/rules/pdlc.md`: a `FAIL` with only Low-severity findings emits the specified `REVIEW_GATE_WARNING` and does not automatically stop the handoff. Preserve the `FAIL` status; mixed severities follow the highest-severity outcome. Independent stage hard gates remain blocking.
 - Stage agents remain unavailable as subagents unless explicitly allowlisted for a documented exception. Technical Specifier may invoke Figma Extractor during specification; Technical Specifier, Implementation Planner, and Technical Documenter may invoke Compliance Reviewer only at their respective review gates.
 
 ## Required Flow
@@ -73,7 +74,6 @@ For existing source requirement folders:
 -> Implementation Builder
 -> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
 -> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
@@ -82,9 +82,6 @@ For new business problems:
 
 ```text
 [Context exists per Context Builder]
--> Context Clarifier
--> BRD Generator
--> Requirements Expander
 -> User Story Generator
 -> Technical Specifier
 -> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
@@ -93,7 +90,6 @@ For new business problems:
 -> Implementation Builder
 -> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
 -> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```

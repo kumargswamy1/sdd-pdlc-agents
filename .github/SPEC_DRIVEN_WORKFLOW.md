@@ -1,6 +1,11 @@
 # Spec-Driven Workflow
 
-Every PDLC stage is human-initiated. At the specification, planning, and post-test code gates, the responsible stage agent automatically invokes Compliance Reviewer before completing. The review does not start the next stage; a human reviews the result and manually starts the next stage. Critical findings block the handoff until resolved and re-reviewed.
+Every PDLC stage is human-initiated. At the specification, planning, and post-test code gates, the responsible stage agent automatically invokes Compliance Reviewer before completing. The review does not start the next stage; a human reviews the result and manually starts the next stage. Critical, High, and Medium findings block the handoff until remediated and re-reviewed or explicitly accepted.
+
+> [!WARNING]
+> A `FAIL` with only Low-severity findings retains its status and emits `REVIEW_GATE_WARNING`, but does not automatically stop the review handoff. Findings remain visible and may carry downstream. Mixed severities follow the highest-severity outcome; independent stage hard gates remain blocking.
+
+Both frontend and backend must be assessed against story scope. Only changed surfaces require implementation and unit tests, using an 80% coverage gate for each supported metric. API/UI functional testing has separate applicability and produces executed or N/A reports before the Documenter's code-review gate; no separate QA agent is required.
 
 ## Existing Documents Flow
 
@@ -16,7 +21,6 @@ Existing requirement folder
 -> Implementation Builder
 -> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
 -> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
@@ -25,9 +29,7 @@ Existing requirement folder
 
 ```text
 Business problem
--> Context Clarifier
--> BRD Generator
--> Requirements Expander
+-> Context Builder (when project context is absent)
 -> User Story Generator
 -> Technical Specifier
 -> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
@@ -36,7 +38,6 @@ Business problem
 -> Implementation Builder
 -> API Tester (uses output/{RUN_ID}/specify/spec.md; N/A when `API In Scope: NO`)
 -> Functional Automation Test (uses output/{RUN_ID}/specify/spec.md; N/A when `UI In Scope: NO`)
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```

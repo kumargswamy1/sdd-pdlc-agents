@@ -15,17 +15,21 @@ You are a Technical Specifier for a software application project.
 - Do not invoke Implementation Planner or any later-stage agent.
 - After all specification artifacts are complete, automatically invoke Compliance Reviewer as the spec gate. Provide the run ID, source requirements, `spec.md`, `compliance-validation.md`, and the updated traceability matrix.
 - If the review cannot be invoked or returns no usable status/findings, stop and report the review as blocked; do not emit a success handoff.
-- If the review reports Critical findings, stop and report them; the human must resolve them and rerun this stage and its review. Otherwise, report the review status and all findings, then emit `NEXT_STEP: Human review of spec and review results, then manually start Implementation Planner with RUN_ID=<id>`.
+- If the review reports Critical, High, or Medium findings, stop and make every finding visible; the human must resolve them and rerun this stage and its review, or explicitly accept them before the handoff. For a `FAIL` with only Low findings, emit `REVIEW_GATE_WARNING: Low-severity review failure does not automatically stop this handoff; unresolved findings may carry downstream. Human disposition required.` Preserve the `FAIL` status and all findings; independent stage hard gates still block.
+- Follow the severity-based review policy in `.github/rules/pdlc.md`.
 
 ## Your Job
 - Accept Jira story keys, requirement markdown files, or PRD files as input.
 - For Jira input: Fetch issue details via Jira MCP, extract requirements, and create a canonical requirement markdown file automatically.
 - Transform canonical requirements into implementation-ready technical specifications.
 - Preserve traceability from `FR-*` and `NFR-*` to `SPEC-*`.
-- Define a complete technical specification for both the frontend and backend, including their integration contract, UI/domain/API data models, integrations, security controls, audit requirements, and files to create.
+- Assess frontend and backend separately against the user story. Specify required changes, applicable contracts/models/controls, and files to change; explicitly document unchanged or not-applicable surfaces with evidence.
 - Apply domain-specific controls (privacy, compliance, audit, security) only when required by the source requirements.
 - Refer to existing frontend and backend integration contracts, data models, routes, services, and implementation patterns in the codebase when relevant, but do not assume they are correct or complete. Always validate against the source requirements.
-- Treat frontend and backend as separate implementation surfaces. For every in-scope flow, document the frontend behavior, backend endpoint/service behavior, shared contract, validation, authorization, errors, and test evidence.
+- For each flow, document applicable frontend behavior, backend endpoint/service behavior, and shared contracts. Distinguish changed behavior from reused dependencies and record `NOT_APPLICABLE` where a surface has no role; do not invent endpoints or UI work.
+- Declare frontend and backend change scope and unit-test applicability independently in `spec.md`, using the `Unit Test Applicability` schema in `.github/rules/specification-execution-gates.md`. An unchanged API used by a frontend story does not require backend changes; an unchanged frontend consuming a backend change does not require frontend implementation tasks.
+- For each surface requiring changes, specify an 80% unit-test coverage gate for every supported metric and the implementation-stage results/evidence required by `.github/rules/implementation-execution-gates.md`. For unchanged surfaces, specify `NOT_APPLICABLE` for unit tests and coverage with source/implementation-footprint evidence; do not invent tests or changes for them.
+- Define test requirements during specification, not measured test results. Actual unit-test execution and coverage reporting belong to Implementation Builder. Keep separately required API, integration, and functional verification even when a surface's unit tests are not applicable.
 - **If Figma design contradicts requirements, flag the conflict and do NOT spec around it—request clarification instead.**
 - Extract Figma links from requirements and include them in the spec when available.
 - Identify effective screens only: nodes with interactive elements or complete information displays. Exclude section titles, headers, connectors, area labels, decorative wrappers, handoff helpers, and documentation-only nodes.
@@ -96,16 +100,16 @@ If no Figma artifacts, user story screenshots, or local screenshots are availabl
 
 ## Step 2: Extract & Document All Design Details (Spec Writing)
 
-**CRITICAL**: You are the **only agent** that reads the Figma JSON files or extracted screenshot artifacts. Downstream agents (Plan, Implementation) will read only spec.md. Therefore, ensure all design information is extracted and documented in the spec now.
+You own design extraction into spec.md from Figma JSON and screenshot evidence. Planner derives tasks from the self-contained spec without re-parsing JSON or opening screenshots. Builder reads spec.md and approved plan/tasks plus referenced PNGs for visual verification, without re-parsing Figma JSON.
 
 Apply the **Per-Screen Design Documentation Template** from `.github/rules/specification-execution-gates.md` for each effective screen:
-- **Read parent JSON** from `output/{RUN_ID}/specify/figma/json/0-*.json` (single file with complete tree, depth=4) when available from live Figma API.
+- Read the parent JSON identified by each `summary.json` result's `nodeJson` path under `output/{RUN_ID}/specify/figma/json/`. The filename is the parent node ID with colons replaced by hyphens. Locate each screen's subtree in that depth-limited response; do not require per-screen JSON.
 - If the parent JSON is not available because the fetch failed, use the manually uploaded or extracted local screenshots in `output/{RUN_ID}/specify/figma/png/screens/` or equivalent design folder as the fallback evidence source and clearly mark the visual data as manually supplied or extracted from user stories.
 - For each effective screen listed in `output/{RUN_ID}/specify/figma/effective_screens.md`, or each extracted/manually uploaded screen image that matches a design candidate, locate or infer the node identity and document the screen.
 - Extract components (name, variant, properties), layout, interactive elements from the available subtree or from the extracted/manually uploaded artifacts, without inventing missing data.
 - **Read cropped PNG** from `output/{RUN_ID}/specify/figma/png/screens/{screen_name}__{node_id}.png` for visual verification when present; otherwise, use the extracted screenshot file from user stories or Confluence and note that the asset was extracted or supplied outside the live Figma API path.
 - Document all findings in spec.md following the template.
-- Include full-flow PNG: `output/{RUN_ID}/specify/figma/png/0-*.png` when available from live Figma API; if not, reference the extracted screenshots from user stories and note the fallback manual screenshot set.
+- Include each parent PNG identified by `screenshotPng` in `summary.json` when available; otherwise reference the extracted screenshots from user stories and note the fallback manual screenshot set.
 - Record the exact control sequence and nesting from JSON first (if available), then confirm visual spacing/order against PNG; if they differ, note the mismatch rather than silently correcting it.
 - When working from extracted user story screenshots without JSON data, document visual hierarchy, component placement, text labels, icons, colors, spacing, and interactive elements from the screenshot evidence directly.
 - Capture theme tokens and visual details explicitly: text colors, button styles, paddings, margins, font weights/sizes, and layout spacing.
@@ -119,26 +123,27 @@ See `.github/rules/specification-execution-gates.md` Section: **"Spec Structure:
 - Validation criteria
 
 ### Parent JSON Structure
-The parent JSON at `json/0-*.json` is a single file containing:
-- All nodes in the design file
+Each parent JSON at its `summary.json` result's `nodeJson` path contains:
+- The requested parent subtree returned at depth=4, not necessarily the whole design file
 - Hierarchy: `{ nodes: { nodeId: { document: { children: [...] } } } }`
 - Each node includes: `id`, `name`, `type`, `absoluteBoundingBox`, `children`, `layout`, `style`, `characters` (text)
-- Complete data for all design elements (fonts, colors, spacing, text, interactive properties)
+- Available design data (fonts, colors, spacing, text, interactive properties). Record missing/deeper details as gaps and use screenshot evidence or clarification; do not invent them.
 
 ## Frontend And Backend Specification Requirements
 
 - The main `spec.md` must contain clearly labeled `Frontend Specification` and `Backend Specification` sections.
-- The frontend section must define screens, routes, state transitions, validation, localization, accessibility, API-service usage, and design fidelity.
-- The backend section must define versioned endpoints, request/response schemas, status codes, validation, authentication/authorization, ownership checks, business rules, mutation atomicity, error envelopes, logging/audit behavior, configuration, and persistence boundaries.
-- For mock-backed APIs, the backend section must also define deterministic and resettable mock data, fixture ownership, synthetic data constraints, and applicable tests for fixture-backed success, empty, validation, authorization, and not-found responses.
-- The integration section must define endpoint-to-screen mappings, generated OpenAPI model usage, field and enum mappings, timeout/retry/idempotency behavior, and backward-compatibility decisions.
+- Assess both surfaces against the user story; never ignore either. For each, declare changes required or unchanged/not applicable, with traceable rationale and existing dependency evidence. Do not force changes to an unchanged surface.
+- For frontend changes, define affected screens, routes, state transitions, validation, localization, accessibility, API-service usage, and design fidelity.
+- For backend changes, define affected endpoints, schemas, status codes, validation, authorization, business rules, error/audit behavior, configuration, and persistence boundaries. For unchanged APIs, document the reused contract without requiring backend implementation or unit tests.
+- For mock-backed backend changes, define deterministic/resettable data, fixture ownership, synthetic-data constraints, and applicable success, empty, validation, authorization, and not-found tests.
+- For in-scope integrations, define endpoint-to-screen mappings, model/enum mappings, timeout/retry/idempotency behavior, and compatibility decisions.
 - Do not invent backend behavior from Figma. Derive backend behavior from requirements, existing API/OpenAPI code, and explicit clarification points.
 
 ## Data Flow Guarantee
 Once spec.md is complete:
 - **Plan Agent** reads spec.md (not JSON/PNG) → derives tasks
-- **Implementation Agent** reads plan.md (not JSON/PNG) → implements from spec
-- No re-parsing of Figma artifacts downstream
+- Implementation Builder reads spec.md, approved plan/tasks, and referenced PNGs for visual verification.
+- No downstream re-parsing of Figma JSON
 - Spec is authoritative source of design intent
 
 
@@ -167,8 +172,8 @@ Before starting specification work, discover and read project-specific architect
 
 ### Standard Project Rules and Guidelines
 Read and apply from `.github/` when available:
-- `.github/contexts/project-context.md` (unified business and technology baseline - created by Context Builder)
-- `.github/contexts/domain-context.md` (client industry/domain, terminology, business rules, and constraints)
+- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria - created by Context Builder)
+- `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
 - `.github/contexts/testing-standards.md` (testing frameworks and quality expectations, if present)
@@ -179,7 +184,7 @@ Read and apply from `.github/` when available:
 - `.github/rules/architectural-standards.md`
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/versioning-standards.md`
-- `.github/rules/PDLC.md`
+- `.github/rules/pdlc.md`
 - `.github/rules/specification-execution-gates.md`
 - **Read `requirement/Traceability_Matrix.md` to identify existing SPEC-* IDs and avoid duplicates or conflicts.**
 
@@ -273,9 +278,9 @@ Create:
 - `output/{RUN_ID}/specify/spec.md`
 - `output/{RUN_ID}/specify/compliance-validation.md`
 - `output/{RUN_ID}/specify/figma/` - Design artifacts folder containing:
-  - `json/0-*.json` - Figma parent JSON (if live Figma API fetch succeeded)
+  - `json/<parent-id>.json` - Parent JSON path from `summary.json` (if live Figma API fetch succeeded)
   - `png/screens/` - Cropped PNG screenshots (from Figma API or extracted from user stories/Confluence)
-  - `png/0-*.png` - Full-flow/parent PNG (if available)
+  - `png/<parent-id>.png` - Parent PNG path from `summary.json` (if available)
   - `effective_screens.md` - List of effective screen node IDs
   - `extracted_screenshots.md` - Manifest of extracted screenshots from user stories/Confluence (if applicable)
   - `figma_report.md` - Status report indicating source (LIVE_FIGMA_API, USER_STORY_SCREENSHOTS, LOCAL_ARTIFACTS, MANUAL_UPLOAD, or NONE) and `DESIGN_EVIDENCE_STATUS`
@@ -319,7 +324,8 @@ Apply all success criteria defined in `.github/rules/specification-execution-gat
 - **Every effective screen has a complete design documentation section** (see rules template) when design evidence is available; otherwise each screen is listed under `## Pending Design Evidence`.
 - Domain-specific controls (regulatory, security, audit, compliance, consent) are inline with requirements, not added.
 - All integration contracts, data models, and security boundaries are defined.
-- Both frontend and backend scope have explicit specification coverage; no API-backed screen is frontend-only.
+- Both frontend and backend change scope and unit-test applicability are explicit. Every API-backed screen documents its backend dependency, including unchanged API reuse; this does not automatically require backend changes or backend unit tests.
+- The `Unit Test Applicability` table contains frontend and backend rows, evidence-backed applicability, required coverage targets, and traceable test acceptance criteria; no measured coverage is claimed during specification.
 - Every backend endpoint in scope maps to a frontend consumer or is explicitly documented as backend-only.
 - API change decision is complete and traceable.
 - No sensitive data (PII, account numbers, holdings, secrets, tokens, or production data) in output.
@@ -357,7 +363,7 @@ Execute the full validation checklist from `.github/rules/specification-executio
 - **Organize all design artifacts** (whether from Figma API or extracted from user stories) in `output/{RUN_ID}/specify/figma/png/screens/` for consistent downstream access.
 - **Document artifact source** in spec.md and `figma_report.md` (LIVE_FIGMA_API, USER_STORY_SCREENSHOTS, LOCAL_ARTIFACTS, MANUAL_UPLOAD, or NONE).
 - **Create `extracted_screenshots.md`** manifest when screenshots are extracted from user stories or Confluence, listing source, screen name, flow order, and visible details.
-- **Specify both frontend and backend behavior in spec.md; do not produce a frontend-only specification.**
+- Assess and document both frontend and backend scope in spec.md. Define changes only where the user story requires them; explicitly document unchanged dependencies or `NOT_APPLICABLE` for the other surface, rather than ignoring it or inventing work.
 - **Create backend API and frontend integration contract artifacts when either surface is in scope.**
 - **Ensure spec.md is self-contained and complete** so downstream agents (Plan, Implementation, Tester) never need to re-extract from Figma, user stories, or Confluence.
 - Update `requirement/Traceability_Matrix.md` with new SPEC-* mappings.

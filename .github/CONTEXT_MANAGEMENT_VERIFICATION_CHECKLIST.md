@@ -44,7 +44,7 @@ ms.date: 2026-10-07
     - ✅ `.github/contexts/backend-context.md`
     - ✅ `.github/contexts/testing-standards.md`
 
-- [x] `.github/agents/tester.agent.md`
+- [x] `.github/agents/api-tester.agent.md` and `.github/agents/functional-automation-test.agent.md`
   - "Before You Start" section includes:
     - ✅ `.github/contexts/project-context.md`
     - ✅ `.github/contexts/frontend-context.md`
@@ -252,7 +252,8 @@ ms.date: 2026-10-07
   ├─ specify.agent.md (updated)
   ├─ planner.agent.md (updated)
   ├─ implement.agent.md (updated)
-  ├─ tester.agent.md (updated)
+  ├─ api-tester.agent.md (updated)
+  ├─ functional-automation-test.agent.md (updated)
   └─ traceability-manager.agent.md (updated)
 ```
 
@@ -283,8 +284,6 @@ ms.date: 2026-10-07
 
 ## Backward Compatibility Check
 
-- [x] Existing Context Clarifier agent still works
-- [x] Existing BRD Generator agent still works
 - [x] Existing Requirement Intake Consolidator still works
 - [x] Existing User Story Generator agent still works
 - [x] Existing Technical Documenter agent still works

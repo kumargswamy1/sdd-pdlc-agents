@@ -17,6 +17,8 @@ description: Execution gates and output schema for Implementation Planner runs.
 - API impact tasks are present when spec declares `EXISTING_API_CHANGE` or `NEW_API_REQUIRED`.
 - Every row in spec `Requirement-to-SPEC Logic Coverage` is represented by one or more planned tasks, or explicitly marked as inherited existing behavior with verification evidence.
 - No requirement-logic rule from spec is dropped, generalized, or converted into a weaker statement during planning.
+- Assess both frontend and backend against approved story scope. Carry spec's independent change declarations and unit-test applicability into plan.md/tasks.md with evidence and trace references. Plan implementation/unit tasks only for changed surfaces; use an 80% coverage gate per required surface and supported metric. Missing work or ambiguous scope is a blocker, not `NOT_APPLICABLE`.
+- Document reused unchanged APIs/screens and required integration/functional verification without inventing implementation or unit-test tasks for them.
 
 ## Required Plan Structure
 `plan.md` MUST include `## Requirement Logic To Task Coverage` with at least:
@@ -49,9 +51,9 @@ If any row is `BLOCKED`, planner run is `BLOCKED`.
   - Add `Design Source: Manual upload (no Figma link)` at the top of `plan.md`, `tasks.md`, and `frontend/components.md`.
   - Reference `SCR-*` screen IDs and screenshot paths in place of Figma node IDs in screen-to-task mappings.
   - Note in each UI task that visual fidelity is verified against manually supplied screenshots, without Figma JSON hierarchy.
-- If status is `PENDING_MANUAL_UPLOAD`, do not generate plan or task outputs. Report `BLOCKED` with unblock action: add screenshots to `output/{RUN_ID}/specify/figma/png/screens/` and re-run Technical Specifier with the same `RUN_ID`.
+- If `UI In Scope = YES` and status is `PENDING_MANUAL_UPLOAD`, do not generate plan or task outputs. Report `BLOCKED` with unblock action: add screenshots to `output/{RUN_ID}/specify/figma/png/screens/` and re-run Technical Specifier with the same `RUN_ID`.
 - If screenshots exist in the folder but spec.md still shows `PENDING_MANUAL_UPLOAD`, report `BLOCKED` and ask for a Technical Specifier re-run; do not read the screenshots directly.
-- If `UI In Scope = NO` (`DESIGN_EVIDENCE_STATUS: NOT_REQUIRED`), this gate does not apply.
+- If `UI In Scope = NO` (`DESIGN_EVIDENCE_STATUS: NOT_REQUIRED`), skip screenshot, per-screen, visual-fidelity, and frontend component-inventory requirements. Record `NOT_APPLICABLE` with scope evidence; do not require design files or create placeholder UI tasks.
 
 ## Required Status Reporting
 Include these one-line fields in final output:

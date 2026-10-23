@@ -14,13 +14,13 @@ You are a Figma Design Artifact Extractor for a software application project.
 ## Your Job
 - Extract all Figma URLs from a given requirement file.
 - Run the Python pipeline script using the **parent-crop approach** to collect:
-  - **One parent JSON** (complete design tree at depth=4, all nodes with layout/typography/colors).
+  - One parent JSON per node-bearing URL (requested subtree at depth=4, not necessarily every descendant).
   - **One parent PNG** (full screenshot at scale 2.0).
   - **Locally-cropped child PNGs** for each effective screen (computed from parent PNG using bounding boxes from JSON — zero per-child API calls).
   - Effective screen table (`effective_screens.md`).
   - Run report (`figma_report.md`) with SUCCESS/FAILED status, parent URLs, screen list, and API call count.
 - Output all artifacts into the spec output folder.
-- **Key Benefit:** 90% reduction in API calls (14+ → 2 per Figma file), eliminates rate-limit pressure.
+- Parent-crop avoids per-child API calls. The baseline is two logical Figma API operations per successfully processed node-bearing URL with screenshots; retries and image downloads add HTTP requests, so rate limits remain possible.
 
 ## Context Discovery
 - Before extraction, inspect `.github/contexts/` and use files relevant to the requirement's product, domain, and design system, including newly added context files and explicitly designated Word/PDF files.
@@ -42,10 +42,10 @@ python3 .github/scripts/figma_requirements_pipeline.py \
 ```
 
 **What happens:**
-1. Fetches ONE parent JSON (complete tree, depth=4, all design data)
-2. Fetches ONE parent PNG (full screenshot)
+1. Fetches one parent JSON response per node-bearing URL at depth=4.
+2. Requests one parent PNG render per such URL and downloads the returned image.
 3. Crops child screens locally using PIL/Pillow (no API calls for children)
-4. Outputs: `json/0-*.json`, `png/0-*.png`, `png/screens/{name}__{id}.png` (7-10 child cropped PNGs)
+4. Outputs parent JSON/PNG files named with the parent node ID (colons replaced by hyphens), and `png/screens/{name}__{id}.png` for each effective screen. Use `summary.json` paths, not an assumed `0-` prefix or fixed screen count.
 
 - `FIGMA_API_KEY` is loaded automatically from `.env` in the workspace root.
 - Do not pass `--api-key` unless `.env` is missing.
@@ -62,7 +62,7 @@ python3 .github/scripts/figma_requirements_pipeline.py \
 | `--max-retries` | `5` | Max retry attempts for 429 errors |
 
 ### Rate Limit Protection
-Because parent-crop uses only 2 API calls per Figma file:
+Parent-crop normally uses two logical Figma API operations per processed node-bearing URL with screenshots, not two HTTP requests per entire run:
 - Standard throttle (1.5s) is usually sufficient
 - If 429 errors occur, increase `--throttle` to 2.0 or 3.0
 - Exponential backoff (1s, 2s, 4s, 8s...) applied automatically
@@ -82,11 +82,11 @@ All artifacts go into `output/<RUN_ID>/specify/figma/`:
 
 | File/Folder | Description |
 |---|---|
-| `figma_report.md` | Run status, parent URLs, effective screen table, total API calls (always 2) |
+| `figma_report.md` | Run status, parent URLs, effective screen table, pipeline-reported logical API count |
 | `effective_screens.md` | Node ID, screen name, Figma link per effective screen |
-| `summary.json` | Machine-readable run summary with API call count |
-| `json/0-*.json` | **Parent JSON only** (complete design tree, all nodes, depth=4) |
-| `png/0-*.png` | **Parent PNG only** (full screenshot at scale 2.0) |
+| `summary.json` | Per-URL status and artifact paths; accumulated logical API count |
+| `json/<parent-id>.json` | Parent JSON subtree at depth=4; exact path in `results[].nodeJson` |
+| `png/<parent-id>.png` | Parent PNG at scale 2.0; exact path in `results[].screenshotPng` |
 | `png/screens/<name>__<id>.png` | Child screens cropped locally from parent PNG (one file per effective screen) |
 
 **Note:** No `json/screens/` directory (not needed — Spec Agent reads parent JSON for all screens).
@@ -95,7 +95,8 @@ All artifacts go into `output/<RUN_ID>/specify/figma/`:
 - `figma_report.md` shows `Status: SUCCESS`.
 - At least one effective screen is listed.
 - `png/screens/` contains one PNG per effective screen.
-- `summary.json` shows `totalApiCalls: 2` (always 2 with parent-crop approach).
+- Verify per-URL statuses and required artifacts rather than requiring `totalApiCalls: 2`. Multiple URLs can legitimately produce a larger total; surface skipped/error URLs and uncovered screens.
+- Report `summary.json.totalApiCalls` as the pipeline's logical-operation count, summed from recorded per-URL `apiCallsTotal` values. It is not an actual HTTP-attempt count: retries, image downloads, and operations before failed results may not be counted. Never claim it measures rate-limit consumption.
 
 ## Failure Handling
 - If no Figma URLs found in requirement file: report `BLOCKED_FIGMA_DATA: no Figma URLs in requirement file`.

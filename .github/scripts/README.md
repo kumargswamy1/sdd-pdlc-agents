@@ -7,10 +7,10 @@
 **Purpose:** Extract Figma design artifacts using the parent-crop workflow
 
 **Workflow:**
-1. Fetch ONE parent JSON (complete tree, depth=4)
-2. Fetch ONE parent PNG (full screenshot at scale 2.0)
+1. Fetch one parent JSON subtree per node-bearing URL (depth=4, not necessarily every descendant)
+2. Request one parent PNG render per such URL and download it at scale 2.0
 3. Crop child screens locally from parent PNG using bounding boxes
-4. Result: 2 API calls (90% reduction vs per-child extraction)
+4. Baseline: two logical Figma API operations per successfully processed URL with screenshots, with no per-child calls
 
 **Usage:**
 ```bash
@@ -32,9 +32,9 @@ python3 .github/scripts/figma_requirements_pipeline.py \
 **Output:**
 ```
 output/{RUN_ID}/specify/figma/
-├── json/0-*.json                    # Parent JSON only
+├── json/<parent-id>.json            # Parent JSON; path in results[].nodeJson
 ├── png/
-│   ├── 0-*.png                      # Parent PNG only
+│   ├── <parent-id>.png              # Parent PNG; path in results[].screenshotPng
 │   └── screens/
 │       ├── screen1__node-id.png     # Cropped locally
 │       └── ... (N child crops)
@@ -77,13 +77,14 @@ output/{RUN_ID}/specify/figma/
 
 ## API Call Efficiency
 
-| Scenario | API Calls |
+| Scenario | Baseline logical Figma operations |
 |----------|-----------|
-| 1 Figma file (7 screens) | 2 |
-| 5 Figma files | 10 |
-| Daily quota (~1000) | ~50 files max |
+| 1 successfully processed node-bearing URL with screenshots | 2 |
+| 5 successfully processed node-bearing URLs with screenshots | 10 |
 
-**Previous approach:** Same 1 file = 14+ calls (now 86% reduction) ✅
+Use `summary.json` artifact paths rather than assuming filenames start with `0-`; parent IDs have colons replaced by hyphens. Validate each URL's status and expected screen artifacts, not a fixed total of two.
+
+The pipeline's `totalApiCalls` sums recorded per-URL logical counts. Retries, image-download requests, and operations before failed results may not be included. Report that limitation; do not interpret this field as an actual HTTP-attempt count or infer quota consumption from it. Rate limits remain possible.
 
 ---
 

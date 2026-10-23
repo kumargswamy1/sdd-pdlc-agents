@@ -1,3 +1,7 @@
+---
+description: Security, privacy, quality, and review gates for in-scope PDLC changes.
+---
+
 # Security & Quality Standards
 
 ## Security
@@ -21,7 +25,9 @@ Apply only when in scope:
 - Regulatory reporting and audit evidence.
 
 ## Quality
-- Unit test coverage target: at least 80% line coverage unless the plan defines a different threshold.
+- Unit tests are mandatory for each frontend/backend surface requiring changes before implementation handoff. Use an 80% passing threshold independently for lines, statements, branches, and functions where supported; Flutter requires executable-line coverage. All layers, including validation, API endpoints, UI components, and utilities, use the same 80% gate; measured coverage may exceed it.
+- Verify actual unit-test execution and native coverage reports. Show separate frontend/backend test counts, coverage metrics, commands, and evidence paths. Failed tests, below-threshold coverage, or missing execution/coverage evidence block implementation completion.
+- Apply unit-test and coverage gates only to surfaces requiring changes in the story. If no backend changes are required or made, skip backend unit tests and coverage; apply the same rule to unchanged frontend. Report `NOT_APPLICABLE` with `N/A` metrics and approved scope evidence, without requiring suite output or coverage reports. Missing tasks or conflicting scope cannot justify skipping; separately required integration/API/functional checks still apply.
 - Critical business rules require positive and negative tests.
 - Integration clients require success, timeout, unavailable, malformed response, and retry/fallback tests.
 - Security tests must cover unauthorized, unauthenticated, cross-customer, and privilege-escalation attempts.

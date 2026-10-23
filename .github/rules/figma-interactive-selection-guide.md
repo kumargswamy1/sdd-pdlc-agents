@@ -1,5 +1,5 @@
 ---
-description: Interactive workflow for user-guided Figma node selection when auto-extraction hits rate limits
+description: User-guided screen scope selection from parent-crop Figma artifacts.
 ---
 
 # Figma Interactive Selection Guide
@@ -19,35 +19,34 @@ description: Interactive workflow for user-guided Figma node selection when auto
 
 ---
 
-## Two-Stage Interactive Workflow
+## Screen Selection Workflow
 
-### Stage 1: Extract Metadata Only (No Downloads)
+### Stage 1: Extract Parent Artifacts and Local Screen Crops
+
+Selection controls which screens enter the specification, not which children are fetched individually. The current pipeline does not implement metadata-only, depth-selection, or node-selection CLI modes. Use its supported parent-crop command; do not invent flags.
 
 **Command:**
 ```bash
-python3 scripts/figma_requirements_pipeline.py \
+python3 .github/scripts/figma_requirements_pipeline.py \
   --requirements-file requirement/{ProjectName}_Requirements.md \
   --out-dir output/{RUN_ID}/specify/figma \
-  --depth 2 \
-  --metadata-only
+  --download-screenshots \
+  --throttle 1.5 \
+  --max-retries 5
 ```
 
 **Output:**
-- `output/{RUN_ID}/specify/figma/figma_report.md` with status
-- `childNodes` array listing all node IDs and names
-- No PNG downloads (fast, one cheap API call)
+- `figma_report.md`, `effective_screens.md`, and `summary.json` with per-URL status and artifact paths
+- Parent JSON at each `results[].nodeJson` path, and parent PNG at `results[].screenshotPng`
+- Local child crops under `png/screens/`; no per-screen JSON
 
-**Example output structure:**
+**Example parent-crop summary entry (paths are illustrative):**
 ```json
 {
-  "status": "metadata_extracted",
-  "childNodes": [
-    {"id": "2555:1044189", "name": "status-bar", "type": "FRAME"},
-    {"id": "2555:1044190", "name": "update-button", "type": "COMPONENT"},
-    {"id": "2555:1044191", "name": "status-dialog", "type": "FRAME"},
-    ...
-  ],
-  "childNodeCount": 15
+  "status": "ok",
+  "nodeJson": "output/example/specify/figma/json/2555-1044188.json",
+  "screenshotPng": "output/example/specify/figma/png/2555-1044188.png",
+  "apiCallsTotal": 2
 }
 ```
 
@@ -86,24 +85,15 @@ AI Pre-selected: ✅ (checked)
 
 ---
 
-### Stage 3: Download Selected Nodes Only
+### Stage 3: Document Confirmed Screen Scope
 
-**Command (after user confirms):**
-```bash
-python3 scripts/figma_requirements_pipeline.py \
-  --requirements-file requirement/{ProjectName}_Requirements.md \
-  --out-dir output/{RUN_ID}/specify/figma \
-  --depth 4 \
-  --download-screenshots \
-  --node-ids "2555:1044189,2555:1044190,2555:1044191,2555:1044195"
-```
+Record selected and excluded screen IDs, requirement references, and rationale in spec.md. Read the selected screens' subtrees from the existing parent JSON and link the existing local crops. Do not download individual child nodes or request per-screen JSON.
 
 **Output:**
-- Only 4 nodes extracted (vs. 15 total)
-- 4 JSON files in `json/screens/`
-- 4 PNG files in `png/screens/`
-- `figma_report.md` with SUCCESS status
-- No rate limit issues (minimal API calls)
+- Four selected screen sections in spec.md for this example
+- References to four existing crops in `png/screens/`
+- Explicit exclusion reasons for other extracted screens
+- Unchanged extraction report with its actual per-URL status; selection does not relabel extraction failures as success
 
 ---
 
@@ -142,8 +132,8 @@ When presenting node list, AI analyzes:
 ```
 User: "Run ICTEST-17122 extraction"
 
-Agent: "🔍 Starting Stage 1: Metadata extraction..."
-[Runs --metadata-only]
+Agent: "Starting parent-crop extraction..."
+[Runs the supported parent-crop command]
 
 Agent: "✅ Found 15 effective child nodes.
 
@@ -166,10 +156,10 @@ Reply with: 'extract' to confirm, or edit selection.
 
 User: "extract"
 
-Agent: "✅ Extracting 3 nodes: status-bar, update-button, status-dialog..."
-[Runs --node-ids with selected IDs]
+Agent: "Documenting 3 selected screen scopes from existing artifacts..."
+[Records confirmed selections and exclusions in spec.md]
 
-Agent: "✅ SUCCESS! 3 JSON files + 3 PNG files ready.
+Agent: "Selected screen sections reference the parent JSON and local crops.
 Proceeding to Spec writing..."
 ```
 
@@ -183,25 +173,25 @@ When using interactive mode:
 - ✅ **Traceability**: Selection linked to requirement and specification
 - ✅ **Scope control**: Only approved screens documented
 - ✅ **No over-extraction**: Unnecessary complexity excluded
-- ✅ **Rate limit safe**: Targeted downloads avoid API errors
+- Parent-crop avoids per-child calls, but retries and rate limits remain possible
 
 ---
 
 ## Troubleshooting
 
-**Q: Still hitting rate limits in Stage 3?**
+**Q: Still hitting rate limits during extraction?**
 - Increase `--throttle` to 2.0 or 3.0
-- Reduce selected nodes (pick only highest-priority ones)
+- Reuse existing parent artifacts when valid instead of repeating extraction for scope selection
 
 **Q: Forgot which nodes were selected?**
 - Check chat history for confirmed selection
-- Look for `--node-ids` command in terminal output
+- Check the selected/excluded screen decisions in spec.md
 - Query `figma_report.md` for effective-screens table
 
 **Q: Need to add more nodes later?**
-- Re-run Stage 1: `--metadata-only` to get full list
-- Compare with previous selection
-- Run Stage 3 with expanded `--node-ids` list
+- Review existing parent artifacts and compare with the previous selection
+- Update confirmed screen scope and exclusions in spec.md
+- Re-run the supported extraction command only if required source artifacts are missing or stale
 
 **Q: Not sure if node is needed?**
 - Check requirement file for matching keywords
@@ -213,12 +203,12 @@ When using interactive mode:
 
 ## Example: Full Workflow
 
-**Step 1: Get metadata**
+**Step 1: Extract parent artifacts**
 ```bash
-python3 scripts/figma_requirements_pipeline.py \
+python3 .github/scripts/figma_requirements_pipeline.py \
   --requirements-file requirement/{ProjectName}_Requirements.md \
   --out-dir output/{RUN_ID}/specify/figma \
-  --metadata-only
+  --download-screenshots
 ```
 
 **Output in chat:**
@@ -226,19 +216,13 @@ python3 scripts/figma_requirements_pipeline.py \
 - AI suggests relevant ones based on requirement
 - User confirms selection
 
-**Step 2: Download selected**
-```bash
-python3 scripts/figma_requirements_pipeline.py \
-  --requirements-file requirement/{ProjectName}_Requirements.md \
-  --out-dir output/{RUN_ID}/specify/figma \
-  --depth 4 \
-  --download-screenshots \
-  --node-ids "2555:1044189,2555:1044190,2555:1044191,2555:1044195"
-```
+**Step 2: Document selected screens**
+
+Use confirmed IDs to select subtrees from parent JSON and reference existing crops in spec.md. Preserve extraction status and report missing data; no additional child-download command is required.
 
 **Output:**
-- Node JSON files (components, layout, states)
-- 4 PNG files (visual evidence)
-- Ready for Spec Agent
+- Self-contained screen sections with component, layout, state, and visual evidence
+- All screenshot references resolve to existing local crops
+- Logical API counts are per URL, not fixed at two per run. `totalApiCalls` excludes retries, image downloads, and potentially operations before failed results; it is not measured HTTP-attempt usage.
 
 ---

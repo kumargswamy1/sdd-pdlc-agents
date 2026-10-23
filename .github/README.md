@@ -18,10 +18,9 @@ The agents are organized into a sequential SDLC workflow that transforms busines
 | 6 | Implementation Builder | `implement.agent.md` | Implementation | `output/{RUN_ID}/plan/tasks.md` | Source code, unit tests, `output/{RUN_ID}/implement/` |
 | 7 | API Tester | `api-tester.agent.md` | Backend API testing | `output/{RUN_ID}/specify/spec.md` | `<backend-root>/test/api/`, `output/{RUN_ID}/api-tests/` |
 | 8 | Functional Automation Test | `functional-automation-test.agent.md` | Frontend functional testing | `output/{RUN_ID}/specify/spec.md` | `output/{RUN_ID}/functional-tests/` |
-| 9 | Quality Tester | `tester.agent.md` | User-workflow QA | Spec, `output/{RUN_ID}/plan/tests/scenarios.md` | `TEST-*` suites and reports |
-| 10 | Compliance Reviewer | `reviewer.agent.md` | Review (gates) | Specs, plans, code, tests, docs | `REVIEW-*` findings and status |
-| 11 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation | `DOC-*` documentation |
-| 12 | Traceability Manager | `traceability-manager.agent.md` | Traceability | All artifacts | `requirement/Traceability_Matrix.md` |
+| 9 | Compliance Reviewer | `reviewer.agent.md` | Review (gates) | Specs, plans, code, tests, docs | `REVIEW-*` findings and status |
+| 10 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation, test evidence | `DOC-*` documentation |
+| 11 | Traceability Manager | `traceability-manager.agent.md` | Traceability | All artifacts | `requirement/Traceability_Matrix.md` |
 
 All agents are user-invocable. The Playwright-based testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
 
@@ -65,23 +64,19 @@ Step 7: Component Functional Automation
    ↓
    Functional Automation Test (every UI behavior in spec.md when `UI In Scope: YES`)
    ↓
-Step 8: Quality Assurance
-   ↓
-   Quality Tester (user-workflow testing)
-   ↓
-Step 9: Review & Compliance
+Step 8: Review & Compliance
    ↓
    Technical Documenter invokes Compliance Reviewer automatically before final documentation
    ↓
-Step 10: Documentation & Traceability
+Step 9: Documentation & Traceability
    ↓
-   Technical Documenter (continues after a successful review)
+   Technical Documenter (continues if no Critical/High/Medium findings and no independent hard-gate blockers)
    Traceability Manager (final reconciliation)
 ```
 
-Compliance Reviewer gates stop the flow on Critical findings. Context Updater can run at any point to resync context with the project.
+Compliance Reviewer gates stop the flow on Critical, High, or Medium findings until human remediation and re-review or explicit acceptance. Low-only `FAIL` results emit a warning and may continue. Context Updater can run at any point to resync context with the project.
 
-**Human checkpoints:** Every PDLC stage is started manually. The Specifier, Planner, and final Documenter invoke Compliance Reviewer automatically at the spec, plan, and post-test code gates. The reviewer does not start the next stage. Critical findings block the handoff; otherwise, review the results and manually start the named next stage.
+**Human checkpoints:** Every PDLC stage is started manually. The Specifier, Planner, and final Documenter invoke Compliance Reviewer automatically at the spec, plan, and post-test code gates. The reviewer does not start the next stage. Critical, High, or Medium findings block the handoff until resolved and re-reviewed or explicitly accepted; Low-only `FAIL` results warn but do not automatically block.
 
 ### Design Evidence Rules
 
@@ -281,6 +276,8 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 - Follows tech-stack-specific standards
 - Reuses approved components and libraries
 - Creates unit tests as part of implementation
+- Executes required frontend/backend unit suites separately before handoff, applies an 80% gate to every supported metric and layer, and displays measured test counts and coverage with report links
+- Skips unit-test creation/execution and coverage for a surface when the story requires no changes to it; reports `NOT_APPLICABLE` with `N/A` metrics and scope evidence instead of requiring tests or coverage reports for unchanged code
 - Matches UI to referenced screenshots/Figma designs using the project theme
 - Documents code inline with standards
 
@@ -294,6 +291,7 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 - Implemented source code files
 - Unit tests under `frontend/test/unit/` and `backend/test/unit/`
 - `output/{RUN_ID}/implement/frontend/`, `backend/`, and `integration/` evidence
+- `output/{RUN_ID}/implement/unit-tests/report.md` with separate frontend/backend results, command output, and native coverage reports; failures or missing/below-threshold coverage block implementation handoff
 - Updated `requirement/Traceability_Matrix.md` (CODE-* IDs)
 
 **User-invocable:** Yes ✅
@@ -357,42 +355,15 @@ Compliance Reviewer gates stop the flow on Critical findings. Context Updater ca
 
 ---
 
-### Phase 7: Quality Assurance
-
-#### **Quality Tester**
-**File:** `tester.agent.md`
-
-**When to use:**
-- After component functional automation completes
-- Testing complete user workflows spanning frontend, backend, and data
-- Validating business logic completeness and user experience
-
-**What it does:**
-- Reads specifications and planned scenarios
-- Designs end-to-end scenarios: happy paths, errors, edge cases, state transitions
-- Covers cross-layer flows, performance, accessibility, and security checks
-- Maps tests to TEST-* IDs
-
-**Reads from:**
-- Specifications with SPEC-* IDs
-- `output/{RUN_ID}/plan/tests/scenarios.md`
-- All applicable files in `.github/contexts/`
-
-**Output:**
-- Executable test files and fixtures
-- Test coverage reports
-- Updated `requirement/Traceability_Matrix.md` (TEST-* IDs)
-
-**User-invocable:** Yes ✅
-
----
-
-### Phase 8: Review & Compliance
+### Phase 7: Review & Compliance
 
 #### **Compliance Reviewer**
 **File:** `reviewer.agent.md`
 
 The reviewer runs automatically as a bounded subagent at the spec, plan, and post-test code gates. It may also be started manually for reviews outside those checkpoints.
+
+> [!WARNING]
+> Critical, High, and Medium findings stop the review handoff until remediated and re-reviewed or explicitly accepted. A usable `FAIL` with only Low findings retains its status, emits `REVIEW_GATE_WARNING`, and may carry the visible findings into later stages or documentation. Independent hard gates, including required unit tests and the 80% coverage gate, still block completion. See [PDLC policy](rules/pdlc.md).
 
 **When to use:**
 - Reviewing any artifact (specs, plans, code, tests, docs)
@@ -425,7 +396,7 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 
 ---
 
-### Phase 9: Documentation & Traceability
+### Phase 8: Documentation & Traceability
 
 #### **Technical Documenter**
 **File:** `technical-documenter.agent.md`
@@ -445,6 +416,8 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 - Writes deployment procedures
 - Creates troubleshooting guides
 - Generates final project documentation
+- Automatically invokes the code compliance review after API/UI test results or evidence-backed N/A reports, before final documentation
+- Records outstanding acceptance checks and review findings without inventing a separate QA result
 
 **Reads from:**
 - `output/{RUN_ID}/specify/spec.md` (initial documentation)
@@ -585,7 +558,6 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 -> Implementation Builder
 -> API Tester
 -> Functional Automation Test
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
@@ -593,9 +565,6 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 ### New Business Problem
 ```
 [Context exists per Context Builder]
--> Context Clarifier
--> BRD Generator
--> Requirements Expander
 -> User Story Generator
 -> Technical Specifier
 -> Technical Specifier automatically invokes Compliance Reviewer
@@ -604,12 +573,17 @@ Chain: `CTX → BRD → FR/NFR → SPEC → TASK → CODE → APT → FT → TES
 -> Implementation Builder
 -> API Tester
 -> Functional Automation Test
--> Quality Tester
 -> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
 -> Traceability Manager
 ```
 
-Requirement Intake Consolidator, Context Clarifier, BRD Generator, Requirements Expander, and User Story Generator are workflow roles without agent files; the prompts in `.github/prompts/` perform them.
+The intake prompt consolidates source requirements and produces the BRD and detailed
+requirements artifacts. User-story generation is a workflow activity, not a standalone
+agent.
+
+There is no separate Quality Tester stage. API Tester covers specified APIs; Functional Automation Test covers UI behaviors and planned user workflows. Both report executed results or scope-backed `NOT_APPLICABLE`. Technical Documenter consumes those reports and implementation/unit coverage evidence for the automatic code-review gate. Acceptance checks outside API/UI automation remain explicit human-verification gaps.
+
+Every story must assess both frontend and backend. Implementation and unit-test tasks are required only for surfaces that change; unchanged dependencies are documented, not ignored. API/UI functional verification is scoped separately from unit coverage.
 
 ### Continuous Updates
 ```
@@ -627,17 +601,17 @@ Requirement Intake Consolidator, Context Clarifier, BRD Generator, Requirements 
 
 Context files in `.github/contexts/` are created by Context Builder and maintained by Context Updater:
 
-- **project-context.md** - Business and technology baseline
-- **domain-context.md** - Client industry/domain, terminology, and business rules
-- **frontend-context.md** - Frontend tech patterns and best practices
-- **backend-context.md** - Backend tech stack, API standards, and patterns (used by API Tester)
-- **testing-standards.md** - Testing frameworks and strategies
+- **project-context.md** - Canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria
+- **domain-context.md** - Supplemental industry/domain terminology and source references
+- **frontend-context.md** - Frontend/UI implementation and detailed design (screens, themes, fonts, styles)
+- **backend-context.md** - Backend implementation, APIs, data, integrations, and operational patterns (used by API Tester)
+- **testing-standards.md** - Testing and verification frameworks, strategies, and coverage
 - Additional user-provided standards indexed by project context
 
 Rules in `.github/rules/` apply across agents:
 
 - **architectural-standards.md**, **security-quality-standards.md**, **environment-standards.md**, **versioning-standards.md**
-- **requirement-standards.md**, **traceability-standards.md**, **sdlc.md**
+- **requirement-standards.md**, **traceability-standards.md**, **pdlc.md**
 - **specification-execution-gates.md**, **planning-execution-gates.md**, **implementation-execution-gates.md**
 - **mcp-usage-guide.md**, **figma-interactive-selection-guide.md**
 

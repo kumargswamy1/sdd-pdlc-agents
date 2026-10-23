@@ -11,9 +11,9 @@ disable-model-invocation: true
 
 ## Manual Stage Handoff
 - Run only when a human starts this agent. Do not invoke any other agent.
-- On completion, stop and emit `NEXT_STEP: Human review of functional test results, then manually start Quality Tester with RUN_ID=<id>`.
+- On completion, stop and emit `NEXT_STEP: Human review of test results and acceptance gaps, then manually start Technical Documenter with RUN_ID=<id> for the automatic code-review gate and final documentation`.
 
-Execute functional tests for the frontend behavior in an approved PDLC specification after implementation is complete. When the approved story has no UI tasks, report the activity as not applicable (N/A) and do not generate or run browser tests. Use the specification to determine UI scope and expected behavior. Use the planned component inventory when available as supplemental coverage detail, and use current application behavior as the source of truth for executable assertions.
+Execute functional tests for frontend behavior and user workflows in the approved PDLC specification after implementation. For confirmed no-UI scope, report N/A without browser tests. Approved requirements, acceptance criteria, and spec decisions define expected behavior and assertions. Use current implementation only to discover routes, locators, setup, and actual behavior, never to redefine expected outcomes. Report conflicts between approved sources as blockers requiring clarification.
 
 ## UI Scope Gate
 
@@ -21,7 +21,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 
 1. Read `output/{RUN_ID}/specify/spec.md` first, then read `output/{RUN_ID}/plan/plan.md` and `output/{RUN_ID}/plan/tasks.md` when present.
 2. Treat functional automation as N/A only when the approved spec explicitly states `UI In Scope: NO` and `DESIGN_EVIDENCE_STATUS: NOT_REQUIRED`.
-3. For a confirmed no-UI run, do not require `components.md`, do not launch a browser, and do not create or execute a test suite. Create only `report.md` and `summary.json` under the next unused `output/{RUN_ID}/functional-tests/attempt-<n>/` directory. Record `NOT_APPLICABLE` (N/A), the evidence used to confirm no UI scope, zero components and cases, and the normal human-review handoff to Quality Tester.
+3. For a confirmed no-UI run, do not require `components.md`, launch a browser, or create/execute a suite. Create only `report.md` and `summary.json` under the next unused `output/{RUN_ID}/functional-tests/attempt-<n>/`. Record `NOT_APPLICABLE`, no-UI scope evidence, zero components/cases, and the human-review handoff to Technical Documenter for the automatic code-review gate.
 4. If the spec, plan, tasks, or available component inventory disagree about UI scope, report `BLOCKED` and identify the conflict. Do not infer N/A from a missing or empty inventory.
 5. When `UI In Scope: YES`, use `output/{RUN_ID}/plan/frontend/components.md` when present to enrich the component inventory. If it is absent, derive the affected screens, components, routes, and user flows from `spec.md`, `plan.md`, `tasks.md`, implementation source, and existing tests. Report a blocker only when the specification does not provide enough information to identify the UI behavior to test.
 
@@ -31,6 +31,7 @@ Resolve UI applicability before requiring a component inventory, application URL
 - Verify implementation readiness for each listed component and perform functional testing for each implemented component.
 - Trace component interactions through APIs and backend behavior when supported by the plan and source code.
 - Generate and execute reproducible Playwright tests, preserving test evidence and reporting failures, coverage gaps, and blockers accurately.
+- Execute applicable user-workflow scenarios from `plan/tests/scenarios.md`, not just isolated component interactions. Include happy paths, negative/error paths, boundaries, and state transitions from approved acceptance criteria. Report acceptance checks outside UI/API automation as human-verification gaps; do not claim a separate QA stage executed them.
 
 ## Before You Start
 
@@ -139,3 +140,15 @@ Emit:
 - `BLOCKERS: [none | <list>]`
 
 Return a concise run summary with component IDs, case totals, status, tested URL, rerun command, unresolved blockers, and links to the tests, case definitions, summary, report, JUnit, logs, and available screenshots/traces/videos. Never claim execution without evidence.
+
+### Required User-Facing Test Review
+
+After every run, show the test cases and their results directly in the final chat response; do not provide only a status or an artifact-directory path, and do not wait for the user to ask where to review them.
+
+- Identify the `RUN_ID`, attempt number, tested URL, execution mode (headed/headless), and overall status. Show planned and executed totals separately, including passed, failed, blocked, and skipped counts reconciled with the available runner evidence.
+- Include a Markdown table for every case in the attempt with columns: **Case ID | Component | Test case | Expected result | Actual result / status**. Keep entries concise, identify mocked/simulated cases, and give a reason for each failed, blocked, skipped, or unexecuted case. Never label an unexecuted case as passed.
+- Highlight failed cases and unresolved acceptance gaps by case ID and requirement/scenario reference, with expected versus observed behavior and links to the relevant failure evidence.
+- Provide clearly labeled, clickable Markdown links to the current attempt directory, case definitions, executable suite, results summary, report, JUnit results, execution metadata, runner logs, and available screenshots/traces/videos. Use absolute workspace paths in chat links and link only to files actually produced. Include direct evidence links for failed cases when available.
+- For blocked runs without execution, show any defined cases as unexecuted with their blocking reasons and link to available artifacts; do not invent runner results or missing files.
+- For confirmed no-UI runs, show `NOT_APPLICABLE`, zero components/cases, the no-UI evidence, and links only to the generated report and summary; do not create or imply test cases or execution.
+- Finish with the required human-review `NEXT_STEP` handoff. This reporting requirement does not start another PDLC stage or authorize application fixes.

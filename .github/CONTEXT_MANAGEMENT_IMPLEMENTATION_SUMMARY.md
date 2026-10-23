@@ -142,7 +142,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 
 ---
 
-#### 4. `.github/agents/tester.agent.md`
+#### 4. API Tester and Functional Automation Test
 **Changes:**
 - Added explicit references to all three tech standards files
 - Updated "Before You Start" section
@@ -241,7 +241,8 @@ Where CTX-* IDs are created by Context Builder and standards files are managed b
 │   ├── specify.agent.md
 │   ├── planner.agent.md
 │   ├── implement.agent.md
-│   ├── tester.agent.md
+│   ├── api-tester.agent.md
+│   ├── functional-automation-test.agent.md
 │   ├── traceability-manager.agent.md
 │   └── [12 other agents]
 ├── copilot-instructions.md
@@ -262,7 +263,8 @@ Where CTX-* IDs are created by Context Builder and standards files are managed b
 │   ├── specify.agent.md                            ✅ UPDATED
 │   ├── planner.agent.md                            ✅ UPDATED
 │   ├── implement.agent.md                          ✅ UPDATED
-│   ├── tester.agent.md                             ✅ UPDATED
+│   ├── api-tester.agent.md                         ✅ UPDATED
+│   ├── functional-automation-test.agent.md          ✅ UPDATED
 │   ├── traceability-manager.agent.md               ✅ UPDATED
 │   └── [12 other agents]
 ├── copilot-instructions.md                         ✅ UPDATED
@@ -340,7 +342,7 @@ Implementation Builder ─→ Reads frontend/backend-context.md
        ↓                      for implementation patterns
 code/
        ↓
-Quality Tester ─→ Reads testing-standards.md
+API Tester / Functional Automation Test ─→ Read testing-standards.md
        ↓             for test design
 tests/
        ↓
@@ -498,7 +500,7 @@ cat requirement/Traceability_Matrix.md
 | specify.agent.md | Agent | ✅ UPDATED | Read tech standards |
 | planner.agent.md | Agent | ✅ UPDATED | Use standards for planning |
 | implement.agent.md | Agent | ✅ UPDATED | Follow standards patterns |
-| tester.agent.md | Agent | ✅ UPDATED | Apply standards-based testing |
+| api-tester.agent.md / functional-automation-test.agent.md | Agents | ✅ UPDATED | Apply standards-based testing |
 | traceability-manager.agent.md | Agent | ✅ UPDATED | Track CTX lifecycle |
 | copilot-instructions.md | Docs | ✅ UPDATED | Context as prerequisite |
 | CONTEXT_MANAGEMENT_GUIDE.md | Docs | ✅ NEW | Complete reference |

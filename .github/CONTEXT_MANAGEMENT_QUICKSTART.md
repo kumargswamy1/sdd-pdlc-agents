@@ -18,15 +18,16 @@ Ensure you have the following files in your repository:
 │   ├── specify.agent.md                  ✅ Updated
 │   ├── planner.agent.md                  ✅ Updated
 │   ├── implement.agent.md                ✅ Updated
-│   ├── tester.agent.md                   ✅ Updated
+│   ├── api-tester.agent.md               ✅ Updated
+│   ├── functional-automation-test.agent.md ✅ Updated
 │   └── traceability-manager.agent.md     ✅ Updated
 ├── copilot-instructions.md               ✅ Updated
 ├── contexts/
-│   ├── project-context.md                         (Created by Context Builder if absent)
-│   ├── domain-context.md                          (Client industry/domain context)
-│   ├── frontend-context.md                        (When a frontend is in scope)
-│   ├── backend-context.md                         (When a backend is in scope)
-│   └── testing-standards.md                        (Created by Context Builder if absent)
+│   ├── project-context.md                         (Business requirements, rules, constraints, design intent)
+│   ├── domain-context.md                          (Supplemental industry/domain references)
+│   ├── frontend-context.md                        (Frontend/UI/design implementation)
+│   ├── backend-context.md                         (Backend implementation and contracts)
+│   └── testing-standards.md                       (Test and verification strategy)
 └── CONTEXT_MANAGEMENT_GUIDE.md           ✅ New
 
 requirement/
@@ -66,16 +67,16 @@ Success: Performance targets, uptime SLA, user satisfaction metrics
 ```
 
 **What You Get:**
-- ✅ `.github/contexts/project-context.md` - Unified business + tech baseline
-- ✅ `.github/contexts/domain-context.md` - Client industry/domain, terminology, and business rules
-- ✅ `.github/contexts/frontend-context.md` - Frontend tech best practices
-- ✅ `.github/contexts/backend-context.md` - Backend tech patterns
-- ✅ `.github/contexts/testing-standards.md` - Testing framework patterns
+- ✅ `.github/contexts/project-context.md` - Canonical business requirements, logic, rules, constraints, design intent, and acceptance criteria
+- ✅ `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
+- ✅ `.github/contexts/frontend-context.md` - Frontend/UI implementation, design details, themes, fonts, styles, and conventions
+- ✅ `.github/contexts/backend-context.md` - Backend implementation, APIs, data, integrations, security, and operations
+- ✅ `.github/contexts/testing-standards.md` - Testing and verification strategy, frameworks, and coverage
 - ✅ Additional user-provided standards preserved and indexed when applicable
 - ✅ `requirement/Context_ProjectName.md` - Detailed context with CTX-* IDs
 - ✅ `requirement/Traceability_Matrix.md` - Context mappings
 
-Existing context documents are left unchanged. Context Builder reports skipped destinations and hands requested document changes to Context Updater; it still records newly created CTX-* IDs in the Traceability Matrix.
+Context Builder creates the initial context and does not replace substantive existing documents. Context Updater maintains existing context files: it checks populated files for new evidence and updates the relevant sections while preserving unrelated content and source attribution. If a required context file is missing or empty, Context Updater reports the gap for Context Builder, which owns creation. Unavailable details are marked `N/A` with a reason.
 
 ### Step 2: Verify Context Files
 
