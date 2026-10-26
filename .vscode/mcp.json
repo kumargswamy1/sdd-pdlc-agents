@@ -32,9 +32,9 @@
                 "mcp-atlassian"
             ],
             "env": {
-                "JIRA_URL": "https://jra.ce.com/",
-                 "JIRA_USERNAME": "abcd@test.com,
-                 "JIRA_API_TOKEN": "AX"
+                "JIRA_URL": "xxxxx",
+                 "JIRA_USERNAME": "axxx",
+                 "JIRA_API_TOKEN": "xxx"
             }
         }
 }
