@@ -116,6 +116,21 @@ Do not copy detailed frontend, backend, or testing inventories into `project-con
 
 For every category with no evidence, include an explicit `N/A — <reason>` entry, such as no application UI source found. A generic rule or example is not evidence that the project implements that feature. Preserve source paths and distinguish conflicts between intended requirements and implemented code.
 
+#### Feature and Business Logic Completeness Gate
+
+For existing projects, a product summary, technology inventory, or list of links is not sufficient business context. When creating `project-context.md`, include the following source-backed sections directly in that file:
+
+1. **Application Feature Catalogue**: Inventory every discovered user-facing feature and business capability exposed through APIs, jobs, or integrations, including backend-only and legacy capabilities. Use columns `Feature / CTX ID | Actor and purpose | Entry or trigger | Business behavior and outcome | Evidence status | Source`. Distinguish implemented UI journeys, backend-only capabilities, documented requirements, placeholders, and unverified behavior. A service method alone does not prove a visible UI feature.
+2. **Feature Workflows and Business Logic**: For each feature, document its preconditions, inputs/defaults, main flow, alternate/error flows, validation and decision rules, calculations, state changes, outputs, ownership/permission rules, and persistence/reset behavior where evidenced. Record exact formulas, operands, units/currencies, date/timezone semantics, limits, ordering, boundary inclusivity and rounding where present; do not replace logic with vague phrases such as "supports filtering" or "displays balances." Mark unknown details explicitly rather than inventing them.
+3. **Business Rule Catalogue**: Give each distinct rule a stable `CTX-*` ID or preserve its authoritative source ID. Map it to affected features and cite the implementation or requirement source. Describe code-derived rules as observed behavior, not approved requirements. Separate current behavior from intended behavior when they conflict; preserve known defects and coverage limitations.
+4. **Feature Coverage Reconciliation**: Reconcile the feature catalogue against every discovered screen/navigation action, registered business endpoint, background handler and supplied requirement. Use columns `Source entry point | Feature / rule reference | Disposition | Evidence or gap`. Group entry points only when they implement the same capability and keep each entry identifiable. Mark technical-only entry points or out-of-scope paths with reasons rather than silently omitting them.
+
+Trace each discovered capability through the relevant frontend handlers, services, backend validation/business logic, data access and tests as applicable; representative flows alone cannot establish complete feature coverage. Tests corroborate behavior but do not prove that an unconnected component or endpoint is reachable from the UI. Keep low-level contracts, schemas, visual design and framework details in the linked technical contexts.
+
+Before reporting `READY` for newly created context, verify that every discovered business capability has a catalogue entry and that each entry has business-logic detail and source evidence or an explicit evidence gap. Report discovered, documented and unresolved feature counts. Do not claim complete coverage when relevant sources remain uninspected.
+
+If `project-context.md` already has substantive content, preserve it under the create-only rule. Report the missing feature/rule coverage as an explicit Context Updater handoff, naming the affected capabilities and sources; do not imply that this run repaired or completed the existing context.
+
 #### Step 1d: Complete Business and Project Context
 1. Extract from the Confluence page, attached document, legacy project, and user clarifications:
    - **Business Context**: Product/project name, purpose, industry, target users, key capabilities, business outcomes, and differentiation.
@@ -323,7 +338,7 @@ Create this file only when the user requests general standards or provides sourc
 
 When `.github/contexts/project-context.md` is missing or objectively empty, create/populate it with:
 1. **Business Overview**: Product/project purpose, industry, target users, business drivers, scope, and intended outcomes.
-2. **Complete Business Requirements and Business Logic**: All sourced requirements, business workflows, rules/policies, invariants, calculations, states, exceptions, validations, acceptance criteria, trace IDs, and source references. This is the canonical home for requirement-level business meaning and logic.
+2. **Complete Business Requirements and Business Logic**: All sourced requirements, business workflows, rules/policies, invariants, calculations, states, exceptions, validations, acceptance criteria, trace IDs, and source references. Include the Application Feature Catalogue, per-feature workflows/business logic, Business Rule Catalogue, and Feature Coverage Reconciliation required by the Feature and Business Logic Completeness Gate. This is the canonical home for requirement-level business meaning and logic; an overview or technical-context links alone cannot satisfy it.
 3. **Business Constraints, Decisions, and Risks**: Business/regulatory/operational constraints, assumptions, exclusions, dependencies, success measures, unresolved questions, and decision history.
 4. **Stakeholders and Current State**: Business stakeholders, current business processes, pain points, and business-level system landscape.
 5. **Business Compliance and Domain Context**: Required business outcomes and obligations; link to supplemental `domain-context.md` material without duplicating requirements or rules.
@@ -380,6 +395,8 @@ If context gathering reveals ambiguities:
 - [ ] Substantive existing context and standards files remain unchanged; applicable files are indexed in new/populated project-context.md
 - [ ] Missing and objectively empty context files are populated from available evidence; substantive context is preserved
 - [ ] Features, business logic, UI/design, backend APIs/services, data/storage, integrations, security/configuration, architecture, build/deployment, testing, and operations have been inventoried, or explicitly marked `N/A` with checked-source scope
+- [ ] Every discovered business capability is reconciled to the project-context feature catalogue and sourced business-logic/rule detail; UI, backend-only, legacy and placeholder capabilities are distinguished
+- [ ] Exact evidenced calculations, validation boundaries, permissions and state/persistence behavior are documented, with intended-versus-implemented discrepancies and evidence gaps explicit
 - [ ] Newly created Markdown context files follow markdown standards; explicitly designated source files retain their original format
 - [ ] Client industry/domain context is captured and referenced from any newly created project-context.md
 - [ ] Context files identify their scope and sources without relying on instruction-file auto-loading
@@ -406,6 +423,7 @@ Emit:
 - `SKIPPED_EXISTING: [<existing-output-files>]`
 - `UPDATE_HANDOFFS: [<requested-changes-for-Context-Updater-or-Traceability-Manager>]`
 - `TRACEABILITY_STATUS: <n> CTX-* IDs created and mapped`
+- `FEATURE_COVERAGE: [DISCOVERED: <n>] [DOCUMENTED: <n>] [UNRESOLVED: <n>] [RECONCILIATION: <artifact and section | unavailable with reason>]` — counts refer to the same distinct capabilities, not routes or rule counts; for preserved existing context, report observed coverage and explicit update handoffs rather than claiming new documentation
 
 ## Required Behavior
 
