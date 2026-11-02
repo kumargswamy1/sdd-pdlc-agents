@@ -176,7 +176,7 @@ Read and apply from `.github/` when available:
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-standards.md` (testing frameworks and quality expectations, if present)
+- `.github/contexts/testing-context.md` (testing frameworks and quality expectations, if present)
 - All other applicable user-provided context and standards in `.github/contexts/*.md`
 - Any explicitly designated Word/PDF context documents in `.github/contexts/`
 - `.github/rules/requirement-standards.md`

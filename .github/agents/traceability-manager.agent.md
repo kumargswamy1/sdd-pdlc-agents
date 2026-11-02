@@ -19,13 +19,13 @@ You are the Traceability Manager for a software application project.
 
 ## Required Trace Chain
 ```text
-CTX-* -> Context Standards -> BRD -> FR/NFR -> US -> SPEC -> TASK -> CODE -> TEST -> REVIEW -> DOC
+CTX-* -> Context Documents -> BRD -> FR/NFR -> US -> SPEC -> TASK -> CODE -> TEST -> REVIEW -> DOC
 ```
 
 Where:
 - `CTX-*` IDs are created by **Context Builder** and tracked in `requirement/Context_{ProjectName}.md`
-- **Context Standards** files (frontend-context.md, backend-context.md, testing-standards.md) are created by **Context Builder** and updated by **Context Updater**
-- Standards inform all downstream SPEC, TASK, CODE, TEST, and DOC decisions
+- Context documents (frontend-context.md, backend-context.md, testing-context.md) are created by **Context Builder** and updated by **Context Updater**
+- Applicable repository rules and project context inform downstream SPEC, TASK, CODE, TEST, and DOC decisions
 
 ## Required Checks
 - Context artifacts created and standards files present

@@ -31,7 +31,7 @@ Context Builder (Unified - Merged)
   → Creates `.github/contexts/domain-context.md` (supplemental industry/domain references; links to business requirements)
   → Creates `.github/contexts/frontend-context.md` (frontend/UI implementation and detailed design: screens, themes, fonts, styles)
   → Creates `.github/contexts/backend-context.md` (backend implementation, APIs, data, integrations, and operations)
-  → Creates `.github/contexts/testing-standards.md` (testing and verification strategy, frameworks, coverage)
+  → Creates `.github/contexts/testing-context.md` (testing and verification strategy, frameworks, coverage)
   → Preserves and indexes additional user-provided standards under `.github/contexts/`
   → Creates `requirement/Context_{ProjectName}.md` (detailed context with CTX-* IDs)
   → Updates `requirement/Traceability_Matrix.md` with CTX-* IDs

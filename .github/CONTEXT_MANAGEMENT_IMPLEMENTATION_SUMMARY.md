@@ -31,7 +31,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
   - `.github/contexts/project-context.md`
   - `.github/contexts/frontend-context.md`
   - `.github/contexts/backend-context.md`
-  - `.github/contexts/testing-standards.md`
+  - `.github/contexts/testing-context.md`
   - `requirement/Context_{ProjectName}.md`
 - **Traceability:** Creates CTX-* IDs for all context elements
 - **When to use:** Project kickoff, new products, major pivots
@@ -98,7 +98,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 
 #### 2. `.github/agents/planner.agent.md`
 **Changes:**
-- Added explicit references to `frontend-context.md`, `backend-context.md`, `testing-standards.md`
+- Added explicit references to `frontend-context.md`, `backend-context.md`, `testing-context.md`
 - Updated "Before You Start" section
 - Clarified standards come from Context Builder/Updater
 
@@ -114,7 +114,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 ```
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-standards.md` (technology-specific testing conventions)
+- `.github/contexts/testing-context.md` (technology-specific testing conventions)
 ```
 
 ---
@@ -137,7 +137,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 ```
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-standards.md` (technology-specific testing conventions)
+- `.github/contexts/testing-context.md` (technology-specific testing conventions)
 ```
 
 ---
@@ -146,7 +146,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 **Changes:**
 - Added explicit references to all three tech standards files
 - Updated "Before You Start" section
-- Clarified testing standards guide test design
+- Clarified testing context guide test design
 
 **Impact:** Tester now creates tests matching project test patterns
 
@@ -160,7 +160,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 ```
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-standards.md` (technology-specific testing conventions)
+- `.github/contexts/testing-context.md` (technology-specific testing conventions)
 ```
 
 ---
@@ -185,10 +185,10 @@ CTX -> BRD -> FR/NFR -> US -> SPEC -> TASK -> CODE -> TEST -> REVIEW -> DOC
 ```
 ## Required Trace Chain
 ```text
-CTX-* -> Context Standards -> BRD -> FR/NFR -> US -> SPEC -> TASK -> CODE -> TEST -> REVIEW -> DOC
+CTX-* -> Context Documents -> BRD -> FR/NFR -> US -> SPEC -> TASK -> CODE -> TEST -> REVIEW -> DOC
 ```
 
-Where CTX-* IDs are created by Context Builder and standards files are managed by Context Builder/Updater.
+Where CTX-* IDs are created by Context Builder and context files are managed by Context Builder/Updater.
 ```
 
 ---
@@ -274,7 +274,7 @@ Where CTX-* IDs are created by Context Builder and standards files are managed b
 │   ├── project-context.md                                  (created by Context Builder)
 │   ├── frontend-context.md                       (created by Context Builder)
 │   ├── backend-context.md                        (created by Context Builder)
-│   ├── testing-standards.md                        (created by Context Builder)
+│   ├── testing-context.md                        (created by Context Builder)
 │   └── bdd-standards.instructions.md
 └── rules/
     └── [various rule files]
@@ -342,7 +342,7 @@ Implementation Builder ─→ Reads frontend/backend-context.md
        ↓                      for implementation patterns
 code/
        ↓
-API Tester / Functional Automation Test ─→ Read testing-standards.md
+API Tester / Functional Automation Test ─→ Read testing-context.md
        ↓             for test design
 tests/
        ↓
@@ -461,7 +461,7 @@ cat .github/contexts/frontend-context.md
 cat .github/contexts/backend-context.md
 
 # Testing patterns
-cat .github/contexts/testing-standards.md
+cat .github/contexts/testing-context.md
 
 # Unified baseline
 cat .github/contexts/project-context.md
@@ -508,7 +508,7 @@ cat requirement/Traceability_Matrix.md
 | project-context.md | Output | Created by Context Builder | Tech baseline |
 | frontend-context.md | Output | Created by Context Builder | Frontend patterns |
 | backend-context.md | Output | Created by Context Builder | Backend patterns |
-| testing-standards.md | Output | Created by Context Builder | Testing patterns |
+| testing-context.md | Output | Created by Context Builder | Testing patterns |
 | Context_{ProjectName}.md | Output | Created by Context Builder | Business context |
 | Traceability_Matrix.md | Output | Updated by Context Builder | CTX* mappings |
 
@@ -519,7 +519,7 @@ cat requirement/Traceability_Matrix.md
 The Context Management System is now **fully integrated** into your PDLC workflow:
 
 ✅ **Foundation layer** for all agents (context management)  
-✅ **Unified standards** for frontend, backend, testing  
+✅ **Unified context documents** for frontend, backend, and testing
 ✅ **Automatic detection** of tech stack and project structure  
 ✅ **Continuous synchronization** as projects evolve  
 ✅ **Complete traceability** from business context through implementation  

@@ -27,7 +27,7 @@ Ensure you have the following files in your repository:
 │   ├── domain-context.md                          (Supplemental industry/domain references)
 │   ├── frontend-context.md                        (Frontend/UI/design implementation)
 │   ├── backend-context.md                         (Backend implementation and contracts)
-│   └── testing-standards.md                       (Test and verification strategy)
+│   └── testing-context.md                       (Test and verification strategy)
 └── CONTEXT_MANAGEMENT_GUIDE.md           ✅ New
 
 requirement/
@@ -71,7 +71,7 @@ Success: Performance targets, uptime SLA, user satisfaction metrics
 - ✅ `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - ✅ `.github/contexts/frontend-context.md` - Frontend/UI implementation, design details, themes, fonts, styles, and conventions
 - ✅ `.github/contexts/backend-context.md` - Backend implementation, APIs, data, integrations, security, and operations
-- ✅ `.github/contexts/testing-standards.md` - Testing and verification strategy, frameworks, and coverage
+- ✅ `.github/contexts/testing-context.md` - Testing and verification strategy, frameworks, and coverage
 - ✅ Additional user-provided standards preserved and indexed when applicable
 - ✅ `requirement/Context_ProjectName.md` - Detailed context with CTX-* IDs
 - ✅ `requirement/Traceability_Matrix.md` - Context mappings
@@ -85,7 +85,7 @@ Check the applicable context files:
 ```bash
 ls -la .github/contexts/
 # Should include project-context.md, domain-context.md, and applicable
-# frontend-context.md, backend-context.md, testing-standards.md, and custom context files
+# frontend-context.md, backend-context.md, testing-context.md, and custom context files
 ```
 
 ### Step 3: Begin Specification Phase
@@ -227,7 +227,7 @@ Read: requirement/Context_{ProjectName}.md
 3. Verify:
    - ✅ API design follows backend-context.md patterns
    - ✅ Components use frontend-context.md reusable widgets
-   - ✅ Tests follow testing-standards.md structure
+   - ✅ Tests follow testing-context.md structure
 4. If mismatch found, either:
    - Update spec to use current standards, OR
    - Document deviation with reasoning
@@ -336,7 +336,7 @@ Step 4: Close CTX-UPDATE-* entry
 ### Standards Files
 - **frontend-context.md** - Frontend tech patterns (created once, updated as needed)
 - **backend-context.md** - Backend tech patterns (created once, updated as needed)
-- **testing-standards.md** - Testing tech patterns (created once, updated as needed)
+- **testing-context.md** - Testing tech patterns (created once, updated as needed)
 - Core documents are indexed in `project-context.md`; downstream agents explicitly read applicable context files from `.github/contexts/`
 
 ### Context Precedence
@@ -355,8 +355,8 @@ Step 4: Close CTX-UPDATE-* entry
 
 ✅ **Unified baseline** - All agents read from same context files  
 ✅ **Tech detection** - Automatic stack discovery on project setup  
-✅ **Synchronized standards** - Frontend/backend/testing standards stay in sync  
-✅ **Continuous alignment** - Context Updater keeps standards current  
+✅ **Synchronized contexts** - Frontend, backend, and testing context stay in sync
+✅ **Continuous alignment** - Context Updater keeps context current
 ✅ **Complete traceability** - CTX-* and CTX-UPDATE-* IDs track all decisions  
 ✅ **Impact detection** - Breaking changes escalated for approval  
 

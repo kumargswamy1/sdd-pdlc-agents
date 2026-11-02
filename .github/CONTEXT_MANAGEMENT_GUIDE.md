@@ -67,7 +67,7 @@ These agents work together to ensure downstream agents use one canonical busines
 2. Create Separated Technical Context Files
    ├─ frontend-context.md (based on detected frontend tech)
    ├─ backend-context.md (based on detected backend tech)
-   └─ testing-standards.md (based on detected test frameworks)
+   └─ testing-context.md (based on detected test frameworks)
 
 3. Create Business Context and Index
    ├─ .github/contexts/project-context.md (all requirements, business logic, rules, constraints, design intent)
@@ -100,7 +100,7 @@ These agents work together to ensure downstream agents use one canonical busines
    ├─ Update project-context.md for business requirement/rule/constraint changes and domain-context.md for supplemental industry references
    ├─ Update frontend-context.md (if frontend changes)
    ├─ Update backend-context.md (if backend changes)
-   ├─ Update testing-standards.md (if testing changes)
+   ├─ Update testing-context.md (if testing changes)
    ├─ Update affected user-provided Markdown context/standards while preserving unrelated authored content
    └─ Hand off missing or empty initial context documents to Context Builder; Updater does not create them
 
@@ -120,7 +120,7 @@ These agents work together to ensure downstream agents use one canonical busines
 - `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - `.github/contexts/frontend-context.md` - Frontend implementation, screen/UI design evidence, theme/style details, and conventions
 - `.github/contexts/backend-context.md` - Backend APIs/services, data, integrations, security/configuration, and operational implementation
-- `.github/contexts/testing-standards.md` - Test frameworks, strategy, execution, and coverage standards
+- `.github/contexts/testing-context.md` - Test frameworks, strategy, execution, and coverage standards
 
 **Impact:** Specifier uses tech standards to validate frontend/backend design choices, recommend existing components, and ensure specs align with project conventions.
 
@@ -130,7 +130,7 @@ These agents work together to ensure downstream agents use one canonical busines
 - `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - `.github/contexts/frontend-context.md` - Frontend folder structure, layer boundaries
 - `.github/contexts/backend-context.md` - Backend service layers, API versioning
-- `.github/contexts/testing-standards.md` - Test structure, coverage requirements
+- `.github/contexts/testing-context.md` - Test structure, coverage requirements
 
 **Impact:** Planner uses tech standards to structure frontend and backend tasks, define test task requirements, and ensure task dependencies reflect project architecture.
 
@@ -138,13 +138,13 @@ These agents work together to ensure downstream agents use one canonical busines
 **Reads from context:**
 - `.github/contexts/frontend-context.md` - Reusable components, approved libraries, code structure
 - `.github/contexts/backend-context.md` - Service patterns, middleware setup, API conventions
-- `.github/contexts/testing-standards.md` - Test patterns, fixtures, test location conventions
+- `.github/contexts/testing-context.md` - Test patterns, fixtures, test location conventions
 
 **Impact:** Builder follows tech standards to create consistent implementation, reuse existing components, and generate tests matching project patterns.
 
 #### API Tester and Functional Automation Test
 **Reads from context:**
-- `.github/contexts/testing-standards.md` - Test frameworks, coverage targets, fixture strategies
+- `.github/contexts/testing-context.md` - Test frameworks, coverage targets, fixture strategies
 - `.github/contexts/frontend-context.md` - Frontend testing patterns, component testing approaches
 - `.github/contexts/backend-context.md` - Backend testing patterns, mock data strategies
 
@@ -174,7 +174,7 @@ requirement/Traceability_Matrix.md (maps CTX-* to BRD/FR/NFR)
    ↓
 .github/contexts/frontend-context.md (frontend/UI/design implementation)
 .github/contexts/backend-context.md (backend implementation and contracts)
-.github/contexts/testing-standards.md (test strategy and verification)
+.github/contexts/testing-context.md (test strategy and verification)
    ↓
 SPEC-* (specification phase reads standards)
    ↓
@@ -195,7 +195,7 @@ TEST-* (tester reads standards)
 ├─ domain-context.md              # Supplemental industry/domain reference material
 ├─ frontend-context.md            # Frontend implementation, UI, design, theme, fonts, styles
 ├─ backend-context.md             # Backend implementation, APIs, data, integrations, operations
-├─ testing-standards.md           # Testing and verification strategy, frameworks, coverage
+├─ testing-context.md           # Testing and verification strategy, frameworks, coverage
 └─ <user-provided-context>.md    # Additional standards/context when applicable
 
 requirement/
@@ -334,7 +334,7 @@ Backend: Node.js/Python, API framework. Testing: Jest/pytest. Compliance: GDPR, 
 # - .github/contexts/project-context.md
 # - .github/contexts/frontend-context.md
 # - .github/contexts/backend-context.md
-# - .github/contexts/testing-standards.md
+# - .github/contexts/testing-context.md
 # - requirement/Context_ProjectName.md
 # - Updated requirement/Traceability_Matrix.md
 ```
@@ -370,7 +370,7 @@ The Context Management System provides:
 
 ✅ **Single source of truth** for business requirements and business logic, with detailed technology guidance separated by frontend, backend, and testing
 ✅ **Automatic detection** of tech stack and project structure  
-✅ **Synchronized standards** across frontend, backend, and testing  
+✅ **Synchronized contexts** for frontend, backend, and testing, with repository rules applied
 ✅ **End-to-end traceability** from business context through implementation  
 ✅ **Continuous alignment** as projects evolve, via Context Updater  
 ✅ **Conflict detection** when context drifts from active work  

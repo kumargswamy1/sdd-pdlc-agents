@@ -49,7 +49,7 @@ Read and apply:
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-standards.md` (technology-specific testing conventions)
+- `.github/contexts/testing-context.md` (technology-specific testing conventions)
 - Discover and read all other applicable context and standards files in `.github/contexts/`, including user-added Markdown and explicitly designated Word/PDF files; account for relevant guidance and conflicts in the plan.
 - `.github/rules/architectural-standards.md`
 - `.github/rules/security-quality-standards.md`

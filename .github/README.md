@@ -21,8 +21,9 @@ The agents support a human-controlled, spec-driven PDLC workflow that transforms
 | 9 | Compliance Reviewer | `reviewer.agent.md` | Review (gates) | Specs, plans, code, tests, docs | `REVIEW-*` findings and status |
 | 10 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation, test evidence | `DOC-*` documentation |
 | 11 | Traceability Manager | `traceability-manager.agent.md` | Traceability | All artifacts | `requirement/Traceability_Matrix.md` |
+| 12 | QA Test Case Generator | `qa-test-case-generator.agent.md` | Standalone utility, not part of PDLC | Jira story key/URL or full story content | `output/test-cases/<story-key>/` |
 
-All listed agents are user-invocable. Stage agents are not invoked as subagents, except for the explicitly allowed Figma Extractor call during specification. Compliance Reviewer is also invoked as a bounded subagent only at the spec, plan, and post-test code gates; it does not start the next stage. The Playwright-based testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
+All listed agents are user-invocable. The QA Test Case Generator is a standalone utility and is not a PDLC stage; it is not included in the workflow below and does not replace API Tester or Functional Automation Test. Stage agents are not invoked as subagents, except for the explicitly allowed Figma Extractor call during specification. Compliance Reviewer is also invoked as a bounded subagent only at the spec, plan, and post-test code gates; it does not start the next stage. The Playwright-based PDLC testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
 
 ## Agent Workflow Architecture
 
@@ -115,7 +116,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
-- `.github/contexts/testing-standards.md`
+- `.github/contexts/testing-context.md`
 - Additional user-provided standards when applicable
 - `requirement/Context_{ProjectName}.md`
 - Updated `requirement/Traceability_Matrix.md`
@@ -203,7 +204,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
-- `.github/contexts/testing-standards.md` (if present)
+- `.github/contexts/testing-context.md` (if present)
 
 **Output:**
 - `output/{RUN_ID}/specify/spec.md` with SPEC-* IDs and per-screen design sections
@@ -243,7 +244,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - `output/{RUN_ID}/specify/`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
-- `.github/contexts/testing-standards.md`
+- `.github/contexts/testing-context.md`
 
 **Output:**
 - `output/{RUN_ID}/plan/plan.md` and `tasks.md` (with `## Pre-submit checks`)
@@ -475,6 +476,36 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 
 ---
 
+## Standalone QA Utility (Not Part of PDLC)
+
+### QA Test Case Generator
+**File:** `qa-test-case-generator.agent.md`
+
+Use this agent independently when QA needs comprehensive test cases from a Jira story or story content. It is not part of the sequential PDLC workflow, is not a substitute for the API Tester or Functional Automation Test stages, and does not trigger PDLC review gates.
+
+**What it does:**
+- Covers every Acceptance Criteria row, uncovered Business Logic rule, uncovered Exception/Error Handling scenario, and independently testable story detail
+- Builds a coverage map before drafting cases and reports validation status and source counts
+- Uses the workspace template by default; on first use, QA may optionally identify a sample test case to establish a reusable template
+- Scans Jira test-case labels to allocate sequential `TC-*` IDs without reading unrelated test-case content
+- Writes individual Markdown cases and an index under `output/test-cases/<story-key>/`
+- Waits for explicit QA approval before creating Jira Tasks or linking them to the parent story
+
+**Inputs:**
+- A Jira story key or URL, or full story content
+- For pasted story content, the Jira story key is required before allocating Jira test-case IDs or writing story-keyed files
+- Optional identified sample test-case ID/key on first use; without one, the existing workspace template is used
+
+**Jira integration:** Uses the configured `jira` MCP server and its direct `jira_*` tools. Issue creation and linking require explicit QA approval after review of the generated cases.
+
+**Related files:**
+- [Agent](agents/qa-test-case-generator.agent.md)
+- [Instructions](instructions/qa-test-case-generator.instructions.md)
+- [Rules](rules/qa-test-case-generator.rules.md)
+- [Workspace test-case template](templates/qa-test-case-template.md)
+
+---
+
 ## Reference Files
 
 #### **agent-frontmatter-reference.md**
@@ -510,7 +541,10 @@ Technical Specifier:       ABCAPP-123  (or requirement/MyApp_Requirements.md)
 Implementation Builder:    RUN_ID=ABCAPP-123_20261013
 API Tester:                RUN_ID=ABCAPP-123_20261013 API_BASE_URL=http://localhost:9090
 Functional Automation Test: RUN_ID=ABCAPP-123_20261013
+QA Test Case Generator:     PROJECT-1234 (or full story content)
 ```
+
+The QA Test Case Generator is a standalone utility, not a PDLC phase. Optionally provide an identified sample test-case ID/key on first use to derive a reusable workspace template.
 
 ### Workflow Prompts
 
@@ -607,7 +641,7 @@ Context files in `.github/contexts/` are created by Context Builder and maintain
 - **domain-context.md** - Supplemental industry/domain terminology and source references
 - **frontend-context.md** - Frontend/UI implementation and detailed design (screens, themes, fonts, styles)
 - **backend-context.md** - Backend implementation, APIs, data, integrations, and operational patterns (used by API Tester)
-- **testing-standards.md** - Testing and verification frameworks, strategies, and coverage
+- **testing-context.md** - Testing and verification frameworks, strategies, and coverage
 - Additional user-provided standards indexed by project context
 
 Rules in `.github/rules/` apply across agents:
@@ -618,6 +652,7 @@ Rules in `.github/rules/` apply across agents:
 - **mcp-usage-guide.md**, **figma-interactive-selection-guide.md**
 
 Templates in `.github/templates/`: `requirements-input-template.md`, `user-story-template.md`.
+The standalone QA utility also uses `.github/templates/qa-test-case-template.md` and `.github/rules/qa-test-case-generator.rules.md`.
 
 All agents read from and respect these standards during their work.
 

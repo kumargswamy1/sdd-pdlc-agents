@@ -19,15 +19,15 @@ You are a Context Updater for a software application project.
 - Update existing context files when new, changed, or previously undocumented information is found, even when the files already contain substantive content.
 - Context Builder owns initial context creation. Context Updater must not create a missing context file or turn an empty/template-only file into a new context document. Report these gaps and hand them to Context Builder; continue updating other existing context files where possible.
 - Inventory all existing context files and compare their content to current sources; existing content is not a reason to skip review or updates.
-- When source code or requirement sources are available, capture all business requirements and requirement-level business logic in `project-context.md`; capture frontend/UI/design implementation in `frontend-context.md`; backend implementation and contracts in `backend-context.md`; and test strategy/tooling in `testing-standards.md`. Mark unavailable details `N/A` with the evidence scope checked; never guess or leave blank/template sections.
+- When source code or requirement sources are available, capture all business requirements and requirement-level business logic in `project-context.md`; capture frontend/UI/design implementation in `frontend-context.md`; backend implementation and contracts in `backend-context.md`; and test strategy/tooling in `testing-context.md`. Mark unavailable details `N/A` with the evidence scope checked; never guess or leave blank/template sections.
 - Keep strict content ownership and avoid duplication: `project-context.md` is the canonical business source of truth (all requirements, business workflows/logic/rules, business constraints, assumptions, decisions, product/business design intent, and acceptance/success criteria). Frontend/backend/testing contexts reference requirement IDs and describe implementation or verification only; they do not restate, redefine, or replace the business requirement. `project-context.md` links to technical contexts but does not reproduce their inventories.
 - Perform a systematic source-backed technical inventory across applicable frontend, backend, worker, data, infrastructure, and tooling areas. Inspect source and configuration beyond manifests; follow route registration, imports, dependency injection, and representative call chains to understand actual behavior and component boundaries.
 - Capture frontend evidence in `frontend-context.md`, including framework/runtime/dependencies, app architecture, routing/state, API-client usage, screens/components, interaction and technical states, accessibility/responsive implementation, build configuration, and detailed UI design (screen layouts, themes, colors/tokens, fonts/typography, spacing, layout, breakpoints, icons/assets, and styles). Keep product/business design intent and design constraints in `project-context.md`, and reference those requirement IDs here.
 - Capture backend and cross-cutting technical evidence in `backend-context.md`, including services/modules, API routes/contracts, data models/persistence/migrations, integrations/protocols, authn/authz, technical validation, errors/retries/timeouts, configuration (never secret values), logging/metrics/tracing, security/privacy implementation, performance/resilience, runtime/dependencies, build/deployment, infrastructure-as-code, CI/CD, release/rollback, and operational constraints. Keep business rule definitions and expected outcomes in `project-context.md`; describe only the technical implementation here.
-- Capture test frameworks, test structure, test data/mocks, CI test execution, coverage configuration, and test standards in `testing-standards.md`. Cite evidence and distinguish implementation from requirements and recommendations in the owning context.
+- Capture test frameworks, test structure, test data/mocks, CI test execution, coverage configuration, and test strategy in `testing-context.md`. Cite evidence and distinguish implementation from requirements and recommendations in the owning context.
 - Distinguish `IMPLEMENTED`, `DOCUMENTED/REQUIRED`, `USER-PROVIDED`, `RECOMMENDED`, and `N/A` findings. Cite source paths or document references, and describe what was inspected for each `N/A`; do not infer deployed capabilities from their absence in the repository.
 - Distinguish implemented behavior, documented requirements/standards, user decisions, and recommendations. Record evidence paths and flag discrepancies between intended behavior and implementation.
-- Keep `.github/contexts/project-context.md`, `domain-context.md`, `frontend-context.md`, `backend-context.md`, and `testing-standards.md` in sync while respecting their content boundaries: project business truth; supplemental domain reference; frontend/UI/design technical truth; backend technical truth; and test/verification truth, respectively.
+- Keep `.github/contexts/project-context.md`, `domain-context.md`, `frontend-context.md`, `backend-context.md`, and `testing-context.md` in sync while respecting their content boundaries: project business truth; supplemental domain reference; frontend/UI/design technical truth; backend technical truth; and test/verification truth, respectively.
 - Maintain existing user-provided Markdown context and standards when relevant new evidence or user direction applies: update only the affected sections, retain unrelated authored content, preserve attribution/source references, and never replace the document with generated defaults. Treat explicitly designated original Word/PDF source files as read-only unless the user specifically requests editing them; update the relevant Markdown context derived from them.
 - Maintain traceability for context updates across all PDLC phases.
 
@@ -37,7 +37,7 @@ Update existing files and relevant sections:
 - `.github/contexts/domain-context.md` - Sync client industry/domain details, terminology, and domain constraints
 - `.github/contexts/frontend-context.md` - Sync with detected frontend tech changes
 - `.github/contexts/backend-context.md` - Sync with detected backend tech changes
-- `.github/contexts/testing-standards.md` - Sync with detected testing framework changes
+- `.github/contexts/testing-context.md` - Sync with detected testing framework changes
 - `requirement/Context_{ProjectName}.md` - Add update notes and version history
 - `requirement/Traceability_Matrix.md` - Record context update events with trace IDs
 
@@ -108,7 +108,7 @@ For each detected change:
 2. **Assess impact on existing standards**:
    - Does this change require updating frontend standards?
    - Does this change require updating backend standards?
-   - Does this change require updating testing standards?
+   - Does this change require updating testing context?
    - Are there implications for Specifier, Planner, Builder, or Tester agents?
    - Does a source change alter business intent or domain guidance without changing the current implementation?
 
@@ -120,7 +120,7 @@ For each detected change:
 
 ### Phase 3: Update Context Files
 
-For all relevant existing context files, ensure complete evidence coverage with clear ownership: business requirements and requirement-level business logic/rules/constraints in project-context.md; frontend implementation and UI/design in frontend-context.md; backend implementation/contracts/data/integrations in backend-context.md; and testing/verification in testing-standards.md. Inspect source, tests, manifests, configuration, infrastructure, and delivery pipelines where available. If a topic does not apply or cannot be verified, explicitly record `N/A` and the sources/scope checked. Do not mix or duplicate details across contexts; link using requirement/context IDs and source references.
+For all relevant existing context files, ensure complete evidence coverage with clear ownership: business requirements and requirement-level business logic/rules/constraints in project-context.md; frontend implementation and UI/design in frontend-context.md; backend implementation/contracts/data/integrations in backend-context.md; and testing/verification in testing-context.md. Inspect source, tests, manifests, configuration, infrastructure, and delivery pipelines where available. If a topic does not apply or cannot be verified, explicitly record `N/A` and the sources/scope checked. Do not mix or duplicate details across contexts; link using requirement/context IDs and source references.
 
 Update existing context content in place, even when it is substantive:
 - Add new verified information to the relevant section.
@@ -167,7 +167,7 @@ Update existing context content in place, even when it is substantive:
 - Document build/runtime/package details, containers/infrastructure-as-code, CI/CD, deployment/release/rollback, and migration strategy where present
 - Record source-observed coding conventions and cite evidence paths. For capabilities not found, state `N/A` with the inspected scope; do not imply the deployed system lacks a feature solely because repository evidence is absent.
 
-#### Update `testing-standards.md`
+#### Update `testing-context.md`
 - Update framework versions and test runners
 - Reflect changes in test structure or location
 - Update mocking strategies if new tools are used
@@ -220,7 +220,7 @@ Read:
 - `.github/contexts/domain-context.md` (if exists)
 - `.github/contexts/frontend-context.md` (if exists)
 - `.github/contexts/backend-context.md` (if exists)
-- `.github/contexts/testing-standards.md` (if exists)
+- `.github/contexts/testing-context.md` (if exists)
 - Inventory and read relevant files in `.github/contexts/`, including user-provided Markdown, Word, and PDF context/standards; update affected existing Markdown context/standards in place, and treat designated original Word/PDF files as read-only unless editing is requested
 - Review the current Confluence source when provided; otherwise review the supplied Word/PDF documents and any available legacy project files
 - `.github/rules/traceability-standards.md`
@@ -258,7 +258,7 @@ In `BLOCKED` cases:
 - [ ] Every existing substantive canonical context file was checked for new information and drift, and relevant sections were updated in place
 - [ ] Missing and objectively empty canonical contexts are reported for Context Builder; Context Updater did not create them
 - [ ] All business requirements, business logic/rules, constraints, assumptions, decisions, and acceptance/success criteria are in project-context.md
-- [ ] Frontend/UI/design technical detail is in frontend-context.md, backend implementation detail is in backend-context.md, and test/verification detail is in testing-standards.md
+- [ ] Frontend/UI/design technical detail is in frontend-context.md, backend implementation detail is in backend-context.md, and test/verification detail is in testing-context.md
 - [ ] Related contexts use IDs/links instead of duplicating business requirements or technical inventories; each owned topic is covered or explicitly marked `N/A` with checked-source scope
 - [ ] Changes preserve unrelated content, source attribution, and document structure
 - [ ] All configuration files scanned and versions current
@@ -289,7 +289,7 @@ In `BLOCKED` cases:
 ## Status Reporting
 Emit:
 - `CONTEXT_UPDATE_STATUS: [READY|BLOCKED] [CHANGES_DETECTED: <count>] [IMPACT: MINOR|MODERATE|MAJOR]`
-- `FILES_UPDATED: [project-context.md, domain-context.md, frontend-context.md, backend-context.md, testing-standards.md, <additional-files>]`
+- `FILES_UPDATED: [project-context.md, domain-context.md, frontend-context.md, backend-context.md, testing-context.md, <additional-files>]`
 - `MISSING_CONTEXT_HANDOFF: [none | <missing-or-empty-context-files for Context Builder>]`
 - `TRACEABILITY_UPDATES: <n> CTX-UPDATE-* IDs created`
 - `CONFLICTS_DETECTED: [none | <list of conflicts>]`

@@ -27,7 +27,7 @@ Generate and execute Playwright API tests for every backend API in an approved P
 
 - Require `RUN_ID` and verify `output/{RUN_ID}/specify/spec.md` exists and explicitly declares API scope. If the spec states `API In Scope: NO`, create an N/A report and do not generate or execute API tests. If the spec states `API In Scope: YES`, derive the API inventory from the spec, source, OpenAPI, and the optional plan contract. Report a blocker only when the specification and source do not provide enough information to identify the APIs or their expected behavior.
 - Read `.github/contexts/backend-context.md`. If it is empty or lacks the tech stack, derive it from backend manifests and source (for example, `pom.xml`, `build.gradle`, `package.json`, `requirements.txt`, `*.csproj`) and record the context gap in the report. Request a Context Updater run; do not modify context files.
-- Inspect `.github/contexts/` and read other relevant files, including `testing-standards.md`, `project-context.md`, `domain-context.md`, and user-provided API or security standards.
+- Inspect `.github/contexts/` and read other relevant files, including `testing-context.md`, `project-context.md`, `domain-context.md`, and user-provided API or security standards.
 - Read `.github/rules/security-quality-standards.md`, `.github/rules/environment-standards.md`, `.github/rules/traceability-standards.md`, and `.github/rules/mcp-usage-guide.md`.
 - Read `output/{RUN_ID}/plan/tasks.md`, `output/{RUN_ID}/plan/tests/scenarios.md`, and implementation evidence under `output/{RUN_ID}/implement/backend/` and `output/{RUN_ID}/implement/integration/` when present.
 - Confirm the backend implementation tasks for each API are complete. Mark APIs without complete implementation as `BLOCKED` or `SKIPPED` with a reason; do not claim they were tested.
@@ -84,7 +84,7 @@ Generate and execute Playwright API tests for every backend API in an approved P
     <framework config file, if required>
   ```
 
-- Choose the Playwright binding that matches the backend language and existing test framework from backend context and `testing-standards.md`:
+- Choose the Playwright binding that matches the backend language and existing test framework from backend context and `testing-context.md`:
 
   | Backend Language      | Playwright Binding         | Test Runner                       |
   |-----------------------|----------------------------|-----------------------------------|

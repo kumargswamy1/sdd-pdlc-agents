@@ -35,24 +35,24 @@ ms.date: 2026-10-07
     - ✅ `.github/contexts/project-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
-    - ✅ `.github/contexts/testing-standards.md`
+    - ✅ `.github/contexts/testing-context.md`
 
 - [x] `.github/agents/implement.agent.md`
   - "Before You Start" section includes:
     - ✅ `.github/contexts/project-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
-    - ✅ `.github/contexts/testing-standards.md`
+    - ✅ `.github/contexts/testing-context.md`
 
 - [x] `.github/agents/api-tester.agent.md` and `.github/agents/functional-automation-test.agent.md`
   - "Before You Start" section includes:
     - ✅ `.github/contexts/project-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
-    - ✅ `.github/contexts/testing-standards.md`
+    - ✅ `.github/contexts/testing-context.md`
 
 - [x] `.github/agents/traceability-manager.agent.md`
-  - "Required Trace Chain" updated to show: CTX-* → Context Standards → BRD → ...
+  - "Required Trace Chain" updated to show: CTX-* → Context Documents → BRD → ...
   - "Required Checks" includes context artifacts and updates
   - Explanation of CTX-* and CTX-UPDATE-* IDs present
 
@@ -111,7 +111,7 @@ ms.date: 2026-10-07
 - [x] Generates `.github/contexts/project-context.md`
 - [x] Generates `.github/contexts/frontend-context.md`
 - [x] Generates `.github/contexts/backend-context.md`
-- [x] Generates `.github/contexts/testing-standards.md`
+- [x] Generates `.github/contexts/testing-context.md`
 - [x] Creates `requirement/Context_{ProjectName}.md`
 - [x] Updates `requirement/Traceability_Matrix.md`
 - [x] Includes validation checklist
@@ -144,21 +144,21 @@ ms.date: 2026-10-07
 - [x] Reads all three tech standards files
 - [x] Structures frontend tasks per standards
 - [x] Structures backend tasks per standards
-- [x] Creates test tasks per testing-standards
+- [x] Creates test tasks per testing-context
 - [x] Maps tasks to standards patterns
 
 ### Builder Integration
 
 - [x] Reads frontend-standards for implementation
 - [x] Reads backend-standards for implementation
-- [x] Uses testing-standards for test patterns
+- [x] Uses testing-context for test patterns
 - [x] Implements per project conventions
 
 ### Tester Integration
 
-- [x] Reads testing-standards for test design
+- [x] Reads testing-context for test design
 - [x] Creates tests matching project patterns
-- [x] Uses testing framework standards
+- [x] Uses testing-context.md guidance
 - [x] Applies approved fixture strategies
 
 ### Traceability Manager Integration
@@ -275,7 +275,7 @@ ms.date: 2026-10-07
   ├─ project-context.md (created by Context Builder)
   ├─ frontend-context.md (created by Context Builder)
   ├─ backend-context.md (created by Context Builder)
-  └─ testing-standards.md (created by Context Builder)
+  └─ testing-context.md (created by Context Builder)
 
 ✅ requirement/
   ├─ Context_{ProjectName}.md (created by Context Builder)
@@ -321,7 +321,7 @@ ms.date: 2026-10-07
    - Creates project-context.md with trace IDs
    - Creates frontend-context.md based on frontend tech
    - Creates backend-context.md based on backend tech
-   - Creates testing-standards.md based on testing tech
+   - Creates testing-context.md based on testing tech
    - Updates traceability matrix
 
 2. ✅ Created context-updater agent
@@ -333,7 +333,7 @@ ms.date: 2026-10-07
    - Specify: reads frontend/backend standards
    - Planner: reads all tech standards
    - Builder: reads all tech standards
-   - Tester: reads testing standards
+   - Tester: reads testing context
    - Traceability Manager: tracks context lifecycle
 
 4. ✅ Preserved existing flows
@@ -362,7 +362,7 @@ ls -la .github/CONTEXT_MANAGEMENT_*.md
 # Check for file references
 grep -r "frontend-context.md" .github/agents/
 grep -r "backend-context.md" .github/agents/
-grep -r "testing-standards.md" .github/agents/
+grep -r "testing-context.md" .github/agents/
 
 # Verify copilot-instructions updated
 grep -A 5 "Context Builder" .github/copilot-instructions.md
