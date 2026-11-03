@@ -112,7 +112,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - Creates unified project context with CTX-* trace IDs
 
 **Output files created:**
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
@@ -200,7 +200,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - Active file (press Enter)
 
 **Reads from:**
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
@@ -427,7 +427,7 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 - `output/{RUN_ID}/specify/spec.md` (initial documentation)
 - `output/{RUN_ID}/plan/frontend/components.md`
 - `output/{RUN_ID}/implement/frontend/` and `backend/` (final documentation)
-- `.github/contexts/project-context.md` and `domain-context.md`
+- `.github/contexts/business-context.md` and `domain-context.md`
 
 **Output:**
 - README, ARCHITECTURE, DEPLOYMENT, CONFIGURATION, SECURITY, COMPLIANCE, TROUBLESHOOTING, and FRONTEND-INTEGRATIONS documents as applicable
@@ -637,7 +637,7 @@ Every story must assess both frontend and backend. Implementation and unit-test 
 
 Context files in `.github/contexts/` are created by Context Builder and maintained by Context Updater:
 
-- **project-context.md** - Canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria
+- **business-context.md** - Canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria
 - **domain-context.md** - Supplemental industry/domain terminology and source references
 - **frontend-context.md** - Frontend/UI implementation and detailed design (screens, themes, fonts, styles)
 - **backend-context.md** - Backend implementation, APIs, data, integrations, and operational patterns (used by API Tester)

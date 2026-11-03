@@ -60,7 +60,18 @@ Flag:
 - Entries in optional `backend-apis.json` or `components.md` that are not reconciled with the specification.
 - Requirements without tests.
 - Compliance requirements without review evidence.
+- Applicable OWASP ASVS/MASVS requirements without source-versioned control IDs and traceable implementation, verification, and review evidence.
+- In-scope FSDM concepts without model/version identifiers and traceable requirement, mapping, implementation, migration, and verification evidence.
+- ISO 20022 requirements without traceable message-definition/profile versions and mapped specification, implementation, and test evidence.
 - Missing GitHub metadata when the repo is linked to GitHub.
+
+## Control and Decision Traceability
+- Trace material NFRs, architecture decisions, threat/control IDs, approved exceptions, data classifications, migration decisions, and operational readiness evidence alongside functional requirements.
+- Each control or exception record must include source/version, accountable owner, applicability, verification evidence, status, and approval/expiry where relevant.
+- Preserve lineage across renamed or superseded IDs. Do not silently delete, reuse, or relabel IDs; mark superseded artifacts and maintain forward/backward references.
+- Reconcile the matrix at stage boundaries and release readiness. Report orphaned controls, missing owners, stale approvals, and evidence that no longer matches the deployed version as explicit gaps.
+
+For ISO 20022 integrations, record the authoritative message definition, schema, and scheme/market-practice guideline versions in the requirement or specification artifacts. Trace each in-scope message mapping and validation rule through `FR-*`/`NFR-*`, `SPEC-*`, `TASK-*`, `CODE-*`, and the applicable API/integration test evidence.
 
 ## Data Protection
 Never include real customer PII, account numbers, card numbers, portfolio holdings, credentials, secrets, tokens, or production data in generated artifacts.

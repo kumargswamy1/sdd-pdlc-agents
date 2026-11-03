@@ -28,7 +28,7 @@ All existing agents (Specifier, Planner, Builder, Tester) now read from this uni
 - **Purpose:** Initialize comprehensive project context from scratch
 - **Input:** Business context, tech stack, compliance needs, stakeholders
 - **Output:** 
-  - `.github/contexts/project-context.md`
+  - `.github/contexts/business-context.md`
   - `.github/contexts/frontend-context.md`
   - `.github/contexts/backend-context.md`
   - `.github/contexts/testing-context.md`
@@ -247,7 +247,7 @@ Where CTX-* IDs are created by Context Builder and context files are managed by 
 │   └── [12 other agents]
 ├── copilot-instructions.md
 ├── instructions/
-│   ├── project-context.md
+│   ├── business-context.md
 │   └── bdd-standards.instructions.md
 └── rules/
     └── [various rule files]
@@ -271,7 +271,7 @@ Where CTX-* IDs are created by Context Builder and context files are managed by 
 ├── CONTEXT_MANAGEMENT_GUIDE.md                     ✅ NEW
 ├── CONTEXT_MANAGEMENT_QUICKSTART.md                ✅ NEW
 ├── instructions/
-│   ├── project-context.md                                  (created by Context Builder)
+│   ├── business-context.md                                  (created by Context Builder)
 │   ├── frontend-context.md                       (created by Context Builder)
 │   ├── backend-context.md                        (created by Context Builder)
 │   ├── testing-context.md                        (created by Context Builder)
@@ -296,8 +296,8 @@ requirement/
                           ↓
     ┌──────────────────────┼──────────────────────┐
     ↓                      ↓                      ↓
-.github/instructions/   requirement/          project-context.md
-├─ project-context.md         ├─ Context_*
+.github/instructions/   requirement/          business-context.md
+├─ business-context.md         ├─ Context_*
 ├─ frontend-stds      └─ Traceability_Matrix
 ├─ backend-stds
 └─ testing-stds
@@ -464,7 +464,7 @@ cat .github/contexts/backend-context.md
 cat .github/contexts/testing-context.md
 
 # Unified baseline
-cat .github/contexts/project-context.md
+cat .github/contexts/business-context.md
 ```
 
 ### Tracking Changes
@@ -505,7 +505,7 @@ cat requirement/Traceability_Matrix.md
 | copilot-instructions.md | Docs | ✅ UPDATED | Context as prerequisite |
 | CONTEXT_MANAGEMENT_GUIDE.md | Docs | ✅ NEW | Complete reference |
 | CONTEXT_MANAGEMENT_QUICKSTART.md | Docs | ✅ NEW | Step-by-step guide |
-| project-context.md | Output | Created by Context Builder | Tech baseline |
+| business-context.md | Output | Created by Context Builder | Tech baseline |
 | frontend-context.md | Output | Created by Context Builder | Frontend patterns |
 | backend-context.md | Output | Created by Context Builder | Backend patterns |
 | testing-context.md | Output | Created by Context Builder | Testing patterns |

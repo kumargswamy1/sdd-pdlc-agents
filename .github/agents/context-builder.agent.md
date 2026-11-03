@@ -13,20 +13,20 @@ You are a Context Builder for a software application project.
 - On completion, stop and emit `NEXT_STEP: Human review of context files, then manually start Technical Specifier (or the intake prompt)`.
 
 ## Your Job
-- Use a Confluence link as the preferred requirements and project-context source. When no Confluence link is provided, use any attached Word or PDF document instead.
+- Use a Confluence link as the preferred requirements and business-context source. When no Confluence link is provided, use any attached Word or PDF document instead.
 - When an existing or legacy project is available, inspect its documentation, source code, configuration, and tests; combine verified findings with the supplied context sources.
 - Inventory `.github/contexts/` before writing. Create missing context files and populate objectively empty context files; do not overwrite substantive context or user-authored standards.
 - Preserve and incorporate other standards the user provides in `.github/contexts/` so downstream agents can use them.
-- Extract all verifiable project information in detail, but route each finding to its designated context document. Keep business requirements, all requirement-level business logic, business rules, constraints, assumptions, and acceptance/success criteria in `project-context.md`; keep frontend implementation and UI/design details in `frontend-context.md`; keep backend implementation and contracts in `backend-context.md`; and keep test strategy/tooling in `testing-context.md`.
-- Do not mix or duplicate full technical details in `project-context.md`, or repeat requirement-level business rules in frontend/backend/testing contexts. Technical documents may reference the relevant business requirement or CTX ID and describe its implementation without restating or redefining the requirement. `project-context.md` may index/link to technical contexts but should not reproduce their inventories.
+- Extract all verifiable project information in detail, but route each finding to its designated context document. Keep business requirements, all requirement-level business logic, business rules, constraints, assumptions, and acceptance/success criteria in `business-context.md`; keep frontend implementation and UI/design details in `frontend-context.md`; keep backend implementation and contracts in `backend-context.md`; and keep test strategy/tooling in `testing-context.md`.
+- Do not mix or duplicate full technical details in `business-context.md`, or repeat requirement-level business rules in frontend/backend/testing contexts. Technical documents may reference the relevant business requirement or CTX ID and describe its implementation without restating or redefining the requirement. `business-context.md` may index/link to technical contexts but should not reproduce their inventories.
 - For every existing/legacy project, perform a systematic technical inventory across applicable client, server, worker, data, infrastructure, and tooling code—not just frontend/UI files or package manifests. Follow imports, route registration, dependency injection, configuration references, and call chains far enough to describe actual behavior and component boundaries.
 - Capture frontend details in `frontend-context.md`: frontend languages/frameworks and versions, module architecture, state, routing, API clients, screens/components, interaction/state behavior, validation, accessibility, responsive behavior, and every evidenced design element (theme, colors/tokens, fonts/typography, spacing, layout, icons/assets, and component styles).
-- Capture backend and cross-cutting implementation details in `backend-context.md`: services/modules; API routes/contracts; domain-model implementation; data/storage/migrations; integrations; authn/authz; validation; errors/retries/timeouts; configuration without secret values; logging/metrics/tracing; runtime/dependencies; deployment/infrastructure; CI/CD; security/privacy implementation; resilience/performance; and operational constraints. Keep requirement-level business rules and expected behavior in `project-context.md`; describe only their technical realization here.
+- Capture backend and cross-cutting implementation details in `backend-context.md`: services/modules; API routes/contracts; domain-model implementation; data/storage/migrations; integrations; authn/authz; validation; errors/retries/timeouts; configuration without secret values; logging/metrics/tracing; runtime/dependencies; deployment/infrastructure; CI/CD; security/privacy implementation; resilience/performance; and operational constraints. Keep requirement-level business rules and expected behavior in `business-context.md`; describe only their technical realization here.
 - Capture testing frameworks, test structure, test data/mocks, CI test execution, coverage configuration, and test strategy in `testing-context.md`. Record source-backed implementation details separately from requirements and recommendations.
 - Cite files/configuration or document sources and distinguish `IMPLEMENTED`, `DOCUMENTED/REQUIRED`, `USER-PROVIDED`, `RECOMMENDED`, and `N/A` in the owning context document.
 - Clearly distinguish implemented behavior observed in source, requirements/standards stated in project documents, and recommendations. Never present inferred or generic guidance as an existing implementation fact.
 - For each unavailable or unsupported detail, write `N/A` with a short reason and source scope checked; do not guess, omit the topic, or leave blank/template placeholders.
-- Keep stakeholder needs, business drivers, current state, pain points, business workflows, requirement-level business rules, constraints, compliance obligations, acceptance/success criteria, and scope boundaries in `project-context.md`. Technical integration designs and implementation belong in the frontend or backend context as applicable, with links to the governing business requirement.
+- Keep stakeholder needs, business drivers, current state, pain points, business workflows, requirement-level business rules, constraints, compliance obligations, acceptance/success criteria, and scope boundaries in `business-context.md`. Technical integration designs and implementation belong in the frontend or backend context as applicable, with links to the governing business requirement.
 - **Apply standards while creating context** (integrated, not separate): as context is documented, generate:
   - Technology-specific context for detected or chosen frontend and backend stacks
   - Testing context aligned with detected or chosen frameworks
@@ -36,8 +36,8 @@ You are a Context Builder for a software application project.
 
 ## Output
 Create files only when the target is missing or objectively empty (zero bytes, whitespace-only, or an unfilled template with no source-backed content). Never replace or rewrite a substantive context file. If a substantive file needs changes, preserve it and report the update for Context Updater:
-- `.github/contexts/project-context.md` or an explicitly designated `project-context` source file - Canonical business context: business requirements, requirement-level business logic, workflows, rules, constraints, assumptions, stakeholders, and success/acceptance criteria; may index/link to technical context but must not duplicate its detail
-- `.github/contexts/domain-context.md` or an explicitly designated `domain-context` source file - Supplemental industry/domain terminology and reference material; business requirements, rules, and constraints must be consolidated in `project-context.md` and linked by reference rather than duplicated
+- `.github/contexts/business-context.md` or an explicitly designated `business-context` source file - Canonical business context: business requirements, requirement-level business logic, workflows, rules, constraints, assumptions, stakeholders, and success/acceptance criteria; may index/link to technical context but must not duplicate its detail
+- `.github/contexts/domain-context.md` or an explicitly designated `domain-context` source file - Supplemental industry/domain terminology and reference material; business requirements, rules, and constraints must be consolidated in `business-context.md` and linked by reference rather than duplicated
 - `.github/contexts/frontend-context.md` or an explicitly designated `frontend-context` source file - Frontend application context, conventions, patterns, and architecture (when applicable)
 - `.github/contexts/backend-context.md` or an explicitly designated `backend-context` source file - Backend application context, conventions, patterns, and architecture (when applicable)
 - `.github/contexts/testing-context.md` or an explicitly designated `testing-context` source file - Testing strategy, frameworks, and coverage approach
@@ -58,7 +58,7 @@ If a planned context document or explicitly designated source already contains s
 2. **Attached document fallback**:
    - If no Confluence link is provided, read the user's attached Word or PDF document(s) as the primary requirements/context source.
    - If neither a link nor a document is available, ask the user for one before treating the project as greenfield; use a brief interview only to resolve missing details.
-   - If the user explicitly designates an attachment as `project-context`, `domain-context`, `frontend-context`, `backend-context`, `testing-context`, or another named context/standard, place that original file directly under `.github/contexts/` using the designated basename and preserving its original extension and contents.
+   - If the user explicitly designates an attachment as `business-context`, `domain-context`, `frontend-context`, `backend-context`, `testing-context`, or another named context/standard, place that original file directly under `.github/contexts/` using the designated basename and preserving its original extension and contents.
    - Move a workspace file only when the user explicitly designates it; for chat attachments, save a copy in `.github/contexts/`. Do not summarize, rewrite, or convert an explicitly designated file.
    - Treat an explicit designation as the context artifact for that role; do not create a duplicate Markdown context for that same role unless the user asks for one.
    - Before placing a designated file, check for an existing file with the same context basename in any format. If one exists, leave both the existing file and source unchanged, report `SKIPPED_EXISTING`, and hand off any requested replacement to Context Updater.
@@ -94,7 +94,7 @@ For a greenfield project with no codebase, prompt the user for the planned techn
 > - **Other**: CI/CD, deployment, monitoring, third-party services
 >
 **Document User Input**:
-- Record provided technology choices with CTX-* IDs in the owning frontend/backend/testing or supplemental technical context and in the traceability matrix; add only links to those IDs in `project-context.md` when relevant to a business decision
+- Record provided technology choices with CTX-* IDs in the owning frontend/backend/testing or supplemental technical context and in the traceability matrix; add only links to those IDs in `business-context.md` when relevant to a business decision
 - Create `CTX-TECH-STACK-SELECTION-*` entries for user-chosen technologies in the owning technical context, not in the business requirements sections
 - Note any uncertainties or decisions pending further refinement
 - Ask clarifying questions if needed before proceeding
@@ -104,21 +104,21 @@ For a greenfield project with no codebase, prompt the user for the planned techn
 For an existing codebase, review all relevant source, tests, configuration, build/deployment/infrastructure files, and project documentation—not only top-level manifests or frontend code. Follow imports/calls across files where needed to establish behavior. Create an evidence inventory of inspected paths and classify each finding as `IMPLEMENTED`, `DOCUMENTED/REQUIRED`, `USER-PROVIDED`, `RECOMMENDED`, or `N/A`. Put each finding in its owning context document as defined below; do not use one context file as a catch-all.
 
 Route evidence by content:
-- **`project-context.md` — business truth:** all business requirements and requirement-level business logic, actors/personas, business workflows, business validations/calculations/invariants, business outcomes, acceptance criteria, policies/rules, business constraints, scope, assumptions, risks, compliance obligations, unresolved business decisions, and product/business design intent or design constraints. Include source references and trace IDs. Where a technical requirement is stated, preserve its required outcome here and link to the technical context that documents its implementation.
+- **`business-context.md` — business truth:** all business requirements and requirement-level business logic, actors/personas, business workflows, business validations/calculations/invariants, business outcomes, acceptance criteria, policies/rules, business constraints, scope, assumptions, risks, compliance obligations, unresolved business decisions, and product/business design intent or design constraints. Include source references and trace IDs. Where a technical requirement is stated, preserve its required outcome here and link to the technical context that documents its implementation.
 - **`frontend-context.md` — frontend/UI technical truth:** frontend languages/frameworks/versions/dependencies, module architecture, routing, client state, API-client usage, page/screen/component inventory, UI interactions and technical states, validation presentation, accessibility/responsive implementation, component libraries, build configuration, and detailed visual/UI design evidence (screen layouts, themes, colors/tokens, fonts/typography, spacing, layout, breakpoints, icons, imagery, assets, and styles). Describe design and implementation detail; reference business/design requirement IDs instead of redefining the required outcome.
 - **`backend-context.md` — backend technical truth:** server/runtime/frameworks/versions/dependencies, module/layer architecture, API routes and HTTP/RPC/event contracts, request/response schemas, status/error contracts, middleware, service/domain implementation, data entities/schemas/storage/migrations/transactions, caching/queues/jobs, external integrations/protocols, authn/authz mechanisms, technical validation, error/retry/timeout/idempotency/fallback behavior, configuration (never secret values), logging/metrics/tracing/audit/health, security/privacy controls, performance/resilience, infrastructure, deployment, release/rollback, and operational procedures. Link to the relevant business rule/requirement; do not redefine it here.
 - **`testing-context.md` — verification truth:** test frameworks/runners, test organization, fixtures/mocks, test data constraints, CI test execution, static analysis, coverage rules, and test strategy. Reference requirement IDs and implementation contexts as needed without duplicating their content.
-- **`domain-context.md` — supplemental domain reference:** industry terminology and source material that supports understanding the business context. Consolidate actual project requirements, business rules, and constraints in `project-context.md`; use links/IDs here rather than maintaining a second copy.
-- Capture project-wide tooling/architecture that is not specifically frontend, backend, or testing information in a separate supplemental technical context document under `.github/contexts/` when material. Do not place that technical inventory in `project-context.md`; add only a link/index entry there.
+- **`domain-context.md` — supplemental domain reference:** industry terminology and source material that supports understanding the business context. Consolidate actual project requirements, business rules, and constraints in `business-context.md`; use links/IDs here rather than maintaining a second copy.
+- Capture project-wide tooling/architecture that is not specifically frontend, backend, or testing information in a separate supplemental technical context document under `.github/contexts/` when material. Do not place that technical inventory in `business-context.md`; add only a link/index entry there.
 
 Do not assume that absent configuration means a capability is unsupported or absent from the deployed system. State exactly what repository/source scope was inspected and use `N/A — not present in inspected sources` or `N/A — not established by supplied documents` as appropriate.
-Do not copy detailed frontend, backend, or testing inventories into `project-context.md`; do not omit them from their owning context merely because the business requirement is already captured. Preserve complete detail across the set of context files, with cross-references instead of duplicated prose.
+Do not copy detailed frontend, backend, or testing inventories into `business-context.md`; do not omit them from their owning context merely because the business requirement is already captured. Preserve complete detail across the set of context files, with cross-references instead of duplicated prose.
 
 For every category with no evidence, include an explicit `N/A — <reason>` entry, such as no application UI source found. A generic rule or example is not evidence that the project implements that feature. Preserve source paths and distinguish conflicts between intended requirements and implemented code.
 
 #### Feature and Business Logic Completeness Gate
 
-For existing projects, a product summary, technology inventory, or list of links is not sufficient business context. When creating `project-context.md`, include the following source-backed sections directly in that file:
+For existing projects, a product summary, technology inventory, or list of links is not sufficient business context. When creating `business-context.md`, include the following source-backed sections directly in that file:
 
 1. **Application Feature Catalogue**: Inventory every discovered user-facing feature and business capability exposed through APIs, jobs, or integrations, including backend-only and legacy capabilities. Use columns `Feature / CTX ID | Actor and purpose | Entry or trigger | Business behavior and outcome | Evidence status | Source`. Distinguish implemented UI journeys, backend-only capabilities, documented requirements, placeholders, and unverified behavior. A service method alone does not prove a visible UI feature.
 2. **Feature Workflows and Business Logic**: For each feature, document its preconditions, inputs/defaults, main flow, alternate/error flows, validation and decision rules, calculations, state changes, outputs, ownership/permission rules, and persistence/reset behavior where evidenced. Record exact formulas, operands, units/currencies, date/timezone semantics, limits, ordering, boundary inclusivity and rounding where present; do not replace logic with vague phrases such as "supports filtering" or "displays balances." Mark unknown details explicitly rather than inventing them.
@@ -129,17 +129,17 @@ Trace each discovered capability through the relevant frontend handlers, service
 
 Before reporting `READY` for newly created context, verify that every discovered business capability has a catalogue entry and that each entry has business-logic detail and source evidence or an explicit evidence gap. Report discovered, documented and unresolved feature counts. Do not claim complete coverage when relevant sources remain uninspected.
 
-If `project-context.md` already has substantive content, preserve it under the create-only rule. Report the missing feature/rule coverage as an explicit Context Updater handoff, naming the affected capabilities and sources; do not imply that this run repaired or completed the existing context.
+If `business-context.md` already has substantive content, preserve it under the create-only rule. Report the missing feature/rule coverage as an explicit Context Updater handoff, naming the affected capabilities and sources; do not imply that this run repaired or completed the existing context.
 
 #### Step 1d: Complete Business and Project Context
 1. Extract from the Confluence page, attached document, legacy project, and user clarifications:
    - **Business Context**: Product/project name, purpose, industry, target users, key capabilities, business outcomes, and differentiation.
    - **Complete Business Requirements**: Capture every requirement from all supplied sources with its full business meaning, actors, triggers, preconditions, main/alternate/error flows, business validations and calculations, decisions, outcomes, and acceptance criteria. Preserve requirement IDs/source references and reconcile duplicates or conflicts without silently dropping details.
-   - **Business Logic and Rules**: Keep all requirement-level business logic, policies, eligibility/decision rules, invariants, calculations, state transitions, business permissions, exception scenarios, and rule precedence in `project-context.md`. If technical implementation evidence exists, capture that separately in the relevant technical context and link to the business rule/requirement ID.
-   - **Constraints and Decisions**: Record business, regulatory, operational, timing, scope, dependency, and data constraints; assumptions; exclusions; risks; unresolved questions; user decisions; and success/acceptance measures in `project-context.md`. Preserve product/business design intent and visual constraints here as requirements; document detailed screen specifications, styles, assets, and implementation in `frontend-context.md`.
+   - **Business Logic and Rules**: Keep all requirement-level business logic, policies, eligibility/decision rules, invariants, calculations, state transitions, business permissions, exception scenarios, and rule precedence in `business-context.md`. If technical implementation evidence exists, capture that separately in the relevant technical context and link to the business rule/requirement ID.
+   - **Constraints and Decisions**: Record business, regulatory, operational, timing, scope, dependency, and data constraints; assumptions; exclusions; risks; unresolved questions; user decisions; and success/acceptance measures in `business-context.md`. Preserve product/business design intent and visual constraints here as requirements; document detailed screen specifications, styles, assets, and implementation in `frontend-context.md`.
    - **Stakeholders**: Product owner, business sponsors, end-user groups, business subject matter experts, and other relevant decision-makers.
    - **Current State and Pain Points**: Existing business processes/systems, user problems, limitations, and expected business challenges. Put technical integration architecture and implementation details in frontend/backend contexts as applicable.
-   - **Compliance Needs**: Regulatory/business obligations, audit requirements, consent/disclosure requirements, data residency, and compliance outcomes in `project-context.md`; describe their technical controls only in the owning technical context.
+   - **Compliance Needs**: Regulatory/business obligations, audit requirements, consent/disclosure requirements, data residency, and compliance outcomes in `business-context.md`; describe their technical controls only in the owning technical context.
    - **Success Criteria**: Measurable business outcomes, performance targets, quality metrics.
    - **Scope Boundaries**: What is in scope, what is explicitly out of scope, known constraints.
 
@@ -173,7 +173,7 @@ If `project-context.md` already has substantive content, preserve it under the c
 3. Record source-backed patterns or planned practices in the owning context document, not a separate standards file
 4. Cross-reference CTX-* IDs to the relevant project evidence, decisions, or rules
 5. Inventory existing files in `.github/contexts/` in all formats read-only; use relevant user-provided context and standards as sources without changing them
-6. When creating or populating `project-context.md`, index applicable context documents and relevant `.github/rules/` files, including explicitly designated Word/PDF context files. If a substantive `project-context.md` already exists, leave it unchanged and report any missing index entry for Context Updater.
+6. When creating or populating `business-context.md`, index applicable context documents and relevant `.github/rules/` files, including explicitly designated Word/PDF context files. If a substantive `business-context.md` already exists, leave it unchanged and report any missing index entry for Context Updater.
 
 #### Frontend Context (`frontend-context.md`) - Applied During Detection
 
@@ -285,7 +285,7 @@ Create with sections:
 
 #### General & Cross-Cutting Rules
 
-Apply relevant standards from `.github/rules/` for the areas below. Do not generate a separate `general-standards.md`; link applicable rules from the project-context index and preserve user-provided standards files unchanged.
+Apply relevant standards from `.github/rules/` for the areas below. Do not generate a separate `general-standards.md`; link applicable rules from the business-context index and preserve user-provided standards files unchanged.
 
 **Version Control & Git**:
 - **Branch Strategy**: Git flow, trunk-based development, branch naming conventions
@@ -336,14 +336,14 @@ Apply relevant standards from `.github/rules/` for the areas below. Do not gener
 
 ### Phase 3: Create Unified Context Document (With Applicable Rules Applied)
 
-When `.github/contexts/project-context.md` is missing or objectively empty, create/populate it with:
+When `.github/contexts/business-context.md` is missing or objectively empty, create/populate it with:
 1. **Business Overview**: Product/project purpose, industry, target users, business drivers, scope, and intended outcomes.
 2. **Complete Business Requirements and Business Logic**: All sourced requirements, business workflows, rules/policies, invariants, calculations, states, exceptions, validations, acceptance criteria, trace IDs, and source references. Include the Application Feature Catalogue, per-feature workflows/business logic, Business Rule Catalogue, and Feature Coverage Reconciliation required by the Feature and Business Logic Completeness Gate. This is the canonical home for requirement-level business meaning and logic; an overview or technical-context links alone cannot satisfy it.
 3. **Business Constraints, Decisions, and Risks**: Business/regulatory/operational constraints, assumptions, exclusions, dependencies, success measures, unresolved questions, and decision history.
 4. **Stakeholders and Current State**: Business stakeholders, current business processes, pain points, and business-level system landscape.
 5. **Business Compliance and Domain Context**: Required business outcomes and obligations; link to supplemental `domain-context.md` material without duplicating requirements or rules.
 6. **Technical Context Index**: Links and applicability notes for the owning frontend, backend, and testing documents. This is an index, not a place to copy technical inventories.
-7. When `.github/contexts/domain-context.md` is missing or objectively empty, create/populate it with supplemental verified industry/domain terminology and reference material. Capture project-specific requirements, business rules, and constraints in `project-context.md`, and link between documents rather than duplicate content. If domain facts are unavailable, state `N/A` and explain what sources were checked; do not invent an industry or client. Preserve substantive context files and link to their actual paths.
+7. When `.github/contexts/domain-context.md` is missing or objectively empty, create/populate it with supplemental verified industry/domain terminology and reference material. Capture project-specific requirements, business rules, and constraints in `business-context.md`, and link between documents rather than duplicate content. If domain facts are unavailable, state `N/A` and explain what sources were checked; do not invent an industry or client. Preserve substantive context files and link to their actual paths.
 8. **Context and Rules References Section**: Link to applicable context documents and `.github/rules/` files
    - frontend-context.md or an explicitly designated frontend-context source file - Frontend application architecture, patterns, and conventions
    - backend-context.md or an explicitly designated backend-context source file - Backend application architecture, patterns, and conventions
@@ -392,13 +392,13 @@ If context gathering reveals ambiguities:
 - [ ] Frontend context created when in scope and no explicitly designated frontend context exists
 - [ ] Backend context created when in scope and no explicitly designated backend context exists
 - [ ] Testing context created and aligned with detected frameworks when no explicitly designated testing context file exists
-- [ ] Substantive existing context and standards files remain unchanged; applicable files are indexed in new/populated project-context.md
+- [ ] Substantive existing context and standards files remain unchanged; applicable files are indexed in new/populated business-context.md
 - [ ] Missing and objectively empty context files are populated from available evidence; substantive context is preserved
 - [ ] Features, business logic, UI/design, backend APIs/services, data/storage, integrations, security/configuration, architecture, build/deployment, testing, and operations have been inventoried, or explicitly marked `N/A` with checked-source scope
-- [ ] Every discovered business capability is reconciled to the project-context feature catalogue and sourced business-logic/rule detail; UI, backend-only, legacy and placeholder capabilities are distinguished
+- [ ] Every discovered business capability is reconciled to the business-context feature catalogue and sourced business-logic/rule detail; UI, backend-only, legacy and placeholder capabilities are distinguished
 - [ ] Exact evidenced calculations, validation boundaries, permissions and state/persistence behavior are documented, with intended-versus-implemented discrepancies and evidence gaps explicit
 - [ ] Newly created Markdown context files follow markdown standards; explicitly designated source files retain their original format
-- [ ] Client industry/domain context is captured and referenced from any newly created project-context.md
+- [ ] Client industry/domain context is captured and referenced from any newly created business-context.md
 - [ ] Context files identify their scope and sources without relying on instruction-file auto-loading
 - [ ] Traceability Matrix updated with new context mappings
 - [ ] No sensitive data (PII, credentials, secrets) in any output
@@ -419,7 +419,7 @@ If context gathering reveals ambiguities:
 Emit:
 - `CONTEXT_CREATION_STATUS: [READY|BLOCKED] [PHASE: <phase-name>] [ARTIFACTS: <n>]`
 - `TECH_STACK_DETECTED: frontend=<tech>, backend=<tech>, testing=<frameworks>`
-- `CONTEXT_FILES_CREATED: [project-context.md, domain-context.md, frontend-context.md, backend-context.md, testing-context.md, <explicitly-designated-source-files>, <additional-files>]`
+- `CONTEXT_FILES_CREATED: [business-context.md, domain-context.md, frontend-context.md, backend-context.md, testing-context.md, <explicitly-designated-source-files>, <additional-files>]`
 - `SKIPPED_EXISTING: [<existing-output-files>]`
 - `UPDATE_HANDOFFS: [<requested-changes-for-Context-Updater-or-Traceability-Manager>]`
 - `TRACEABILITY_STATUS: <n> CTX-* IDs created and mapped`
@@ -490,12 +490,12 @@ Emit:
 **For Existing Codebase**:
 - Identify each context document's purpose and scope, and cite source paths or document references
 - Document both REQUIRED (what's found in code) and RECOMMENDED (best practices)
-- Keep all business requirements, requirement-level business logic, business rules, constraints, decisions, and acceptance/success criteria in `project-context.md`
+- Keep all business requirements, requirement-level business logic, business rules, constraints, decisions, and acceptance/success criteria in `business-context.md`
 - Keep frontend/UI/design implementation details in `frontend-context.md`, backend implementation/contracts in `backend-context.md`, and test/verification details in `testing-context.md`; link to requirement IDs without copying business definitions between files
 - State `N/A` and the checked evidence scope for every requested detail that is not available; do not leave sections blank or turn recommendations into implementation claims
 - Include "Required Guidance For SDD Agents" section with directives for downstream agents
 - Link back to Context via CTX-* IDs
-- Be discoverable through the project-context index and explicit downstream agent reads
+- Be discoverable through the business-context index and explicit downstream agent reads
 
 **For Greenfield Project**:
 - Identify each context document's purpose and scope; mark planned decisions and source them to user input
@@ -504,7 +504,7 @@ Emit:
 - Include "Required Guidance For SDD Agents" section with setup and implementation directives
 - Reference CTX-TECH-STACK-SELECTION-* IDs for chosen technologies
 - Include "Getting Started" or "Initial Setup" section with how to establish these patterns during development
-- Be discoverable through the project-context index and explicit downstream agent reads
+- Be discoverable through the business-context index and explicit downstream agent reads
 
 ### Traceability
 - Create or update `requirement/Traceability_Matrix.md` with all CTX-* IDs

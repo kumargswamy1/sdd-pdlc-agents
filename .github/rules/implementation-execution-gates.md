@@ -14,8 +14,14 @@ description: Execution gates and output schema for Implementation Builder runs.
 - Screen-level labels/text match requirement/spec wording unless explicitly inherited.
 - Requirement-logic behavior (conditions, option sets, editability, transitions, prefixes) is preserved exactly as documented in spec.
 - API impact decision is enforced (`NO_API_CHANGE`, `EXISTING_API_CHANGE`, `NEW_API_REQUIRED`) with required contract/client updates.
+- When ISO 20022 is in scope, implementation evidence identifies the exact schema and market profile validated, confirms requirement-to-element mappings, and includes execution results for applicable message-validation and lifecycle tests.
 - Security/privacy/audit controls from in-scope tasks are implemented and tested.
+- For approved OWASP controls in scope, record the adopted source/version, control IDs, verification performed, results, and any approved exclusions. Scanner output alone is not evidence that a control passed.
+- For FSDM mappings in scope, provide evidence that implementation/schema mappings match the approved model version and semantics; include migration, lineage, data-quality, and compatibility test results where those controls are changed.
 - No plaintext PII, credentials, account numbers, holdings, tokens, or secrets in code/logs/tests/artifacts.
+- Confirm implementation and deployment configuration match the approved design, data classification, trust boundaries, API/data contracts, and change scope. Record deviations and obtain approval before claiming completion.
+- Require dependency/license/security scan disposition, secret scanning, and a software bill of materials (SBOM) or documented equivalent for production releases where supported by the delivery platform.
+- For production-impacting changes, require migration/recovery strategy, operational owner, health signals, alerts, support/runbook changes, and rollback or forward-recovery evidence before a successful handoff.
 
 ## Required Evidence Structure
 When `UI In Scope: YES`, required outputs under `output/{RUN_ID}/implement/design/`:
@@ -56,6 +62,7 @@ Use one row per surface, with `PASS`, `FAIL`, `BLOCKED`, or `NOT_APPLICABLE` sta
 - Using an existing API or screen unchanged does not make that surface's unit tests applicable. Any actual change makes the surface `REQUIRED`; incomplete implementation, missing tasks, or unclear/conflicting scope cannot justify an exemption. These exemptions do not remove separately required API, integration, or functional testing.
 - After implementing production code, write or update and execute unit tests for every in-scope frontend and backend surface before completing this stage.
 - Each required surface must independently meet an 80% coverage gate for lines, statements, branches, and functions where supported by its native tool. Flutter requires executable-line coverage. Apply the same 80% gate to all layers, including validation; measured coverage may exceed it.
+- All required tests must pass. Code coverage is a separate metric and gate; never describe coverage percentage as a test pass rate.
 - Use the approved project production-source scope, including untested files; report the scope explicitly. Do not substitute a narrow selected-file report or combined frontend/backend average for surface totals.
 - Configure the native runner's coverage thresholds when supported and verify the measured report against every required metric. Do not lower thresholds, add coverage exclusions to make the run pass, or replace unit coverage with API/integration/end-to-end coverage.
 - Any failed unit test or required metric below threshold blocks completion. Missing tests/reports, an unexecuted suite, an unexplained skipped required test, or an execution/tooling failure also blocks completion with an explicit unblock action.

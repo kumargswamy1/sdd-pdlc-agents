@@ -107,7 +107,7 @@ See `.github/contexts/testing-context.md` for complete unit testing patterns and
 
 ## Before You Start
 Read and apply from project-specific files:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)

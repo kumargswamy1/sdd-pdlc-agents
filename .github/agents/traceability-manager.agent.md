@@ -41,7 +41,7 @@ Where:
 
 ## Before You Start
 Read:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md` (client industry/domain context and related CTX-* evidence)
 - Inspect `.github/contexts/` for additional context files relevant to traceability; include their evidence and CTX-* mappings where applicable.
 - `.github/rules/traceability-standards.md`

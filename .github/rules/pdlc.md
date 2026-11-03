@@ -40,6 +40,14 @@ After implementation, humans start API Tester and Functional Automation Test for
 - Review findings are resolved or explicitly accepted.
 - Documentation reflects implemented behavior.
 
+## Enterprise Control Governance
+- Every control must have a clear scope, accountable owner, evidence artifact, and verification point. Stage agents implement or assess controls; the named human/control owner approves policy decisions and accepted risk.
+- Apply controls according to system criticality, data sensitivity, external exposure, regulatory scope, and change impact. Record why a control is applicable or not applicable; do not turn example standards into universal mandates.
+- Standards are hierarchical: laws/regulatory obligations and approved enterprise policies take precedence, followed by approved requirements/architecture decisions, then project recommendations. Surface conflicts and block affected decisions until the accountable owner resolves them.
+- A standards exception requires the affected rule/control ID, scope, rationale, risk, compensating controls, accountable approver, approval date, expiry/review date, and trace to implementation and monitoring evidence. Agents must not grant or imply exception approval.
+- Preserve separation of duties for high-impact financial, security, access, production, and data changes. The same actor must not approve their own restricted action where policy requires independent approval.
+- Maintain audit-ready evidence for material decisions and stage gates. Evidence must be attributable, time-bound, reproducible where feasible, and free of secrets or real customer data.
+
 ## Stop Conditions
 - Critical requirement gaps.
 - Missing compliance-critical information.

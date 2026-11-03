@@ -14,11 +14,18 @@ description: Execution gates and output schema for Implementation Planner runs.
 - `tasks.md` includes verification method and dependency metadata (`BLOCKED_BY`) for every task.
 - `tasks.md` uses a deterministic task table schema with at least: `TASK ID`, `Description`, `Trace (SPEC/FR/NFR)`, `BLOCKED_BY`, and `Verification`.
 - Security/privacy/compliance tasks are present only when required by source spec and requirements.
+- When the spec includes approved OWASP security controls, map each applicable control to implementation and verification tasks with the source version and control ID; do not create scope solely from an unassessed Top 10 category.
+- When the spec includes FSDM mappings, plan tasks for changed concept mappings, transformations, schema/data migrations, lineage or quality controls, and compatibility tests as applicable. Preserve explicit mapping status and owner decisions.
 - API impact tasks are present when spec declares `EXISTING_API_CHANGE` or `NEW_API_REQUIRED`.
+- When the spec includes ISO 20022 messages, tasks cover approved message mapping, schema/profile validation, version compatibility, secure parsing, and required positive, negative, duplicate/retry, and lifecycle tests as applicable.
 - Every row in spec `Requirement-to-SPEC Logic Coverage` is represented by one or more planned tasks, or explicitly marked as inherited existing behavior with verification evidence.
 - No requirement-logic rule from spec is dropped, generalized, or converted into a weaker statement during planning.
 - Assess both frontend and backend against approved story scope. Carry spec's independent change declarations and unit-test applicability into plan.md/tasks.md with evidence and trace references. Plan implementation/unit tasks only for changed surfaces; use an 80% coverage gate per required surface and supported metric. Missing work or ambiguous scope is a blocker, not `NOT_APPLICABLE`.
 - Document reused unchanged APIs/screens and required integration/functional verification without inventing implementation or unit-test tasks for them.
+- Include accountable owner, acceptance evidence, dependencies, risk/impact, and completion criteria for every delivery task. Make cross-team, vendor, data-owner, security, operations, and regulatory dependencies explicit.
+- Plan architecture decisions, threat/privacy reviews, data migration/backfill, observability, runbook, release, rollback, and support readiness tasks when the approved scope changes those areas.
+- Record risk-ranked assumptions, decisions, exceptions, and unresolved dependencies with owner and due date. A missing owner or unresolved high-impact decision blocks dependent tasks; do not encode it as an unapproved assumption.
+- Include contract compatibility and consumer-impact analysis for API, event, FSDM, database, and ISO 20022 message changes where applicable.
 
 ## Required Plan Structure
 `plan.md` MUST include `## Requirement Logic To Task Coverage` with at least:

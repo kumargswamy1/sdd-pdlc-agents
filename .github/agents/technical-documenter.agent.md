@@ -31,7 +31,7 @@ You are a Technical Writer for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md` (client industry/domain and domain terminology)
 - Inspect `.github/contexts/` for additional context files relevant to the documentation task; read them in their original format when applicable.
 - Discover and read frontend technology standards from project instructions

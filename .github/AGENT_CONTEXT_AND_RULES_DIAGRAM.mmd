@@ -1,0 +1,136 @@
+flowchart LR
+    H([Human starts stage])
+
+    subgraph Owners[Context ownership]
+        CB[Context Builder<br/>creates eligible canonical contexts]
+        CU[Context Updater<br/>updates existing contexts]
+    end
+
+    subgraph WorkflowRoles[Documented workflow roles, not standalone agents]
+        RI[Requirement Intake Consolidator<br/>invoked by intake prompts]
+        USG[User Story Generator<br/>no local agent or prompt definition found]
+    end
+
+    RD[Requirement artifacts<br/>context / BRD / requirements / gaps / traceability]
+    US[User story artifacts<br/>US-*]
+
+    subgraph Contexts[Context library assumed available after Context Builder]
+        PC[business-context.md<br/>business truth]
+        DC[domain-context.md<br/>industry references]
+        FC[frontend-context.md<br/>UI and frontend]
+        BC[backend-context.md<br/>services and APIs]
+        TC[testing-context.md<br/>test strategy and tooling]
+        ACX[Additional user contexts<br/>Markdown / Word / PDF]
+    end
+
+    subgraph Agents[Downstream consumers: 10 of 12 runnable agent definitions]
+        SI[Technical Specifier]
+        PL[Implementation Planner]
+        IM[Implementation Builder]
+        AP[API Tester]
+        FT[Functional Automation Test]
+        RV[Compliance Reviewer]
+        TD[Technical Documenter]
+        TR[Traceability Manager]
+        FG[Figma Extractor]
+        QA[QA Test Case Generator]
+    end
+
+    subgraph Rules[Centralized rules]
+        GL[Global: copilot-instructions.md<br/>ai-agent-safety.md / pdlc.md]
+        REQ[requirement-standards.md<br/>business and BIAN vocabulary]
+        ARC[architectural-standards.md<br/>architecture / API / FSDM / ISO 20022]
+        SEC[security-quality-standards.md<br/>security / OWASP / compliance]
+        GATE[Stage gates<br/>spec / plan / implement]
+        TRACE[traceability-standards.md]
+        OTH[Scope-specific rules<br/>environment / versioning / MCP / Figma / QA]
+    end
+
+    H --> CB
+    H --> CU
+    H --> RI
+    H --> USG
+    RI -->|intake prompts create| RD
+    RD -->|human review and intake traceability gate| TR
+    TR -->|after human approval| SI
+    USG -->|workflow role creates| US
+    US -->|human handoff| SI
+    CB -->|creates or populates| PC
+    CB --> DC
+    CB --> FC
+    CB --> BC
+    CB --> TC
+    CU -->|updates, never creates missing canonical files| PC
+    CU --> DC
+    CU --> FC
+    CU --> BC
+    CU --> TC
+
+    PC --> SI
+    DC --> SI
+    FC --> SI
+    BC --> SI
+    TC --> SI
+    PC --> PL
+    DC --> PL
+    FC --> PL
+    BC --> PL
+    TC --> PL
+    PC --> IM
+    DC --> IM
+    FC --> IM
+    BC --> IM
+    TC --> IM
+    PC --> AP
+    DC --> AP
+    BC --> AP
+    TC --> AP
+    PC --> FT
+    DC --> FT
+    FC --> FT
+    BC --> FT
+    TC --> FT
+    PC --> RV
+    DC --> RV
+    PC --> TD
+    DC --> TD
+    FC --> TD
+    BC --> TD
+    TC --> TD
+    PC --> TR
+    DC --> TR
+    PC --> FG
+    DC --> FG
+    FC --> FG
+    PC --> QA
+    ACX --> SI
+    ACX --> PL
+    ACX --> IM
+    ACX --> RV
+
+    CB -. applies .github/rules .-> REQ
+    CB -.-> ARC
+    CB -.-> SEC
+    SI -.-> REQ
+    SI -.-> ARC
+    SI -.-> SEC
+    SI -.-> GATE
+    PL -.-> ARC
+    PL -.-> SEC
+    PL -.-> GATE
+    IM -.-> ARC
+    IM -.-> SEC
+    IM -.-> GATE
+    AP -.-> SEC
+    AP -.-> OTH
+    FT -. inherits global rules .-> GL
+    RV -.-> SEC
+    RV -.-> ARC
+    RV -.-> TRACE
+    TD -.-> ARC
+    TD -.-> SEC
+    TR -.-> TRACE
+    FG -. Figma workflow when applicable .-> OTH
+    QA -. QA-specific rules and template .-> OTH
+    CU -.-> TRACE
+    H -. all stages inherit .-> GL

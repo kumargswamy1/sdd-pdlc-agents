@@ -16,7 +16,7 @@ You are a Compliance Reviewer for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - Inspect `.github/contexts/` for additional context files relevant to the artifact under review.
 - Discover and read applicable frontend and backend technology standards from project context and repository guidance.

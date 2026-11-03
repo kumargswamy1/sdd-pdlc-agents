@@ -35,15 +35,20 @@ Before writing spec content, determine change type using mandatory evidence inpu
 Determine change scope from requirements, trace history, and the implementation footprint, not merely from the presence of a screen or API. Backend internal changes may be required without an API contract change; frontend service/state changes may be required without a new screen.
 
 ## Validation Checkpoints
+- Record requirement, business owner, architecture/data/security owners where applicable, and the decision/approval sources used to define scope.
 - All `FR-*` and `NFR-*` are mapped to `SPEC-*`.
 - All screens in Figma are accounted for or explicitly excluded with reason.
 - No gaps in requirements before speccing; flag and request clarification if found.
 - No invented financial, regulatory, or security requirements; only apply what's in source requirements.
+- When application security is in scope, identify the adopted OWASP source/version and map approved security requirements to applicable version-qualified controls and planned verification. Treat OWASP Top 10 resources as threat-discovery guidance, not standalone requirements or conformance evidence.
+- When an adopted FSDM is in scope, spec MUST identify its owner, source, edition/version, modeling layer, and mappings for changed data concepts. Document definition, stable identifier, attributes, relationships/cardinality, lifecycle/effective time, source-of-truth ownership, lineage, validation, and any extension or unmapped item; do not infer semantics.
 - Do not assume UI, business-logic, API, status-transition, field-rule, or integration behavior that is not evidenced by requirement text, trace history, or implementation footprint.
 - If required behavior cannot be evidenced, mark it `BLOCKED` and request clarification instead of inferring.
 - Figma MCP inspection evidence is captured when Figma artifacts are available (root node type, root node ID, child count, and effective-vs-excluded node decision log); otherwise the design evidence source and failure reason are recorded.
 - API impact assessment is explicit: NO_API_CHANGE, EXISTING_API_CHANGE, or NEW_API_REQUIRED.
 - For EXISTING_API_CHANGE or NEW_API_REQUIRED, spec MUST define endpoint, method, request/response delta, error behavior, and versioning impact.
+- For production-impacting or regulated changes, spec MUST define applicable trust boundaries, data classification/flows, authorization policy, audit evidence, failure/degraded behavior, operational SLOs, dependencies, migration/recovery approach, and owner-approved exceptions where relevant.
+- When ISO 20022 messages are in scope, spec MUST record the message identifier/version, scheme or market-practice guideline/version, authoritative source, direction, and a requirement-to-message-element mapping. Document cardinality, code sets, transformations, validation/rejection behavior, and lifecycle outcomes; do not infer unspecified message semantics.
 - Every business-rule statement in the source requirement is mapped to at least one `SPEC-*` item, or explicitly marked as inherited behavior with rationale.
 - User story intent, preconditions, triggers, status transitions, field editability, option constraints, and exceptional-path rules are all explicitly covered in `spec.md`.
 
@@ -57,6 +62,10 @@ Determine change scope from requirements, trace history, and the implementation 
 - Status-transition matrix (source status, condition, target status).
 - Exceptional-case behavior.
 - API change assessment (impact type, contract delta, backward compatibility).
+- `## Architecture and Operational Impact` when architecture, integration, data, availability, or production operations change, identifying affected components, dependencies, owners, decisions, failure modes, and rollout/recovery constraints.
+- `## Security Verification Mapping` when security requirements are in scope, with columns for requirement/reference, OWASP source/version/control ID, threat or control objective, verification method, and expected evidence.
+- `## FSDM Data Mapping` when an adopted FSDM is in scope, with columns for requirement/reference, model/version, concept and stable ID, mapped entity/attribute, definition, relationship/cardinality, source/owner, mapping status, and verification.
+- `## ISO 20022 Message Mapping` when ISO 20022 is in scope, with columns for requirement/reference, message/version/profile, element path, direction, cardinality/code set, mapping/validation, and rejection or lifecycle outcome.
 - `## Unit Test Applicability`
 
 `Unit Test Applicability` MUST contain one row each for frontend and backend:
@@ -65,7 +74,7 @@ Determine change scope from requirements, trace history, and the implementation 
 |---------|------------------|------------|---------------|----------------------------|------------------------|--------------------------|
 
 - Set `Changes Required` to `YES` or `NO`, consistently with the change scope declaration.
-- For `YES`, set `Unit Tests` to `REQUIRED`. Define an 80% passing threshold for lines, statements, branches, and functions where supported by the native tool (Flutter executable lines), consistently across all layers. Define positive, negative, boundary, and error-path scenarios appropriate to the changed behavior.
+- For `YES`, set `Unit Tests` to `REQUIRED`. Require all tests to pass and separately define an 80% coverage target for lines, statements, branches, and functions where supported by the native tool (Flutter executable lines), consistently across all layers. Define positive, negative, boundary, and error-path scenarios appropriate to the changed behavior.
 - For `NO`, set both `Unit Tests` and `Coverage Gate` to `NOT_APPLICABLE`. Cite evidence that no changes are needed to that surface. Unchanged API/screen reuse alone does not require that surface's unit-test creation, execution, or coverage reports.
 - Reference `.github/rules/implementation-execution-gates.md` for the required implementation-stage test counts, coverage metrics, commands, and native report evidence. Do not invent measured results or block specification on tests that will only exist after implementation.
 - Preserve separately required API, integration, and functional testing. Missing evidence or ambiguous/conflicting change scope requires clarification, not an exemption.

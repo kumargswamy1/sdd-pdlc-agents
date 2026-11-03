@@ -45,7 +45,7 @@ You are an Implementation Planner for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)

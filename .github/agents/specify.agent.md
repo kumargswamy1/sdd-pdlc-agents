@@ -172,7 +172,7 @@ Before starting specification work, discover and read project-specific architect
 
 ### Standard Project Rules and Guidelines
 Read and apply from `.github/` when available:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria - created by Context Builder)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria - created by Context Builder)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
