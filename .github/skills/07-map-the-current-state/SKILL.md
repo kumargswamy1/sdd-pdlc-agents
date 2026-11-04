@@ -42,7 +42,7 @@ Not for: designing the future journey. Use 09-ideate-the-future-state. Not for d
 | Pain point register: registers/pain-point-register.md | None. Internal | Required for step 4 | Stop at step 4 and ask |
 | Subject matter expert and stakeholder input, with policy and system documents | None. Step 2 of the main process is optional | Optional | Proceed. Mark the backstage layer Assumption |
 | Participants and experts, to validate the blueprint | None. People | Required for step 8 | Stop and ask |
-| Local config file: local-config.md (language rules, whether product names may appear, ID formats, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (language rules, whether product names may appear, ID formats, approver roles) | None | Required | Stop and ask |
 | Templates: templates/journey-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

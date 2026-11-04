@@ -43,7 +43,7 @@ Not for: colour, type, components or content rules. Use 16-define-the-design-lan
 | A real screen or flow, to test principles on | None. To verify | Required for step 8 | Stop at step 8 and ask |
 | Card sort or interview data on how users group things | None | Optional | Proceed. Mark the grouping Assumption |
 | Stakeholders, for agreement | None. People | Required for steps 10 and 25 | Stop and ask |
-| Local config file: local-config.md (principle pattern, content standard, ID formats, approver roles, success rate for findability) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (principle pattern, content standard, ID formats, approver roles, success rate for findability) | None | Required | Stop and ask |
 | Templates: templates/structure-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

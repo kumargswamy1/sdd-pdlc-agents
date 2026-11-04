@@ -37,7 +37,7 @@ Not for: producing the artifact itself. Use the capability skill. Not for packag
 | Handoff register row for this handoff (from step, to step, decision, minimum contents) | The handoff ID being written | Required | Stop and ask |
 | Handoff file template: handoff-template.md | None | Required | Stop and ask |
 | Evidence log for the artifact | None | Required | Proceed and mark every claim To verify |
-| Local config file: local-config.md (ID prefixes, approver roles, repository location) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (ID prefixes, approver roles, repository location) | None | Required | Stop and ask |
 
 ## 5. Method
 

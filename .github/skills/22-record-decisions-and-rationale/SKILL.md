@@ -40,7 +40,7 @@ Not for: making or ratifying decisions. People decide. Not for packaging approve
 | Story, job or pain point, evidence and principle IDs behind the decision | None. Internal | Required for screens and foundations | Stop and ask |
 | Screen plan with the story, evidence and principle IDs for each screen: screens/screen-plan.md, and the design language foundations: language/foundations.md | None. Internal, from 12-design-the-detailed-screens and 16-define-the-design-language | Required for steps 3 and 4 | Stop at those steps and ask |
 | The existing decision log: decisions/decision-log.md | None. Internal | Required | Create it from the template |
-| Local config file: local-config.md (ID format, approver roles, where the log lives) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (ID format, approver roles, where the log lives) | None | Required | Stop and ask |
 | Template: templates/decision-log-template.md | None | Required | Stop and ask |
 
 ## 5. Method

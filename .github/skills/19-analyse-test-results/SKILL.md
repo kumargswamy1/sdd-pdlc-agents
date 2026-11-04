@@ -42,7 +42,7 @@ Not for: logging, tagging or numbering results. Use 05-organise-the-evidence. No
 | Hi-fi prototype link and version | H18 | Optional | Proceed and mark To verify |
 | Pass criteria, signed off by a person: analysis/usability-pass-criteria.md | None. Internal, from 18-test-usability | Required for step 10 | Stop and ask |
 | Prior measurements and targets from the OKRs | None. To verify | Optional | Proceed. Write that no baseline exists |
-| Local config file: local-config.md (confidence level, minimum sample, severity scale, ID formats) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (confidence level, minimum sample, severity scale, ID formats) | None | Required | Stop and ask |
 | Templates: templates/results-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

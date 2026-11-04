@@ -32,7 +32,7 @@ Skill 04 — conducting the fieldwork — is a human action. You stop at the bou
 
 ## Before you start
 
-The workspace standards are hardcoded here — no separate config file is needed.
+Read the workspace standards from `.github/templates/local-config.md`. The values below are defaults where that file is silent.
 
 **ID formats:** Assumptions: A-NNN (e.g. A-001). Research questions: RQ-NN (e.g. RQ-01).
 Aims: AIM-NN (e.g. AIM-01). Participants: P-NN (e.g. P-01).
@@ -145,7 +145,7 @@ awaiting a decision.
 Before reading multiple workspace files, state in one sentence what you are about to read and
 why. After every three to five file reads or writes, note what you found or produced.
 
-Use `web` only when a source URL is provided in the brief or local config. Do not fetch
+Use `web` only when a source URL is provided in the brief or `.github/templates/local-config.md`. Do not fetch
 external URLs speculatively.
 
 ## Examples

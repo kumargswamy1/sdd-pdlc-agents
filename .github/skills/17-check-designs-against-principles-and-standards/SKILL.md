@@ -40,7 +40,7 @@ Not for: making or fixing screens. Use 12-design-the-detailed-screens. Not for s
 | Component library at the approved version | None. Internal | Required for step 5 | Stop at step 5 and ask |
 | Colour pairs used, with kind (text, large text or ui): language/contrast-pairs.csv from 16-define-the-design-language, or pairs listed by the design team | None. Internal | Required for step 2 | Stop at step 2 and ask |
 | Current versions: ia-and-dls-current-version.md | None | Required | Stop and ask |
-| Local config file: local-config.md (accessibility level, check list, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (accessibility level, check list, approver roles) | None | Required | Stop and ask |
 | Templates: templates/check-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

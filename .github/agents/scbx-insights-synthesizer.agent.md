@@ -88,7 +88,7 @@ stakeholders) are human or other-agent actions. You stop at their boundaries.
 
 List every source read before starting work.
 
-**Workspace standards — hardcoded (no separate config needed).**
+**Workspace standards.** Read `.github/templates/local-config.md`. The values below are defaults where that file is silent.
 
 **ID formats:**
 Evidence items: E-NNNN (e.g. E-0001). Participants: P-NN (e.g. P-01).

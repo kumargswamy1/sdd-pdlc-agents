@@ -76,7 +76,7 @@ actions. You stop at their boundaries.
 
 ## Before you start
 
-The workspace standards are hardcoded here — no separate config file is needed.
+Read the workspace standards from `.github/templates/local-config.md`. The values below are defaults where that file is silent.
 
 **Inputs from the IS agent (read before any Design-phase work):**
 - `03_define/handoffs/H13_experience-principles_v1.md` — experience principles handoff
@@ -140,7 +140,7 @@ If no such decision is recorded, note it in the Gaps section and proceed with th
 a draft.
 
 Before running skill 16 with a publish action, the version scheme is semver (MAJOR.MINOR.PATCH).
-No local config file is needed — proceed with versioning using this scheme.
+Take the version scheme from `.github/templates/local-config.md`; use this scheme where it is silent.
 
 ## Core directives
 

@@ -41,7 +41,7 @@ Not for: the file format and the ten tests. Use s2-handoff-standard, which this 
 | Stories or jobs the screens serve | None. To verify where they are recorded | Required for step 4 | Stop at step 4 and ask |
 | Check log for the screens | None. Internal | Optional | Proceed and list under Gaps |
 | Recipients, the medium to send through and the comment window | None. To verify | Required for steps 8 and 9 | Stop and ask |
-| Local config file: local-config.md (repository location, ID formats, recipients, comment window, medium) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (repository location, ID formats, recipients, comment window, medium) | None | Required | Stop and ask |
 | Handoff template: handoff-template.md. Templates: templates/handoff-package-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

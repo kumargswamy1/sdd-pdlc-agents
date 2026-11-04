@@ -40,7 +40,7 @@ Not for: deciding which features matter most. Use 10-prioritise. Not for mapping
 | Experience principles | H13 | Optional | Proceed and mark To verify |
 | Pain point register: registers/pain-point-register.md | None. Internal | Required for step 3 | Stop at step 3 and ask |
 | Jobs-to-be-done matrix: jobs/jobs-to-be-done-matrix.md | None. Internal | Required for step 7 | Stop at step 7 and ask |
-| Local config file: local-config.md (feature cap, ID formats, language rules, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (feature cap, ID formats, language rules, approver roles) | None | Required | Stop and ask |
 | Templates: templates/future-state-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

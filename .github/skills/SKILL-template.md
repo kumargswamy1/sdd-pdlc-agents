@@ -40,7 +40,7 @@ Not for: <what the neighbouring capability does>. Use <neighbouring-skill-name>.
 | Input | Source handoff ID | Required or optional | If missing |
 |---|---|---|---|
 | <input, named by handoff ID and file name> | <ID or None> | <Required or Optional> | <Stop and ask, or proceed and mark To verify> |
-| Local config file: <file name> | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md | None | Required | Stop and ask |
 
 ## 5. Method
 

@@ -44,7 +44,7 @@ Not for: reading or scoring the results. Use 19-analyse-test-results. Not for de
 | Personas | H10 | Required for step 12 | Stop at step 12 and ask |
 | Participant pool, criteria and schedule | None. To verify | Required for steps 5 and 12 | Stop and ask |
 | A colleague as pilot participant | None. A person | Required for step 11 | Stop and ask |
-| Local config file: local-config.md (where raw recordings and contact details are kept, confirmation roles, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (where raw recordings and contact details are kept, confirmation roles, approver roles) | None | Required | Stop and ask |
 | Templates: templates/concept-test-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

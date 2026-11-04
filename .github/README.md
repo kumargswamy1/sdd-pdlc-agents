@@ -22,8 +22,11 @@ The agents support a human-controlled, spec-driven PDLC workflow that transforms
 | 10 | Technical Documenter | `technical-documenter.agent.md` | Documentation | Spec, components, implementation, test evidence | `DOC-*` documentation |
 | 11 | Traceability Manager | `traceability-manager.agent.md` | Traceability | All artifacts | `requirement/Traceability_Matrix.md` |
 | 12 | QA Test Case Generator | `qa-test-case-generator.agent.md` | Standalone utility, not part of PDLC | Jira story key/URL or full story content | `output/test-cases/<story-key>/` |
+| 13 | Research Planner | `scbx-research-planner.agent.md` | Discovery planning | Project brief, vision, or kickoff notes | `01_discovery/assumptions/`, `01_discovery/plan/`, H07 handoff |
+| 14 | Insights Synthesizer | `scbx-insights-synthesizer.agent.md` | Discovery and Define | Research outputs, evidence, and test results | Evidence synthesis, journeys, feature list, H13/H14 handoffs |
+| 15 | Experience Architect | `scbx-experience-architect.agent.md` | Design and Develop | H13/H14 handoffs and feature list | Design system, Figma screens, accessibility specs, implementation |
 
-All listed agents are user-invocable. The QA Test Case Generator is a standalone utility and is not a PDLC stage; it is not included in the workflow below and does not replace API Tester or Functional Automation Test. Stage agents are not invoked as subagents, except for the explicitly allowed Figma Extractor call during specification. Compliance Reviewer is also invoked as a bounded subagent only at the spec, plan, and post-test code gates; it does not start the next stage. The Playwright-based PDLC testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
+All listed agents are user-invocable. The QA Test Case Generator is a standalone utility and is not a PDLC stage; it is not included in the workflow below and does not replace API Tester or Functional Automation Test. The Research Planner, Insights Synthesizer, and Experience Architect form an additional SCBx discovery and design track; they do not change the software-delivery workflow below. Stage agents are not invoked as subagents, except for the explicitly allowed Figma Extractor call during specification. Compliance Reviewer is also invoked as a bounded subagent only at the spec, plan, and post-test code gates; it does not start the next stage. The Playwright-based PDLC testing agents (API Tester, Functional Automation Test) use the `playwright` MCP server defined in `.vscode/mcp.json`.
 
 ## Agent Workflow Architecture
 
@@ -503,6 +506,62 @@ Use this agent independently when QA needs comprehensive test cases from a Jira 
 - [Instructions](instructions/qa-test-case-generator.instructions.md)
 - [Rules](rules/qa-test-case-generator.rules.md)
 - [Workspace test-case template](templates/qa-test-case-template.md)
+
+## SCBx Discovery and Design Agents
+
+These agents support a separate research-to-design track. Start with the Research Planner when
+the project needs research planning, hand off the approved research outputs to the Insights
+Synthesizer, then pass the resulting H13 experience principles and H14 screen inventory to the
+Experience Architect. Each agent stops at its stated human or workflow boundary.
+
+### Research Planner
+
+**File:** `scbx-research-planner.agent.md`
+
+Use this agent with a project brief, vision document, or kickoff notes when research assumptions
+and a plan need to be prepared for review.
+
+**What it does:**
+- Surfaces facts, beliefs, open questions, and unsupported assumptions, then proposes risk rankings
+- Turns ranked gaps into research aims, questions, a recommended method, and a recruitment matrix
+- Produces an assumptions log, a research plan, and an H07 handoff for review
+- Stops before fieldwork; a person decides the research scope and judgment calls
+
+**Primary outputs:** `01_discovery/assumptions/assumptions-log.md`,
+`01_discovery/plan/research-plan.md`, and `01_discovery/handoffs/H07_assumptions-log_v1.md`
+
+### Insights Synthesizer
+
+**File:** `scbx-insights-synthesizer.agent.md`
+
+Use this agent with research plans, fieldwork evidence, prior discovery outputs, or usability test
+results to organise evidence and develop evidence-linked product and experience artifacts.
+
+**What it does:**
+- Organises and synthesises evidence, maintains the evidence repository, and develops insights and needs
+- Maps current-state journeys, frames problems, ideates future states, and prioritises features
+- Structures the experience, plans concept and usability testing, and analyses test results
+- Produces H13 experience principles and H14 information architecture and screen inventory for handoff
+- Stops at human decision points and hands the completed Define work to the Experience Architect
+
+**Primary outputs:** Evidence logs and registers under `02_research/`, Define artifacts under
+`03_define/`, and H13/H14 handoffs
+
+### Experience Architect
+
+**File:** `scbx-experience-architect.agent.md`
+
+Use this agent after the Insights Synthesizer has prepared H13 experience principles and H14 screen
+inventory, for design-language, screen, accessibility, Figma, or implementation work.
+
+**What it does:**
+- Defines and maintains design tokens and components, and records design decisions
+- Creates screen annotations, interaction and accessibility specifications, and Figma canvases and components
+- Audits designs against WCAG 2.2 AA, experience principles, and applicable brand standards
+- Builds the code design system and screens from the approved Figma design and token library
+- Stops at human decision points and does not take over experience prioritisation or information architecture
+
+**Primary outputs:** Design artifacts under `04_design/` and code under `05_develop/`
 
 ---
 

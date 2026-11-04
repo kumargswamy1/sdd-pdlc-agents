@@ -39,7 +39,7 @@ Not for: scoring, counting or reading results. Use 19-analyse-test-results. Not 
 | OKR targets that relate to usability | None. To verify | Optional | Proceed. Write that no target exists |
 | Prior usability measurements: analysis/usability-benchmark.md from a prior round | None. Internal, from 19-analyse-test-results | Optional | Proceed. Write that no baseline exists |
 | Published reference scores, with source and date | None | Optional | Proceed. Write that none were used |
-| Local config file: local-config.md (confidence level, minimum sample, who signs, how criteria are versioned) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (confidence level, minimum sample, who signs, how criteria are versioned) | None | Required | Stop and ask |
 | Template: templates/pass-criteria-template.md | None | Required | Stop and ask |
 
 ## 5. Method

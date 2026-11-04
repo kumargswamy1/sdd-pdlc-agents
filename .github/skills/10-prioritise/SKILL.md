@@ -39,7 +39,7 @@ Not for: scoring or counting test results. Use 19-analyse-test-results. Not for 
 | Feature acceptance and validated assumptions: analysis/concept-test-analysis.md | None. Internal, from 19-analyse-test-results | Required for step 4 | Stop at step 4 and ask |
 | Prioritisation criteria, written down before ranking | None. Held in the local config file or agreed by people | Required | Stop and ask |
 | Acceptance threshold from the test plan: tests/test-plan.md | None. Internal | Required for step 4 | Stop at step 4 and ask |
-| Local config file: local-config.md (criteria, thresholds, who signs, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (criteria, thresholds, who signs, approver roles) | None | Required | Stop and ask |
 | Templates: templates/prioritisation-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

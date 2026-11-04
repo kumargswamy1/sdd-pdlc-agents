@@ -35,7 +35,7 @@ Not for: how to do the work. Use the capability skill for the method and this sk
 | Input | Source handoff ID | Required or optional | If missing |
 |---|---|---|---|
 | Authority and gates section of the capability skill in use | None | Required | Stop and ask |
-| Local config file: local-config.md (domain terms, limits, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (domain terms, limits, approver roles) | None | Required | Stop and ask |
 
 ## 5. Method
 

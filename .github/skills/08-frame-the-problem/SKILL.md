@@ -39,7 +39,7 @@ Not for: writing need statements or jobs. Use 06-draw-out-insights-and-needs. No
 | Jobs-to-be-done matrix: jobs/jobs-to-be-done-matrix.md | H08 | Required | Stop and ask |
 | Validated as-is journey blueprint: journeys/as-is-journey-blueprint-validated.md | H08 | Required | Stop and ask |
 | Objectives from step 1 | None. To verify where they are recorded | Required | Stop and ask |
-| Local config file: local-config.md (evidence threshold, ID formats, solution word list, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (evidence threshold, ID formats, solution word list, approver roles) | None | Required | Stop and ask |
 | Template: templates/problem-statement-template.md | None | Required | Stop and ask |
 
 ## 5. Method

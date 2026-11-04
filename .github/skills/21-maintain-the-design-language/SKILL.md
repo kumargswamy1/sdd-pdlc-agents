@@ -40,7 +40,7 @@ Not for: building or extending the system. Use 16-define-the-design-language. No
 | Application gaps: language/application-gaps.md | None. Internal | Optional | Proceed |
 | Versions cited by concept testing and detailed design: tests/, screens/ | None. Internal | Required for step 5 | Proceed and mark each step To verify |
 | Delivery team feedback | None. People | Optional | Proceed and list under Gaps |
-| Local config file: local-config.md (version scheme, approver roles, review period, who may block a release) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (version scheme, approver roles, review period, who may block a release) | None | Required | Stop and ask |
 | Templates: templates/release-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

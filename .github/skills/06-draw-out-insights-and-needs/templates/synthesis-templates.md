@@ -9,7 +9,7 @@ Every output carries status draft, version, date, an evidence table and a Gaps a
 
 Status: draft | Version: <n> | Date: <YYYY-MM-DD>
 Participants behind this segment: <participant IDs>
-Evidence threshold met: <yes or no, per local-config.md>
+Evidence threshold met: <yes or no, per .github/templates/local-config.md>
 
 ## Role
 <Generic role description. No organisation or unit names.>
@@ -117,5 +117,5 @@ When <situation>, I want to <motivation>, so I can <outcome wanted>.
 ```
 | Job ID | Job statement | Level | Type | Persona | Importance | How well served today | Evidence strength | Item IDs |
 |---|---|---|---|---|---|---|---|---|
-| <JB-NN> | <statement> | Main or supporting | Functional, emotional or social | <persona label> | <per scale in local-config.md> | <per scale> | <participants behind it> | <IDs> |
+| <JB-NN> | <statement> | Main or supporting | Functional, emotional or social | <persona label> | <per scale in .github/templates/local-config.md> | <per scale> | <participants behind it> | <IDs> |
 ```

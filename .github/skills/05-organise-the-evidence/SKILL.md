@@ -38,7 +38,7 @@ Not for: finding themes, needs or jobs in the evidence. Use 06-draw-out-insights
 | Clearance record: a person has checked each source for sensitive content | None. To verify where it is recorded | Required | Stop and ask |
 | Participant ID list. Participants appear by ID only | None. To verify | Required | Stop and ask |
 | Draft whose claims need links, such as a persona set, an empathy map or a register | None. It is internal to the output being built | Optional | Skip step 13 and list the claims as gaps |
-| Local config file: local-config.md (tag vocabulary, ID format, source ID format, repository location) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (tag vocabulary, ID format, source ID format, repository location) | None | Required | Stop and ask |
 | Evidence log template: templates/evidence-log-template.md | None | Required | Stop and ask |
 
 ## 5. Method

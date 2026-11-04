@@ -39,7 +39,7 @@ Not for: scoring or ranking results. Use 19-analyse-test-results. Not for packag
 | Pass criteria comparison: analysis/pass-criteria-comparison.md | None. Internal | Required for step 2 | Stop at step 2 and ask |
 | Usability benchmark: analysis/usability-benchmark.md | None. Internal | Optional | Proceed and list under Gaps |
 | Delivery constraints | None. To verify where they are recorded | Optional | Proceed and mark To verify |
-| Local config file: local-config.md (ID formats, approver roles, where rework may go) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (ID formats, approver roles, where rework may go) | None | Required | Stop and ask |
 | Templates: templates/backlog-and-decisions-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

@@ -38,7 +38,7 @@ Not for: logging, tagging or numbering evidence. Use 05-organise-the-evidence. N
 | User need register: registers/user-need-register.md | None. Internal | Required | Stop and ask |
 | Register of experience principles. File name: To verify | None. Internal | Optional | Proceed and list the principles as not checked |
 | Outputs that cite registers: folders named in the local config file (personas, empathy maps, jobs matrix, journey blueprints, experience principles) | None. Internal | Required | Stop and ask |
-| Local config file: local-config.md (ID prefixes to check, folders to scan, register owner roles, how often to run) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (ID prefixes to check, folders to scan, register owner roles, how often to run) | None | Required | Stop and ask |
 | Template: templates/consistency-report-template.md | None | Required | Stop and ask |
 
 ## 5. Method

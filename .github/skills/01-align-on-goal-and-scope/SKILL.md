@@ -38,7 +38,7 @@ Not for: logging or ranking assumptions. Use 02-surface-assumptions. Not for wri
 | Draft vision and objectives and key results | None. People | Required | Stop and ask |
 | Briefs and prior material | None. To verify where they are kept | Optional | Proceed and list under Gaps |
 | Sponsor, for the confirmation | None. A person | Required for steps 5 and 6 | Stop and ask |
-| Local config file: local-config.md (plain language rules, sensitivity rules, ID formats, approver roles) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (plain language rules, sensitivity rules, ID formats, approver roles) | None | Required | Stop and ask |
 | Template: templates/vision-objectives-templates.md | None | Required | Stop and ask |
 
 ## 5. Method

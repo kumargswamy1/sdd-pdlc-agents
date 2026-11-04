@@ -39,7 +39,7 @@ Not for: logging, tagging or numbering evidence. Use 05-organise-the-evidence. N
 | Pain point register: registers/pain-point-register.md | None. Internal | Required for steps 9 to 12 | Stop at step 9. Run 05-organise-the-evidence first |
 | Research plan: objectives, interview sample and participant mix | None. To verify where it is recorded | Required for step 1 | Stop and ask |
 | Affinity themes from the interview notes | None. To verify | Optional | Proceed and mark To verify |
-| Local config file: local-config.md (evidence threshold, ID formats, need statement pattern, feature word list, job statement pattern, rating scales, role wording rules) | None | Required | Stop and ask |
+| Local config file: .github/templates/local-config.md (evidence threshold, ID formats, need statement pattern, feature word list, job statement pattern, rating scales, role wording rules) | None | Required | Stop and ask |
 | Templates: templates/synthesis-templates.md | None | Required | Stop and ask |
 
 ## 5. Method
