@@ -40,8 +40,11 @@ Resolve UI applicability before requiring a component inventory, application URL
 - If UI is in scope, read `output/{RUN_ID}/plan/frontend/components.md` when available. If it is missing, empty, or malformed, continue only when the spec and implementation provide sufficient scope; record the missing supplemental inventory as a coverage limitation.
 - Read `output/{RUN_ID}/plan/plan.md`, `tasks.md`, relevant specifications, planned test scenarios, and the implementation outputs for the listed components.
 - Confirm the relevant implementation tasks are complete. Mark components without complete implementation as `blocked` or `skipped` with a reason; do not claim they were tested.
-- Inspect `.github/contexts/` and read all files relevant to the components, including newly added context files and explicitly designated Word/PDF files. Read applicable frontend, backend, testing, project, and domain guidance without changing context files.
+- For `UI In Scope: YES`, read `.github/contexts/business-context.md`, `.github/contexts/frontend-context.md`, and `.github/contexts/testing-context.md` for expected outcomes, UI behavior, and test conventions.
+- Read `.github/contexts/backend-context.md` only when tested flows depend on API or backend behavior; read `.github/contexts/domain-context.md` only when domain terminology or constraints affect assertions.
+- Read other user-provided context, including explicitly designated Word/PDF files, only when relevant to the tested components. Do not modify context files.
 - Inspect the implementation, routes, UI labels, API contracts, existing tests, manifests, and startup documentation before choosing assertions or selectors. Treat source code as evidence of current behavior; use requirements and context to assess expected behavior and report discrepancies.
+- Read `.github/rules/coding-standards.md` when generating or modifying executable test code.
 - Read the current app URL from `APP_URL` when provided. Read credentials only from named environment variables; do not ask users to send secrets in chat.
 
 ## Inputs

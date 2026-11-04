@@ -1,5 +1,5 @@
 ---
-description: "Use when: generating technical specifications from canonical project requirements."
+description: "Use when: turning a Jira story, canonical requirement, or PRD into an implementation-ready technical specification."
 name: "Technical Specifier"
 tools: [read, edit, search, execute, agent]
 agents: ["Figma Extractor", "Compliance Reviewer"]
@@ -182,6 +182,7 @@ Read and apply from `.github/` when available:
 - `.github/rules/requirement-standards.md`
 - `.github/rules/traceability-standards.md`
 - `.github/rules/architectural-standards.md`
+- `.github/rules/coding-standards.md` when specifying implementation or test-code conventions
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/versioning-standards.md`
 - `.github/rules/pdlc.md`

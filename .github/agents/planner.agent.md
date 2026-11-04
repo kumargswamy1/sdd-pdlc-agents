@@ -45,13 +45,15 @@ You are an Implementation Planner for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
-- `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
-- `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
-- `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-context.md` (technology-specific testing conventions)
-- Discover and read all other applicable context and standards files in `.github/contexts/`, including user-added Markdown and explicitly designated Word/PDF files; account for relevant guidance and conflicts in the plan.
+- `.github/contexts/business-context.md` for canonical business requirements, rules, constraints, decisions, design intent, and acceptance criteria.
+- `.github/contexts/frontend-context.md` only for frontend surfaces affected by or dependent on planned work.
+- `.github/contexts/backend-context.md` only for backend/API/data surfaces affected by or dependent on planned work.
+- `.github/contexts/testing-context.md` to plan verification for changed surfaces.
+- `.github/contexts/domain-context.md` only when domain terminology or constraints affect the plan.
+- Other user-provided context in `.github/contexts/` only when relevant to the scoped work, including explicitly designated Word/PDF files.
+- Do not require technical contexts for unchanged or out-of-scope surfaces; use approved evidence to record their non-applicability.
 - `.github/rules/architectural-standards.md`
+- `.github/rules/coding-standards.md` when planning implementation or test-code tasks
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/versioning-standards.md`
 - `.github/rules/traceability-standards.md`

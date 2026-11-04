@@ -368,6 +368,7 @@ Read and apply:
 - `.github/rules/requirement-standards.md`
 - `.github/rules/traceability-standards.md`
 - `.github/rules/architectural-standards.md`
+- `.github/rules/coding-standards.md` when documenting code conventions or recommendations
 - `.github/rules/security-quality-standards.md`
 
 ## Input

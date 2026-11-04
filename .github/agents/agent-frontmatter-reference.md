@@ -14,7 +14,7 @@ How to use:
 - Be specific about domain and output.
 
 Good example:
-`description: "Use when: generating technical specifications from canonical project requirements."`
+`description: "Use when: turning a Jira story, canonical requirement, or PRD into an implementation-ready technical specification."`
 
 ## 2. name
 What it is:
@@ -175,7 +175,7 @@ model: "GPT-5 (copilot)"
 ### Example 1: Technical Specifier Agent
 ```yaml
 ---
-description: "Use when: generating technical specifications from canonical project requirements."
+description: "Use when: turning a Jira story, canonical requirement, or PRD into an implementation-ready technical specification."
 name: "Technical Specifier"
 tools: [read, search, execute, edit]
 user-invocable: true

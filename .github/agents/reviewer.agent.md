@@ -21,6 +21,7 @@ Read and apply:
 - Inspect `.github/contexts/` for additional context files relevant to the artifact under review.
 - Discover and read applicable frontend and backend technology standards from project context and repository guidance.
 - `.github/rules/security-quality-standards.md`
+- `.github/rules/coding-standards.md` when reviewing source or executable tests
 - `.github/rules/architectural-standards.md`
 - `.github/rules/traceability-standards.md`
 - `.github/rules/environment-standards.md`

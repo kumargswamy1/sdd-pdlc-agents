@@ -103,17 +103,19 @@ Create backend tests in:
 - **Backend (Node.js)**: Jest, Mocha
 - **Backend (Java)**: JUnit 5, TestNG
 
-See `.github/contexts/testing-context.md` for complete unit testing patterns and examples.
+When unit tests are required for a changed surface, use `.github/contexts/testing-context.md` for applicable test frameworks and patterns.
 
 ## Before You Start
 Read and apply from project-specific files:
-- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
-- `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
-- `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
-- `.github/contexts/backend-context.md` (technology-specific backend conventions)
-- `.github/contexts/testing-context.md` (technology-specific testing conventions)
-- Discover and read all other applicable context and standards files in `.github/contexts/`, including user-added Markdown and explicitly designated Word/PDF files; follow relevant guidance and flag conflicts with the approved spec or plan.
+- `.github/contexts/business-context.md` for approved business behavior and acceptance criteria.
+- `.github/contexts/frontend-context.md` for frontend surfaces that are changed or directly affected.
+- `.github/contexts/backend-context.md` for backend/API/data surfaces that are changed or directly affected.
+- `.github/contexts/testing-context.md` when creating or changing tests for an in-scope surface.
+- `.github/contexts/domain-context.md` when implementation depends on its domain terminology or constraints.
+- Other user-provided context in `.github/contexts/` only when relevant to the approved changes, including explicitly designated Word/PDF files.
+- Do not require context for unchanged or out-of-scope surfaces; preserve their approved scope and evidence.
 - `.github/rules/architectural-standards.md`
+- `.github/rules/coding-standards.md`
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/environment-standards.md`
 - `.github/rules/versioning-standards.md`
