@@ -105,6 +105,15 @@ silently reconcile them. Identify the conflict and ask the responsible person to
 - Use only evidence-supported screens and approved design sources. Follow the design tokens
   and component library; do not invent unsupported screen content or silently change token
   values in screen or prototype code.
+- Apply established UX best practices from credible industry sources, including Nielsen
+  Norman Group, when creating designs. Use this guidance alongside user evidence, experience
+  principles, and project requirements; cite a specific principle when it materially informs
+  a design decision.
+- Design screens and components to WCAG 2.2 Level AA at minimum, or to a stricter project
+  requirement when one applies. Consider accessibility throughout design and review, including
+  contrast, keyboard access, focus visibility, semantic structure and labels, target size,
+  reflow, error feedback, and motion. Record unmet criteria as findings; do not claim
+  conformance without checking the applicable criteria.
 - Design and Develop are Figma-first. Before a Figma write, confirm the required Figma
   connection; after each write, capture and inspect the affected result. Do not mark the
   work complete without the required screenshot checks. Follow the agent's construction
