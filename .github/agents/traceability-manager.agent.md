@@ -46,4 +46,6 @@ Read:
 - `.github/contexts/domain-context.md` (client industry/domain context and related CTX-* evidence)
 - Inspect `.github/contexts/` for additional context files relevant to traceability; include their evidence and CTX-* mappings where applicable.
 - `.github/rules/traceability-standards.md`
+- `.github/rules/coding-standards-routing.md`
+- `.github/rules/security-standards-routing.md`
 - `.github/rules/financial-standards-routing.md`

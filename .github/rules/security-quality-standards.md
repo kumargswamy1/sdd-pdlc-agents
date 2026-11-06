@@ -24,6 +24,11 @@ Apply only when in scope:
 - Data retention and deletion rules.
 - Regulatory reporting and audit evidence.
 
+## Coding And Security Standards
+Apply to all code changes and, for security, to every PDLC stage. Selection, stage routing, and severity are defined in `.github/rules/coding-standards-routing.md` and `.github/rules/security-standards-routing.md`:
+- Security: OWASP baseline (`.github/rules/security/OWASP Security Guidelines & Best Practices.md`) and Secure coding (`.github/rules/security/Secure_Coding_Best_Practices.md`), with sections selected by feature type (web, API, auth, data, mobile, AI, cloud).
+- Coding: General coding (`.github/rules/coding-standards/General_Coding_Best_Practices.md`) for every project, plus the stack-specific standard (React.js, .NET backend, Python, PySpark/Databricks) selected from the detected technology stack.
+
 ## Financial Standards
 Apply when the story involves banking capabilities, financial data, or payment/statement/settlement messages. Applicability, stage routing, evidence, and severity are defined in `.github/rules/financial-standards-routing.md`:
 - BIAN (`.github/rules/bian-standards/references/bian-validation-framework.md`) for Service Domain and Semantic API alignment.

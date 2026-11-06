@@ -58,6 +58,8 @@ Determine change scope from requirements, trace history, and the implementation 
 - Exceptional-case behavior.
 - API change assessment (impact type, contract delta, backward compatibility).
 - `## Financial Standards Applicability` (BIAN, FSDM, ISO 20022 per `.github/rules/financial-standards-routing.md`).
+- `## Coding Standards Applied` (per `.github/rules/coding-standards-routing.md`: one row per surface with detected stack, standards loaded, and gaps).
+- `## Security Standards Applied` (per `.github/rules/security-standards-routing.md`: feature areas, OWASP/secure-coding sections, and gaps).
 - `## Unit Test Applicability`
 
 `Unit Test Applicability` MUST contain one row each for frontend and backend:
@@ -108,6 +110,12 @@ Determine change scope from requirements, trace history, and the implementation 
 - Do not declare success when any UI, logic, or API decision depends on unstated assumptions.
 - Any inferred behavior must be backed by explicit evidence from requirement text, trace chain, or implementation footprint and recorded in spec.
 - If evidence is missing or contradictory, mark run `BLOCKED` and request clarification.
+
+### Coding Standards Required
+- `spec.md` MUST contain `## Coding Standards Applied` with a row for each of frontend and backend (`Surface | Detected Stack | Standards Loaded | Gaps`). General coding is always loaded; add the stack-specific file for the detected stack. A stack with no file is `NO_STACK_SPECIFIC_STANDARD`, not a blocker; an undetectable stack is a `CLAR-*` item. Unchanged surfaces record `NOT_APPLICABLE` with evidence.
+
+### Security Standards Required
+- `spec.md` MUST contain `## Security Standards Applied` (`Surface / Feature Area | Standards And Sections | Gaps`) listing the OWASP and secure-coding sections selected for the feature types in scope, with the security controls the story needs traced to `SPEC-*`. Items that do not apply are `NOT_APPLICABLE` with evidence; unclear applicability is a `CLAR-*` item.
 
 ### Financial Standards Required
 - `spec.md` MUST contain `## Financial Standards Applicability` with one row each for BIAN, FSDM, and ISO 20022 (`Standard | Applicability | Evidence | Scope Notes`). `NOT_APPLICABLE` requires cited evidence; unclear applicability is a `CLAR-*` item.

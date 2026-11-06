@@ -225,6 +225,7 @@ Read:
 - Inventory and read relevant files in `.github/contexts/`, including user-provided Markdown, Word, and PDF context/standards; update affected existing Markdown context/standards in place, and treat designated original Word/PDF files as read-only unless editing is requested
 - Review the current Confluence source when provided; otherwise review the supplied Word/PDF documents and any available legacy project files
 - `.github/rules/traceability-standards.md`
+- `.github/rules/coding-standards-routing.md` and `.github/rules/security-standards-routing.md` (when the stack or security posture changes, update which coding and security standard files apply in the owning technical context and flag the impact on spec `## Coding Standards Applied` and `## Security Standards Applied`)
 - `.github/rules/financial-standards-routing.md` (banking/financial projects)
 
 ## Trigger Conditions

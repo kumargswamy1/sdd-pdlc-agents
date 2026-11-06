@@ -16,6 +16,7 @@ description: Execution gates and output schema for Implementation Builder runs.
 - API impact decision is enforced (`NO_API_CHANGE`, `EXISTING_API_CHANGE`, `NEW_API_REQUIRED`) with required contract/client updates.
 - Security/privacy/audit controls from in-scope tasks are implemented and tested.
 - No plaintext PII, credentials, account numbers, holdings, tokens, or secrets in code/logs/tests/artifacts.
+- Code on each changed surface follows the standards in spec `## Coding Standards Applied` and `## Security Standards Applied` (General coding, the stack-specific standard, and the selected Secure coding and OWASP sections), the repository formatter/linter/analyzers pass, and each selected standard's Review Checklist and the Pull Request Security Checklist are walked and recorded in implementation notes. A stack with `NO_STACK_SPECIFIC_STANDARD` is not a blocker.
 - Every `APPLICABLE` standard in spec `## Financial Standards Applicability` is implemented and evidenced per `.github/rules/financial-standards-routing.md`; each `FSDM` `BLOCK` condition (float money, missing `currency_code`, PII in logs/URLs, mutable ledger, missing lineage/idempotency, unversioned breaking contract change) is absent.
 
 ## Required Evidence Structure

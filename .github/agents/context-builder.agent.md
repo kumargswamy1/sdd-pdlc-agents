@@ -372,6 +372,7 @@ Read and apply:
 - `.github/rules/traceability-standards.md`
 - `.github/rules/architectural-standards.md`
 - `.github/rules/security-quality-standards.md`
+- `.github/rules/coding-standards-routing.md` and `.github/rules/security-standards-routing.md` (when documenting the detected stack and security posture, record which coding and security standard files apply in the owning frontend/backend/testing context as `DOCUMENTED/REQUIRED`, with `NO_STACK_SPECIFIC_STANDARD` where no coding standard exists; do not copy the standards' content)
 - `.github/rules/financial-standards-routing.md` (and the BIAN/FSDM/ISO 20022 entry points it names, only as needed for banking/financial projects)
 
 ## Input

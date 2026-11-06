@@ -40,6 +40,8 @@ Read and apply:
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/traceability-standards.md`
 - `.github/rules/pdlc.md`
+- `.github/rules/coding-standards-routing.md` (document the applied coding standards, deviations, and stack gaps in `ARCHITECTURE.md`)
+- `.github/rules/security-standards-routing.md` (document implemented controls, accepted deviations, and open findings in `SECURITY.md`)
 - `.github/rules/financial-standards-routing.md` and `output/{RUN_ID}/implement/financial-standards-report.md` (when any financial standard is `APPLICABLE`)
 
 ## Output

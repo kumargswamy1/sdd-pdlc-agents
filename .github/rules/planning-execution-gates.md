@@ -8,6 +8,7 @@ description: Execution gates and output schema for Implementation Planner runs.
 - The planner must inspect `spec.md`'s `## Clarification Log` before creating tasks. Every `CLAR-*` item must be `RESOLVED`, or the spec must explicitly state `CLARIFICATION_STATUS: NOT_REQUIRED` with evidence.
 - If any `CLAR-*` item is `OPEN`, unanswered, incomplete, contradictory, or lacks a resulting `SPEC-*` decision, the planning run is `BLOCKED`; do not create final planning tasks or carry the ambiguity forward as an assumption.
 - Every `SPEC-*` in scope is mapped to one or more `TASK-*` items.
+- Plan tasks follow spec `## Coding Standards Applied` and `## Security Standards Applied`: each changed surface has a lint/format/analyzer task and unit-test tasks that follow the selected stack standard's testing section, and every security control the spec requires has a task and a security test (`.github/rules/coding-standards-routing.md`, `.github/rules/security-standards-routing.md`).
 - Every `FR-*` and `NFR-*` referenced by in-scope `SPEC-*` is covered by planned tasks.
 - Every scope bullet in `plan.md` maps to at least one task in `tasks.md`.
 - Every effective-screen node or `SCR-*` screenshot screen from spec (or grouped set) is mapped to at least one task.

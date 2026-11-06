@@ -709,6 +709,8 @@ Rules in `.github/rules/` apply across agents:
 - **requirement-standards.md**, **traceability-standards.md**, **pdlc.md**
 - **specification-execution-gates.md**, **planning-execution-gates.md**, **implementation-execution-gates.md**
 - **mcp-usage-guide.md**, **figma-interactive-selection-guide.md**
+- **coding-standards-routing.md** - which coding standards (`coding-standards/`) each agent applies by detected tech stack (General always; React, .NET, Python, PySpark by stack)
+- **security-standards-routing.md** - which security standards (`security/`: OWASP baseline and secure coding) each agent applies at every stage, selected by project type and feature (web, API, auth, data, mobile, AI, cloud)
 - **financial-standards-routing.md** - which of BIAN (`bian-standards/`), FSDM (`fsdm-standards/`), and ISO 20022 (`iso-20022-Standards/`) each agent applies at each stage, with applicability, evidence, and severity rules
 
 Templates in `.github/templates/`: `requirements-input-template.md`, `user-story-template.md`.
