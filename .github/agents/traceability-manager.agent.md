@@ -37,11 +37,13 @@ Where:
 - Requirements without tests.
 - Artifacts without review status.
 - Banking compliance requirements without evidence.
+- Applicable BIAN, FSDM, and ISO 20022 mappings (`BIAN-*`, `FSDM-*`, `ISO-*`) declared in `spec.md` `## Financial Standards Applicability` without downstream task, code, test, and review coverage, or with unresolved `BLOCK` findings, per `.github/rules/financial-standards-routing.md`.
 - Missing GitHub issue, PR, branch, or commit metadata when available.
 
 ## Before You Start
 Read:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md` (client industry/domain context and related CTX-* evidence)
 - Inspect `.github/contexts/` for additional context files relevant to traceability; include their evidence and CTX-* mappings where applicable.
 - `.github/rules/traceability-standards.md`
+- `.github/rules/financial-standards-routing.md`

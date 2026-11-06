@@ -26,27 +26,27 @@ ms.date: 2026-10-07
 
 - [x] `.github/agents/specify.agent.md`
   - "Standard Project Rules and Guidelines" section includes:
-    - ✅ `.github/contexts/project-context.md`
+    - ✅ `.github/contexts/business-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
 
 - [x] `.github/agents/planner.agent.md`
   - "Before You Start" section includes:
-    - ✅ `.github/contexts/project-context.md`
+    - ✅ `.github/contexts/business-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
     - ✅ `.github/contexts/testing-context.md`
 
 - [x] `.github/agents/implement.agent.md`
   - "Before You Start" section includes:
-    - ✅ `.github/contexts/project-context.md`
+    - ✅ `.github/contexts/business-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
     - ✅ `.github/contexts/testing-context.md`
 
 - [x] `.github/agents/api-tester.agent.md` and `.github/agents/functional-automation-test.agent.md`
   - "Before You Start" section includes:
-    - ✅ `.github/contexts/project-context.md`
+    - ✅ `.github/contexts/business-context.md`
     - ✅ `.github/contexts/frontend-context.md`
     - ✅ `.github/contexts/backend-context.md`
     - ✅ `.github/contexts/testing-context.md`
@@ -108,7 +108,7 @@ ms.date: 2026-10-07
 - [x] Accepts business context input
 - [x] Detects technology stack
 - [x] Creates CTX-* IDs
-- [x] Generates `.github/contexts/project-context.md`
+- [x] Generates `.github/contexts/business-context.md`
 - [x] Generates `.github/contexts/frontend-context.md`
 - [x] Generates `.github/contexts/backend-context.md`
 - [x] Generates `.github/contexts/testing-context.md`
@@ -133,7 +133,7 @@ ms.date: 2026-10-07
 
 ### Specifier Integration
 
-- [x] Reads `project-context.md` for tech baseline
+- [x] Reads `business-context.md` for tech baseline
 - [x] Reads `frontend-context.md` for frontend patterns
 - [x] Reads `backend-context.md` for backend patterns
 - [x] Uses standards for design validation
@@ -163,7 +163,7 @@ ms.date: 2026-10-07
 
 ### Traceability Manager Integration
 
-- [x] Reads project-context.md for baseline
+- [x] Reads business-context.md for baseline
 - [x] Tracks CTX-* IDs
 - [x] Tracks CTX-UPDATE-* IDs
 - [x] Maintains traceability matrix
@@ -189,7 +189,7 @@ ms.date: 2026-10-07
 
 ### Trace Chain
 
-- [x] CTX-* → context files (project-context.md, standards files)
+- [x] CTX-* → context files (business-context.md, standards files)
 - [x] context files → SPEC-*
 - [x] SPEC-* → TASK-*
 - [x] TASK-* → CODE-*
@@ -272,7 +272,7 @@ ms.date: 2026-10-07
 
 ```
 ✅ .github/instructions/
-  ├─ project-context.md (created by Context Builder)
+  ├─ business-context.md (created by Context Builder)
   ├─ frontend-context.md (created by Context Builder)
   ├─ backend-context.md (created by Context Builder)
   └─ testing-context.md (created by Context Builder)
@@ -318,7 +318,7 @@ ms.date: 2026-10-07
 1. ✅ Configured the Context Builder agent
    - Gathers business context
    - Identifies stakeholders, systems, integrations, compliance, scope
-   - Creates project-context.md with trace IDs
+   - Creates business-context.md with trace IDs
    - Creates frontend-context.md based on frontend tech
    - Creates backend-context.md based on backend tech
    - Creates testing-context.md based on testing tech

@@ -19,6 +19,7 @@ description: Execution gates and output schema for Implementation Planner runs.
 - No requirement-logic rule from spec is dropped, generalized, or converted into a weaker statement during planning.
 - Assess both frontend and backend against approved story scope. Carry spec's independent change declarations and unit-test applicability into plan.md/tasks.md with evidence and trace references. Plan implementation/unit tasks only for changed surfaces; use an 80% coverage gate per required surface and supported metric. Missing work or ambiguous scope is a blocker, not `NOT_APPLICABLE`.
 - Document reused unchanged APIs/screens and required integration/functional verification without inventing implementation or unit-test tasks for them.
+- Every `APPLICABLE` row in spec `## Financial Standards Applicability` (BIAN, FSDM, ISO 20022) maps to implementation tasks, test tasks, and a verification method per `.github/rules/financial-standards-routing.md`. Do not create tasks for `NOT_APPLICABLE` standards.
 
 ## Required Plan Structure
 `plan.md` MUST include `## Requirement Logic To Task Coverage` with at least:
@@ -31,6 +32,11 @@ description: Execution gates and output schema for Implementation Planner runs.
 
 `REQ_REF` values MUST come from spec coverage rows.
 If any row is `BLOCKED`, planner run is `BLOCKED`.
+
+`plan.md` MUST also include `## Financial Standards Coverage` with columns `Standard | Applicability | Spec Mapping Ref | Mapped TASK-* | Mapped Test Task/Scenario | Verification | Status (COVERED|BLOCKED|NOT_APPLICABLE)`. The planner inherits applicability from spec; an `APPLICABLE` row without tasks or tests is `BLOCKED`. Required task content by standard:
+- BIAN: Service Domain/API alignment tasks and gap or `EXTENDED` justification review.
+- FSDM: DDL/schema/code tasks for fixed-point money with `currency_code`, bitemporal and lineage columns, idempotency, append-only ledger, log redaction, data classification, externalized reference data, plus data-contract backward-compatibility and financial-invariant tests.
+- ISO 20022: parser/serializer, field and business-rule validation, 4-level validation, error-code handling, and tests per `ISO-20022-Part5-TestingGuide.md`.
 
 ## Hard Gates
 
@@ -63,6 +69,7 @@ Include these one-line fields in final output:
 - `PLANNER_DESIGN_SOURCE: [LIVE_FIGMA_API|USER_STORY_SCREENSHOTS|LOCAL_ARTIFACTS|MANUAL_UPLOAD|NOT_REQUIRED] [NOTE: <e.g. Manual upload (no Figma link) or n/a>]`
 - `PLAN_REQUIREMENT_COVERAGE_SUMMARY: <plain one-line human message>`
 - `PLAN_REQUIREMENT_COVERAGE_RESULT: [SUCCESS|FAILURE] [TOTAL_RULES: <n>] [TASK_COVERED_RULES: <n>] [MISSING_TASK_RULES: <n>] [AMBIGUOUS_TASK_RULES: <n>] [CONTRADICTIONS: <n>]`
+- `FINANCIAL_STANDARDS_RESULT: [PASS|WARN|BLOCK|NOT_APPLICABLE|INCOMPLETE_ARTIFACT] [BIAN: <status>] [FSDM: <status>] [ISO20022: <status>] [BLOCKERS: <n>] [REASON: <short reason>]`
 
 If `MISSING_TASK_RULES > 0` or `CONTRADICTIONS > 0`, planner run is `BLOCKED`.
 

@@ -16,7 +16,7 @@ You are a Compliance Reviewer for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - Inspect `.github/contexts/` for additional context files relevant to the artifact under review.
 - Discover and read applicable frontend and backend technology standards from project context and repository guidance.
@@ -26,6 +26,7 @@ Read and apply:
 - `.github/rules/environment-standards.md`
 - `.github/rules/versioning-standards.md`
 - `.github/rules/pdlc.md`
+- `.github/rules/financial-standards-routing.md`, and for each standard the spec marks `APPLICABLE`: `.github/rules/bian-standards/references/bian-validation-framework.md`, `.github/rules/fsdm-standards/reference/` (stage-matched files and `07-compliance-output-schema.md`), `.github/rules/iso-20022-Standards/ISO-20022-MASTER-INDEX.md`
 
 ## Input
 Any file or directory:
@@ -44,6 +45,7 @@ Create or report:
 - A finding that causes review failure must remain `FAIL` regardless of severity; severity controls blocking, not the reported status. Make all findings visible. Critical, High, or Medium findings block the handoff; Low-only findings do not automatically block and require the exact `REVIEW_GATE_WARNING` defined in `.github/rules/pdlc.md`. For mixed severities, apply the highest-severity outcome. Never suppress or downgrade a failure; independent stage hard gates remain binding.
 
 ## Required Checks
+- Financial standards (BIAN, FSDM, ISO 20022): independently verify the artifact's `## Financial Standards Applicability` decision against the requirements and code. For each applicable standard, review the artifact at the matching stage (spec, plan, code, tests, docs) using the routing matrix, cite the exact entity/column/JSON path/file:line, and never invent standards content. Use the FSDM output contract (`reference/07-compliance-output-schema.md`) for FSDM verdicts and the BIAN finding format and evidence labels (`Official BIAN`, `BIAN-derived`, `Architecture recommendation`, `Unverified`) for BIAN; treat `Unverified` mappings stated as fact as Critical. Map standards findings to `REVIEW-*` using the severity table in `.github/rules/financial-standards-routing.md`, and emit `FINANCIAL_STANDARDS_RESULT`. An applicable standard with no evidence of application is `INCOMPLETE_ARTIFACT`, not `PASS`.
 - Authentication and authorization.
 - Customer and account data protection.
 - Audit logging for sensitive financial actions.

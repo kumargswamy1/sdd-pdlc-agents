@@ -32,7 +32,7 @@ These agents work together to ensure downstream agents use one canonical busines
                           ↓
 ┌─────────────────────────────────────────────────────────┐
 │      Business Context                                   │
-│  (.github/contexts/project-context.md)                  │
+│  (.github/contexts/business-context.md)                  │
 │  - All business requirements and business logic         │
 │  - Rules, constraints, design intent, acceptance        │
 │  - Links to separate technical contexts                 │
@@ -70,7 +70,7 @@ These agents work together to ensure downstream agents use one canonical busines
    └─ testing-context.md (based on detected test frameworks)
 
 3. Create Business Context and Index
-   ├─ .github/contexts/project-context.md (all requirements, business logic, rules, constraints, design intent)
+   ├─ .github/contexts/business-context.md (all requirements, business logic, rules, constraints, design intent)
    ├─ .github/contexts/domain-context.md (supplemental industry/domain references; link to requirements)
    ├─ Index additional user-provided standards under .github/contexts/
    └─ Link source evidence and guidance for downstream agents
@@ -97,7 +97,7 @@ These agents work together to ensure downstream agents use one canonical busines
    └─ Identify implications for active specs/plans
 
 3. Update Context Files
-   ├─ Update project-context.md for business requirement/rule/constraint changes and domain-context.md for supplemental industry references
+   ├─ Update business-context.md for business requirement/rule/constraint changes and domain-context.md for supplemental industry references
    ├─ Update frontend-context.md (if frontend changes)
    ├─ Update backend-context.md (if backend changes)
    ├─ Update testing-context.md (if testing changes)
@@ -116,7 +116,7 @@ These agents work together to ensure downstream agents use one canonical busines
 
 #### Technical Specifier
 **Reads from context:**
-- `.github/contexts/project-context.md` - Complete business requirements, business logic/rules, constraints, product design intent, and acceptance criteria
+- `.github/contexts/business-context.md` - Complete business requirements, business logic/rules, constraints, product design intent, and acceptance criteria
 - `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - `.github/contexts/frontend-context.md` - Frontend implementation, screen/UI design evidence, theme/style details, and conventions
 - `.github/contexts/backend-context.md` - Backend APIs/services, data, integrations, security/configuration, and operational implementation
@@ -126,7 +126,7 @@ These agents work together to ensure downstream agents use one canonical busines
 
 #### Implementation Planner
 **Reads from context:**
-- `.github/contexts/project-context.md` - Business requirements, business rules/constraints, design intent, and acceptance criteria
+- `.github/contexts/business-context.md` - Business requirements, business rules/constraints, design intent, and acceptance criteria
 - `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - `.github/contexts/frontend-context.md` - Frontend folder structure, layer boundaries
 - `.github/contexts/backend-context.md` - Backend service layers, API versioning
@@ -152,7 +152,7 @@ These agents work together to ensure downstream agents use one canonical busines
 
 #### Traceability Manager
 **Reads from context:**
-- `.github/contexts/project-context.md` - Baseline for context version tracking
+- `.github/contexts/business-context.md` - Baseline for context version tracking
 - `requirement/Context_{ProjectName}.md` - CTX-* ID mapping and change history
 - `requirement/Traceability_Matrix.md` - CTX-* to downstream artifact mappings
 
@@ -170,7 +170,7 @@ requirement/Context_{ProjectName}.md
    ↓
 requirement/Traceability_Matrix.md (maps CTX-* to BRD/FR/NFR)
    ↓
-.github/contexts/project-context.md (business requirements and business logic)
+.github/contexts/business-context.md (business requirements and business logic)
    ↓
 .github/contexts/frontend-context.md (frontend/UI/design implementation)
 .github/contexts/backend-context.md (backend implementation and contracts)
@@ -191,7 +191,7 @@ TEST-* (tester reads standards)
 
 ```
 .github/contexts/
-├─ project-context.md             # Canonical business requirements, logic, rules, constraints, design intent
+├─ business-context.md             # Canonical business requirements, logic, rules, constraints, design intent
 ├─ domain-context.md              # Supplemental industry/domain reference material
 ├─ frontend-context.md            # Frontend implementation, UI, design, theme, fonts, styles
 ├─ backend-context.md             # Backend implementation, APIs, data, integrations, operations
@@ -233,7 +233,7 @@ Context updates also maintain a changelog:
 ### Scenario 1: New Project Kickoff
 
 1. **Run Context Builder** with business requirements and detected tech stack
-   - Outputs: project-context.md, standards files, Context_ProjectName.md
+   - Outputs: business-context.md, standards files, Context_ProjectName.md
    - Traceability: CTX-* IDs created
 
 2. **All downstream agents** read from the created context files
@@ -254,7 +254,7 @@ Context updates also maintain a changelog:
 
 1. **Project changes** folder structure (e.g., split services into modules)
 2. **Context Updater** detects structure change
-3. **Updates** the owning technical context with architecture changes; project-context.md is changed only when business requirements, rules, constraints, or decisions change
+3. **Updates** the owning technical context with architecture changes; business-context.md is changed only when business requirements, rules, constraints, or decisions change
 4. **Traceability Manager** assesses impact on active implementations
 5. **Affected implementations** are re-validated against new standards
 
@@ -331,7 +331,7 @@ Context updates also maintain a changelog:
 Backend: Node.js/Python, API framework. Testing: Jest/pytest. Compliance: GDPR, applicable regulations."
 
 # Outputs:
-# - .github/contexts/project-context.md
+# - .github/contexts/business-context.md
 # - .github/contexts/frontend-context.md
 # - .github/contexts/backend-context.md
 # - .github/contexts/testing-context.md

@@ -23,7 +23,7 @@ Ensure you have the following files in your repository:
 │   └── traceability-manager.agent.md     ✅ Updated
 ├── copilot-instructions.md               ✅ Updated
 ├── contexts/
-│   ├── project-context.md                         (Business requirements, rules, constraints, design intent)
+│   ├── business-context.md                         (Business requirements, rules, constraints, design intent)
 │   ├── domain-context.md                          (Supplemental industry/domain references)
 │   ├── frontend-context.md                        (Frontend/UI/design implementation)
 │   ├── backend-context.md                         (Backend implementation and contracts)
@@ -67,7 +67,7 @@ Success: Performance targets, uptime SLA, user satisfaction metrics
 ```
 
 **What You Get:**
-- ✅ `.github/contexts/project-context.md` - Canonical business requirements, logic, rules, constraints, design intent, and acceptance criteria
+- ✅ `.github/contexts/business-context.md` - Canonical business requirements, logic, rules, constraints, design intent, and acceptance criteria
 - ✅ `.github/contexts/domain-context.md` - Supplemental industry/domain terminology and source references
 - ✅ `.github/contexts/frontend-context.md` - Frontend/UI implementation, design details, themes, fonts, styles, and conventions
 - ✅ `.github/contexts/backend-context.md` - Backend implementation, APIs, data, integrations, security, and operations
@@ -84,7 +84,7 @@ Check the applicable context files:
 
 ```bash
 ls -la .github/contexts/
-# Should include project-context.md, domain-context.md, and applicable
+# Should include business-context.md, domain-context.md, and applicable
 # frontend-context.md, backend-context.md, testing-context.md, and custom context files
 ```
 
@@ -239,7 +239,7 @@ Read: requirement/Context_{ProjectName}.md
 
 **Answer:**
 ```
-1. Read: .github/contexts/project-context.md
+1. Read: .github/contexts/business-context.md
    → "## Technology Baseline" section
 2. Read: .github/contexts/frontend-context.md
    → "## Router And Navigation" section
@@ -337,7 +337,7 @@ Step 4: Close CTX-UPDATE-* entry
 - **frontend-context.md** - Frontend tech patterns (created once, updated as needed)
 - **backend-context.md** - Backend tech patterns (created once, updated as needed)
 - **testing-context.md** - Testing tech patterns (created once, updated as needed)
-- Core documents are indexed in `project-context.md`; downstream agents explicitly read applicable context files from `.github/contexts/`
+- Core documents are indexed in `business-context.md`; downstream agents explicitly read applicable context files from `.github/contexts/`
 
 ### Context Precedence
 ```

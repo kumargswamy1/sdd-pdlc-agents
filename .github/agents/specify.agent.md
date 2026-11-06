@@ -30,6 +30,7 @@ You are a Technical Specifier for a software application project.
 - Declare frontend and backend change scope and unit-test applicability independently in `spec.md`, using the `Unit Test Applicability` schema in `.github/rules/specification-execution-gates.md`. An unchanged API used by a frontend story does not require backend changes; an unchanged frontend consuming a backend change does not require frontend implementation tasks.
 - For each surface requiring changes, specify an 80% unit-test coverage gate for every supported metric and the implementation-stage results/evidence required by `.github/rules/implementation-execution-gates.md`. For unchanged surfaces, specify `NOT_APPLICABLE` for unit tests and coverage with source/implementation-footprint evidence; do not invent tests or changes for them.
 - Define test requirements during specification, not measured test results. Actual unit-test execution and coverage reporting belong to Implementation Builder. Keep separately required API, integration, and functional verification even when a surface's unit tests are not applicable.
+- Apply the BIAN, FSDM, and ISO 20022 standards per `.github/rules/financial-standards-routing.md`. Decide applicability for each from the requirements and codebase evidence and record it in `spec.md` under `## Financial Standards Applicability`. For each `APPLICABLE` standard, read its entry point and only the stage-relevant files, then add the mappings required by `.github/rules/specification-execution-gates.md` (BIAN Service Domain/CR/BQ/operations/Semantic API with evidence labels; FSDM entity mapping, data classification, money/temporal/lineage/idempotency and `x-fsdm-*` schema requirements; ISO 20022 message type, field mapping, business rules, validation levels, and error codes), each traced to `SPEC-*`, `FR-*`, and `NFR-*`. Verify BIAN Service Domains against the v14.0 index; never invent Service Domains, message types, or clauses. Record unresolved standards conflicts or unverifiable mappings as `CLAR-*` items. Reflect standards results in `compliance-validation.md` and emit `FINANCIAL_STANDARDS_RESULT`.
 - **If Figma design contradicts requirements, flag the conflict and do NOT spec around it—request clarification instead.**
 - Extract Figma links from requirements and include them in the spec when available.
 - Identify effective screens only: nodes with interactive elements or complete information displays. Exclude section titles, headers, connectors, area labels, decorative wrappers, handoff helpers, and documentation-only nodes.
@@ -172,7 +173,7 @@ Before starting specification work, discover and read project-specific architect
 
 ### Standard Project Rules and Guidelines
 Read and apply from `.github/` when available:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria - created by Context Builder)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria - created by Context Builder)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
@@ -186,6 +187,7 @@ Read and apply from `.github/` when available:
 - `.github/rules/versioning-standards.md`
 - `.github/rules/pdlc.md`
 - `.github/rules/specification-execution-gates.md`
+- `.github/rules/financial-standards-routing.md`, then, for each applicable standard, its entry point: `.github/rules/bian-standards/references/bian-validation-framework.md`, stage-matched files in `.github/rules/fsdm-standards/reference/`, `.github/rules/iso-20022-Standards/ISO-20022-MASTER-INDEX.md`
 - **Read `requirement/Traceability_Matrix.md` to identify existing SPEC-* IDs and avoid duplicates or conflicts.**
 
 ## Input

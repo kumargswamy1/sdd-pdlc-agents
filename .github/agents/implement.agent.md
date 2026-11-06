@@ -27,6 +27,7 @@ You are an Implementation Builder for a software application project.
 - Implement UI to match requirement logic, every documented design detail from spec, and the referenced Figma/manual PNG screenshots. Treat the screenshot and the spec per-screen component/layout tables as acceptance evidence, not optional inspiration. Do not simplify, substitute, omit, or redesign a visible control, label, icon, state, spacing relationship, or navigation element.
 - Do NOT re-parse Figma JSON files (Spec Agent already extracted all information).
 - Enforce security, privacy, audit, and financial-domain controls from plan/spec scope.
+- Apply each standard the spec marks `APPLICABLE` per `.github/rules/financial-standards-routing.md`: FSDM Stage 2-4 rules (fixed-point decimal money with ISO 4217 `currency_code`, bitemporal and BCBS 239 lineage columns, `Idempotency-Key`/idempotent posting, append-only ledger, data-classification annotations and `x-fsdm-*`, log/URL redaction, externalized reference data); ISO 20022 field, business-rule, validation-level, and error-code handling for the specified messages; and the mapped BIAN Service Domain boundaries and Semantic API alignment. Implement only what the approved spec and plan require, report deviations rather than silently choosing, and write `output/{RUN_ID}/implement/financial-standards-report.md`.
 - Treat the JSON hierarchy in spec.md as the source of truth for element order and nesting; use PNGs only to confirm visual fidelity such as spacing, colors, typography, padding, margins, alignment, and control order. When the design source is a manual upload (no Figma link), there is no JSON hierarchy: use the control order documented in spec.md with the `SCR-*` screenshots as the visual reference, do not block, and note `Design Source: Manual upload (no Figma link)` in implementation evidence.
 - Reuse existing frontend components and project components before creating new UI components; match them against the spec and document any mismatch or gap.
 - Preserve the exact ordering of controls from the JSON tree, even when the PNG or prior implementation suggests a different sequence.
@@ -107,7 +108,7 @@ See `.github/contexts/testing-context.md` for complete unit testing patterns and
 
 ## Before You Start
 Read and apply from project-specific files:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
@@ -120,6 +121,7 @@ Read and apply from project-specific files:
 - `.github/rules/traceability-standards.md`
 - `.github/rules/pdlc.md`
 - `.github/rules/implementation-execution-gates.md`
+- `.github/rules/financial-standards-routing.md` (load the standard-specific files only for standards the spec marks `APPLICABLE`)
 - Read `output/{RUN_ID}/specify/spec.md` and verify upstream spec readiness.
 - Read `output/{RUN_ID}/plan/tasks.md` and verify planner readiness.
 - Confirm the task set explicitly assesses both frontend and backend scope. Require tasks only for approved changes; record unchanged surfaces with evidence-backed applicability. Report missing tasks when the story requires changes, not merely because a frontend flow consumes an unchanged API.

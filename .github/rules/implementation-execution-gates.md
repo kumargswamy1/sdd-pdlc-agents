@@ -16,6 +16,7 @@ description: Execution gates and output schema for Implementation Builder runs.
 - API impact decision is enforced (`NO_API_CHANGE`, `EXISTING_API_CHANGE`, `NEW_API_REQUIRED`) with required contract/client updates.
 - Security/privacy/audit controls from in-scope tasks are implemented and tested.
 - No plaintext PII, credentials, account numbers, holdings, tokens, or secrets in code/logs/tests/artifacts.
+- Every `APPLICABLE` standard in spec `## Financial Standards Applicability` is implemented and evidenced per `.github/rules/financial-standards-routing.md`; each `FSDM` `BLOCK` condition (float money, missing `currency_code`, PII in logs/URLs, mutable ledger, missing lineage/idempotency, unversioned breaking contract change) is absent.
 
 ## Required Evidence Structure
 When `UI In Scope: YES`, required outputs under `output/{RUN_ID}/implement/design/`:
@@ -35,6 +36,8 @@ When `UI In Scope: YES`, required outputs under `output/{RUN_ID}/implement/desig
 
 If any screen row is `BLOCKED`, run is `BLOCKED`.
 For `UI In Scope: NO`, record design evidence as `NOT_APPLICABLE` in implementation notes; do not require the design directory or screen reports.
+
+When any financial standard is `APPLICABLE`, persist `output/{RUN_ID}/implement/financial-standards-report.md` with one section per applicable standard: mapped `SPEC-*`/`TASK-*`/`CODE-*`, evidence (file/line, DDL, schema path, test name), deviations with a `CLAR-*` or approved exception, and the FSDM verdict in the `reference/07-compliance-output-schema.md` format when FSDM applies. For standards that are `NOT_APPLICABLE`, record the spec evidence only.
 
 ### Unit Test Evidence
 
@@ -92,6 +95,7 @@ Include these one-line fields in final output:
 - `IMPLEMENT_MCP_STATUS_SUMMARY: <plain one-line human message>`
 - `IMPLEMENT_MCP_API_RESULT: [SUCCESS|FAILURE|NOT_APPLICABLE] [API: GET <endpoint>] [HTTP: <status>] [ERROR: <message-or-n/a>] [RETRY_AFTER: <seconds-or-n/a>] [NODE_TYPE: <type-or-n/a>] [CHILD_COUNT: <count-or-n/a>]` (use `NOT_APPLICABLE` for manual-upload design sources)
 - `IMPLEMENT_DESIGN_SOURCE: [LIVE_FIGMA_API|USER_STORY_SCREENSHOTS|LOCAL_ARTIFACTS|MANUAL_UPLOAD|NOT_REQUIRED] [NOTE: <e.g. Manual upload (no Figma link) or n/a>]`
+- `FINANCIAL_STANDARDS_RESULT: [PASS|WARN|BLOCK|NOT_APPLICABLE|INCOMPLETE_ARTIFACT] [BIAN: <status>] [FSDM: <status>] [ISO20022: <status>] [BLOCKERS: <n>] [REASON: <short reason>]` (`BLOCK` or `INCOMPLETE_ARTIFACT` makes the run `BLOCKED`)
 - `UI_FIDELITY_SUMMARY: <plain one-line human message>`
 - `UI_FIDELITY_RESULT: [SUCCESS|FAILURE|NOT_APPLICABLE] [TOTAL_NODES: <n>] [MATCHED_NODES: <n>] [MISSING_NODE_ARTIFACTS: <n>] [STYLE_MISMATCHES: <n>] [TEXT_MISMATCHES: <n>] [CONTRADICTIONS: <n>]`
 

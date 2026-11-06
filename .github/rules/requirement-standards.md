@@ -69,6 +69,8 @@ Allowed classifications:
 - `[CONFIDENTIAL]`
 - `[PUBLIC]`
 
+When FSDM is `APPLICABLE` (see `.github/rules/financial-standards-routing.md`), also record each entity's FSDM core concept and the FSDM classification (`PUBLIC`, `INTERNAL`, `CONFIDENTIAL`, `RESTRICTED_PII`, `SENSITIVE_PERSONAL_DATA`, `REGULATORY_CRITICAL`) alongside the allowed classification above, with retention and consent linkage. Choose the FSDM class using the definitions in `.github/rules/fsdm-standards/reference/02-privacy-and-regulatory-governance.md`; flag ambiguous classification as an open question.
+
 ### 7. Integration Points
 For each system, define direction, protocol, timeout, retry, fallback, error handling, and owner.
 
@@ -84,6 +86,8 @@ Example systems:
 - Document/statement service
 - Notification service
 - Payment or settlement systems
+
+For payment, statement, or settlement integrations, name the ISO 20022 message family and type when applicable (for example `pacs.008`, `camt.053`, `sese.023`), or state `NOT_APPLICABLE` with reason.
 
 ### 8. Business Rules
 Use `BR-001`, `BR-002`, ...
@@ -116,6 +120,9 @@ Owner, needed-by date or phase, and impact if unanswered.
 ### 13. Traceability Summary
 Map `CTX -> BRD -> FR/NFR -> US -> AC/BR/INT/ERR`.
 
+### 14. Financial Standards Mapping (When Applicable)
+For banking requirements, map each capability to a BIAN Service Domain using `.github/rules/bian-standards/references/bian-validation-framework.md` with one status: `ALIGNED`, `EXTENDED`, `UNMAPPED`, or `NOT_APPLICABLE`. Use the v14.0 index to verify existence, compare at least two candidate domains, and label evidence (`Official BIAN`, `BIAN-derived`, `Architecture recommendation`, `Unverified`). Never infer a Service Domain from name similarity alone. Record FSDM entity mappings and ISO 20022 message mappings per `.github/rules/financial-standards-routing.md`. Business vocabulary and mapping status belong here; technical alignment belongs in the specification.
+
 ## Quality Gates
 - Trace metadata is present.
 - Functional requirements use `FR-*`.
@@ -126,4 +133,5 @@ Map `CTX -> BRD -> FR/NFR -> US -> AC/BR/INT/ERR`.
 - Integration points include timeouts and fallback behavior.
 - Performance SLAs are numeric.
 - Compliance assumptions are explicit.
+- Applicable BIAN, FSDM, and ISO 20022 mappings are present with evidence, or marked `NOT_APPLICABLE` with reason.
 - No real customer PII, account numbers, portfolio holdings, secrets, tokens, or production data.

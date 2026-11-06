@@ -27,6 +27,8 @@ Follow these files exactly:
 
 Start from the user-provided story key or full story content, preserve source fidelity, and build full coverage maps spanning all four sources (AC, BL, EH, GEN). When the template's `SAMPLE SETUP` marker is `PENDING`, invite the user to provide a sample test-case ID/key. If an identified sample is provided, derive a reusable, story-neutral template and replace `.github/templates/qa-test-case-template.md` after backing up the existing file. If no ID/key is provided, use the current workspace template and mark setup `COMPLETE`. Reuse the resulting template on subsequent runs unless the user supplies a new identified sample. Generate all cases under `output/test-cases/<story-key>/` and stop for explicit QA approval before creating any Jira issue.
 
+When the story involves banking capabilities, financial data, or payment/statement/settlement messages, consult `.github/rules/financial-standards-routing.md` and add independently testable cases (classified under the existing source categories, never as invented requirements) for story-evidenced financial rules, using only the files the story needs: FSDM `reference/02`, `03`, `06` (money/currency precision, idempotency, classification, masking, data-contract rules), ISO 20022 `Part 5` and the domain part (valid/invalid messages, business-rule and error-code cases), and BIAN capability/operation expectations. Use synthetic data only.
+
 ## Jira tool access
 
 Use the workspace `jira` MCP server configured in [mcp.json](../../.vscode/mcp.json).

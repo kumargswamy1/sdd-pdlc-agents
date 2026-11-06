@@ -60,6 +60,7 @@ Flag:
 - Entries in optional `backend-apis.json` or `components.md` that are not reconciled with the specification.
 - Requirements without tests.
 - Compliance requirements without review evidence.
+- Applicable BIAN/FSDM/ISO 20022 mappings (`BIAN-*`, `FSDM-*`, `ISO-*`) in `spec.md` without task, code, or test coverage, or with unresolved `BLOCK` findings.
 - Missing GitHub metadata when the repo is linked to GitHub.
 
 ## Data Protection

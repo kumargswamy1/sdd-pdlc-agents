@@ -57,6 +57,7 @@ Determine change scope from requirements, trace history, and the implementation 
 - Status-transition matrix (source status, condition, target status).
 - Exceptional-case behavior.
 - API change assessment (impact type, contract delta, backward compatibility).
+- `## Financial Standards Applicability` (BIAN, FSDM, ISO 20022 per `.github/rules/financial-standards-routing.md`).
 - `## Unit Test Applicability`
 
 `Unit Test Applicability` MUST contain one row each for frontend and backend:
@@ -108,6 +109,15 @@ Determine change scope from requirements, trace history, and the implementation 
 - Any inferred behavior must be backed by explicit evidence from requirement text, trace chain, or implementation footprint and recorded in spec.
 - If evidence is missing or contradictory, mark run `BLOCKED` and request clarification.
 
+### Financial Standards Required
+- `spec.md` MUST contain `## Financial Standards Applicability` with one row each for BIAN, FSDM, and ISO 20022 (`Standard | Applicability | Evidence | Scope Notes`). `NOT_APPLICABLE` requires cited evidence; unclear applicability is a `CLAR-*` item.
+- For each `APPLICABLE` standard, load only the stage files listed in `.github/rules/financial-standards-routing.md` and add a mapping subsection with `SPEC-*` traceability:
+  - BIAN: Service Domain, Control Record, BQs, operations, Semantic API file, status (`ALIGNED|EXTENDED|UNMAPPED`), BIAN release, and evidence label per cell. Never mark a mapping verified from name similarity.
+  - FSDM: entity-to-core-concept mapping, data classification per field, money/currency/temporal rules, lineage/idempotency/immutability needs, and API/event schema requirements (`x-fsdm-*`, `Idempotency-Key`, `X-Trace-Correlation-Id`).
+  - ISO 20022: message type and version, field-level mapping (for example `Dbtr`, `Cdtr`, `UETR`, `EndToEndId`), business rules, validation levels, and error codes.
+- Do not invent standards content, Service Domains, message types, or regulatory clauses. Mark unverifiable items `Unverified` and raise a `CLAR-*`.
+- A standards rule that conflicts with an approved requirement or repository rule is a `CLAR-*` item; do not choose silently.
+
 ## Required Status Reporting
 Include these one-line fields in final output:
 - `MCP_STATUS_SUMMARY: <plain one-line human message>`
@@ -117,6 +127,7 @@ Include these one-line fields in final output:
 - `REQUIREMENT_COVERAGE_SUMMARY: <plain one-line human message>`
 - `REQUIREMENT_COVERAGE_RESULT: [SUCCESS|FAILURE] [TOTAL_RULES: <n>] [COVERED_RULES: <n>] [MISSING_RULES: <n>] [AMBIGUOUS_RULES: <n>] [CONTRADICTIONS: <n>]`
 - `DESIGN_EVIDENCE_STATUS: [AVAILABLE|PENDING_MANUAL_UPLOAD|NOT_REQUIRED] [SOURCE: LIVE_FIGMA_API|USER_STORY_SCREENSHOTS|LOCAL_ARTIFACTS|MANUAL_UPLOAD|NONE] [SCREENS: <n>] [UNBLOCK_ACTION: <action-or-n/a>]`
+- `FINANCIAL_STANDARDS_RESULT: [PASS|WARN|BLOCK|NOT_APPLICABLE|INCOMPLETE_ARTIFACT] [BIAN: <status>] [FSDM: <status>] [ISO20022: <status>] [BLOCKERS: <n>] [REASON: <short reason>]`
 1. Re-read both spec.md and compliance-validation.md.
 2. Verify Traceability_Matrix was updated with unique SPEC IDs.
 3. Verify every SPEC entry against FR/NFR links.
@@ -124,7 +135,7 @@ Include these one-line fields in final output:
 5. Confirm MCP evidence or the alternate design evidence source (or pending-design status) is recorded.
 6. Re-validate data models and contracts for syntax/undefined references.
 7. Validate API impact decision and required contract deltas.
-8. Re-validate banking controls against source requirements.
+8. Re-validate banking controls against source requirements, and re-validate `## Financial Standards Applicability` and its BIAN/FSDM/ISO 20022 mappings against `.github/rules/financial-standards-routing.md`.
 9. Re-validate classification output against requirement, trace chain, and implementation footprint.
 10. Re-read source requirement and verify zero unmapped business-rule lines.
 11. Validate explicit rule preservation for intent/triggers/preconditions/constraints/transitions/exceptions.

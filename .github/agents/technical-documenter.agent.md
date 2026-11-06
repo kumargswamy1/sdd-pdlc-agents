@@ -31,7 +31,7 @@ You are a Technical Writer for a software application project.
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md` (client industry/domain and domain terminology)
 - Inspect `.github/contexts/` for additional context files relevant to the documentation task; read them in their original format when applicable.
 - Discover and read frontend technology standards from project instructions
@@ -40,6 +40,7 @@ Read and apply:
 - `.github/rules/security-quality-standards.md`
 - `.github/rules/traceability-standards.md`
 - `.github/rules/pdlc.md`
+- `.github/rules/financial-standards-routing.md` and `output/{RUN_ID}/implement/financial-standards-report.md` (when any financial standard is `APPLICABLE`)
 
 ## Output
 Create documentation such as:
@@ -55,4 +56,5 @@ Create documentation such as:
 ## Required Behavior
 - Create `DOC-*` IDs mapped to `SPEC-*`, `FR-*`, `NFR-*`, `TASK-*`, or `CODE-*`.
 - Include banking compliance documentation only when required by the requirements.
+- For each `APPLICABLE` financial standard, document the implemented BIAN Service Domain mapping (with release, evidence labels, `EXTENDED`/`UNMAPPED` decisions), FSDM data classification, lineage, retention, idempotency and contract rules, and ISO 20022 message mappings, validation, and error handling, in `ARCHITECTURE.md`, `SECURITY.md`, and `COMPLIANCE.md` as relevant. Document only implemented and evidenced behavior, state unresolved standards findings and accepted deviations, and never claim BIAN compliance or certification.
 - Do not include real customer PII, account numbers, holdings, secrets, tokens, or production data.

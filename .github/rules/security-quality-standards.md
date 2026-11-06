@@ -24,6 +24,12 @@ Apply only when in scope:
 - Data retention and deletion rules.
 - Regulatory reporting and audit evidence.
 
+## Financial Standards
+Apply when the story involves banking capabilities, financial data, or payment/statement/settlement messages. Applicability, stage routing, evidence, and severity are defined in `.github/rules/financial-standards-routing.md`:
+- BIAN (`.github/rules/bian-standards/references/bian-validation-framework.md`) for Service Domain and Semantic API alignment.
+- FSDM (`.github/rules/fsdm-standards/reference/`) for data classification, fixed-point money with ISO 4217 currency, bitemporal/lineage columns, idempotency, append-only ledgers, log/URL redaction, and data-contract versioning.
+- ISO 20022 (`.github/rules/iso-20022-Standards/ISO-20022-MASTER-INDEX.md`) for message structure, validation, and error handling.
+
 ## Quality
 - Unit tests are mandatory for each frontend/backend surface requiring changes before implementation handoff. Use an 80% passing threshold independently for lines, statements, branches, and functions where supported; Flutter requires executable-line coverage. All layers, including validation, API endpoints, UI components, and utilities, use the same 80% gate; measured coverage may exceed it.
 - Verify actual unit-test execution and native coverage reports. Show separate frontend/backend test counts, coverage metrics, commands, and evidence paths. Failed tests, below-threshold coverage, or missing execution/coverage evidence block implementation completion.
@@ -40,4 +46,5 @@ Critical blockers:
 - Missing authorization on protected operations.
 - Missing input/output sanitization or unsafe rendering paths.
 - Missing audit trail for regulated financial actions.
+- Applicable FSDM `BLOCK` conditions (float monetary types, PII in logs/URLs, mutable posted ledger, missing idempotency/lineage) or fabricated BIAN/ISO 20022 mappings.
 - Requirement or implementation with no traceability for production-impacting behavior.

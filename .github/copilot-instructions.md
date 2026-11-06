@@ -15,7 +15,7 @@ This repository uses a spec-driven PDLC workflow for software development.
 
 ### Context Loading For Every Agent
 
-Before starting a task, every agent must inspect `.github/contexts/` and read the files relevant to its scope. Keep using the existing context filenames, and also consider any additional files added to the folder. Read explicitly designated Word/PDF context files as well as Markdown files; use the project-context index when available. Do not load unrelated files. Treat context as guidance alongside task requirements and current source evidence. Context Builder creates new context only, Context Updater owns context maintenance, and other agents must not modify context files unless explicitly assigned that work.
+Before starting a task, every agent must inspect `.github/contexts/` and read the files relevant to its scope. The **project context** is the full set in that folder: `business-context.md`, `domain-context.md`, `frontend-context.md`, `backend-context.md`, and `testing-context.md`; "business context" refers only to `business-context.md`. Keep using the existing context filenames, and also consider any additional files added to the folder. Read explicitly designated Word/PDF context files as well as Markdown files; use the business-context index when available. Do not load unrelated files. Treat context as guidance alongside task requirements and current source evidence. Context Builder creates new context only, Context Updater owns context maintenance, and other agents must not modify context files unless explicitly assigned that work.
 
 ### Initial Context Setup
 For new projects or when context does not exist, use a single unified agent:
@@ -27,7 +27,7 @@ Context Builder (Unified - Merged)
   → Extracts tech stack from source code (package.json, config files, folder structure)
   → Gathers business and client-domain context from supplied sources
   → Applies standards DURING context creation (integrated, not separate)
-  → Creates `.github/contexts/project-context.md` (all business requirements, logic, rules, constraints, design intent, and acceptance criteria)
+  → Creates `.github/contexts/business-context.md` (all business requirements, logic, rules, constraints, design intent, and acceptance criteria)
   → Creates `.github/contexts/domain-context.md` (supplemental industry/domain references; links to business requirements)
   → Creates `.github/contexts/frontend-context.md` (frontend/UI implementation and detailed design: screens, themes, fonts, styles)
   → Creates `.github/contexts/backend-context.md` (backend implementation, APIs, data, integrations, and operations)

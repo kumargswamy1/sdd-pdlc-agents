@@ -115,7 +115,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - Creates unified project context with CTX-* trace IDs
 
 **Output files created:**
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
@@ -203,7 +203,7 @@ These arrows show the recommended order, not automatic execution. Each numbered 
 - Active file (press Enter)
 
 **Reads from:**
-- `.github/contexts/project-context.md`
+- `.github/contexts/business-context.md`
 - `.github/contexts/domain-context.md`
 - `.github/contexts/frontend-context.md`
 - `.github/contexts/backend-context.md`
@@ -430,7 +430,7 @@ The reviewer runs automatically as a bounded subagent at the spec, plan, and pos
 - `output/{RUN_ID}/specify/spec.md` (initial documentation)
 - `output/{RUN_ID}/plan/frontend/components.md`
 - `output/{RUN_ID}/implement/frontend/` and `backend/` (final documentation)
-- `.github/contexts/project-context.md` and `domain-context.md`
+- `.github/contexts/business-context.md` and `domain-context.md`
 
 **Output:**
 - README, ARCHITECTURE, DEPLOYMENT, CONFIGURATION, SECURITY, COMPLIANCE, TROUBLESHOOTING, and FRONTEND-INTEGRATIONS documents as applicable
@@ -694,14 +694,14 @@ Every story must assess both frontend and backend. Implementation and unit-test 
 
 ## Standards Files
 
-Context files in `.github/contexts/` are created by Context Builder and maintained by Context Updater:
+Context files in `.github/contexts/` are created by Context Builder and maintained by Context Updater. Together they form the **project context**:
 
-- **project-context.md** - Canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria
+- **business-context.md** - Canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria
 - **domain-context.md** - Supplemental industry/domain terminology and source references
 - **frontend-context.md** - Frontend/UI implementation and detailed design (screens, themes, fonts, styles)
 - **backend-context.md** - Backend implementation, APIs, data, integrations, and operational patterns (used by API Tester)
 - **testing-context.md** - Testing and verification frameworks, strategies, and coverage
-- Additional user-provided standards indexed by project context
+- Additional user-provided standards indexed by `business-context.md`
 
 Rules in `.github/rules/` apply across agents:
 
@@ -709,6 +709,7 @@ Rules in `.github/rules/` apply across agents:
 - **requirement-standards.md**, **traceability-standards.md**, **pdlc.md**
 - **specification-execution-gates.md**, **planning-execution-gates.md**, **implementation-execution-gates.md**
 - **mcp-usage-guide.md**, **figma-interactive-selection-guide.md**
+- **financial-standards-routing.md** - which of BIAN (`bian-standards/`), FSDM (`fsdm-standards/`), and ISO 20022 (`iso-20022-Standards/`) each agent applies at each stage, with applicability, evidence, and severity rules
 
 Templates in `.github/templates/`: `requirements-input-template.md`, `user-story-template.md`.
 The standalone QA utility also uses `.github/templates/qa-test-case-template.md` and `.github/rules/qa-test-case-generator.rules.md`.

@@ -41,11 +41,12 @@ You are an Implementation Planner for a software application project.
 - When both surfaces change and frontend work depends on a changed backend contract, complete backend implementation, backend unit tests, and contract verification before dependent frontend integration tasks.
 - Make dependent frontend tasks explicitly `BLOCKED_BY` the changed backend's contract-verification task. For an unchanged API, link existing contract evidence instead of inventing backend tasks. Do not substitute frontend-owned runtime fixtures for a required backend; isolated frontend unit tests may mock API boundaries.
 - Create separate unit-test tasks for every surface requiring changes, whether or not it has an API-backed flow. Integration or end-to-end tests do not replace required unit tests.
+- Read `## Financial Standards Applicability` in `spec.md`. For each `APPLICABLE` standard (BIAN, FSDM, ISO 20022), plan implementation and test tasks as defined in `.github/rules/planning-execution-gates.md` and `.github/rules/financial-standards-routing.md`, trace them to the spec mappings, and add `## Financial Standards Coverage` to `plan.md`. Do not add tasks for `NOT_APPLICABLE` standards or invent standards requirements the spec does not contain.
 
 
 ## Before You Start
 Read and apply:
-- `.github/contexts/project-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
+- `.github/contexts/business-context.md` (canonical business requirements, business logic/rules, constraints, design intent, and acceptance criteria)
 - `.github/contexts/domain-context.md` (supplemental industry/domain terminology and source references)
 - `.github/contexts/frontend-context.md` (technology-specific frontend conventions)
 - `.github/contexts/backend-context.md` (technology-specific backend conventions)
@@ -57,6 +58,7 @@ Read and apply:
 - `.github/rules/traceability-standards.md`
 - `.github/rules/pdlc.md`
 - `.github/rules/planning-execution-gates.md`
+- `.github/rules/financial-standards-routing.md` (load the standard-specific files only for standards the spec marks `APPLICABLE`)
 - Read `output/{RUN_ID}/specify/spec.md` and confirm upstream status is ready for planning.
 
 ## Clarification Readiness Gate (Required Before Creating Tasks)
