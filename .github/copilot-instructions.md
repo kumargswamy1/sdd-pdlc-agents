@@ -1,123 +1,169 @@
-# Copilot Instructions - Spec-Driven Development
-
-This repository uses a spec-driven PDLC workflow for software development.
-
-## Default Behavior
-- Prefer the agents in `.github/agents/`.
-- Follow centralized rules in `.github/rules/`.
-- Use templates in `.github/templates/`.
-- Preserve traceability through every artifact.
-- Treat GitHub issues, branches, commits, and pull requests as trace metadata when available.
-
-## Context Management (Prerequisite for All Workflows)
-
-**Context creation and maintenance is foundational to all PDLC workflows.**
-
-### Context Loading For Every Agent
-
-Before starting a task, every agent must inspect `.github/contexts/` and read the files relevant to its scope. The **project context** is the full set in that folder: `business-context.md`, `domain-context.md`, `frontend-context.md`, `backend-context.md`, and `testing-context.md`; "business context" refers only to `business-context.md`. Keep using the existing context filenames, and also consider any additional files added to the folder. Read explicitly designated Word/PDF context files as well as Markdown files; use the business-context index when available. Do not load unrelated files. Treat context as guidance alongside task requirements and current source evidence. Context Builder creates new context only, Context Updater owns context maintenance, and other agents must not modify context files unless explicitly assigned that work.
-
-### Initial Context Setup
-For new projects or when context does not exist, use a single unified agent:
-
-```text
-Context Builder (Unified - Merged)
-  → Uses a Confluence link when provided; otherwise uses attached Word/PDF documents
-  → Inspects available legacy project documentation, source code, configuration, and tests
-  → Extracts tech stack from source code (package.json, config files, folder structure)
-  → Gathers business and client-domain context from supplied sources
-  → Applies standards DURING context creation (integrated, not separate)
-  → Creates `.github/contexts/business-context.md` (all business requirements, logic, rules, constraints, design intent, and acceptance criteria)
-  → Creates `.github/contexts/domain-context.md` (supplemental industry/domain references; links to business requirements)
-  → Creates `.github/contexts/frontend-context.md` (frontend/UI implementation and detailed design: screens, themes, fonts, styles)
-  → Creates `.github/contexts/backend-context.md` (backend implementation, APIs, data, integrations, and operations)
-  → Creates `.github/contexts/testing-context.md` (testing and verification strategy, frameworks, coverage)
-  → Preserves and indexes additional user-provided standards under `.github/contexts/`
-  → Creates `requirement/Context_{ProjectName}.md` (detailed context with CTX-* IDs)
-  → Updates `requirement/Traceability_Matrix.md` with CTX-* IDs
-```
-
-**No MCP file validation needed** - all context extracted directly from source code and project structure.
-**Standards are embedded, not separate** - as context is discovered, standards are applied to ensure consistency.
-
-### Context Maintenance
-As project evolves, keep context synchronized:
-
-```text
-Context Updater
-  (triggered by: Confluence/document changes, legacy project or code changes, domain guidance, custom standards, or user request)
-  → reviews source documents, project structure, configuration, and all context files
-  → detects changes (MINOR/MODERATE/MAJOR)
-  → updates project/domain/technology/testing context and affected user-provided standards
-  → tracks changes with CTX-UPDATE-* IDs
-  → escalates MAJOR changes for approval
-  → updates `requirement/Traceability_Matrix.md`
-```
-
-## Human-Initiated Stages
-- Every PDLC stage is started manually by a human. At the specification, planning, and post-test code gates, the stage agent automatically invokes Compliance Reviewer as a bounded subagent before completing. This review does not start the next PDLC stage.
-- Critical, High, and Medium review findings stop the handoff until a human records remediation or explicit acceptance; remediation requires re-review. Keep the `FAIL` status and every finding visible.
-- Follow `.github/rules/pdlc.md`: a `FAIL` with only Low-severity findings emits the specified `REVIEW_GATE_WARNING` and does not automatically stop the handoff. Preserve the `FAIL` status; mixed severities follow the highest-severity outcome. Independent stage hard gates remain blocking.
-- Stage agents remain unavailable as subagents unless explicitly allowlisted for a documented exception. Technical Specifier may invoke Figma Extractor during specification; Technical Specifier, Implementation Planner, and Technical Documenter may invoke Compliance Reviewer only at their respective review gates.
-
-## Required Flow
-For existing source requirement folders:
-
-```text
-[Context exists per Context Builder]
--> Requirement Intake Consolidator
--> Traceability Manager
--> Technical Specifier
--> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
--> Implementation Planner
--> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
--> Implementation Builder
--> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
--> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
--> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
--> Traceability Manager
-```
-
-For new business problems:
-
-```text
-[Context exists per Context Builder]
--> User Story Generator
--> Technical Specifier
--> Technical Specifier automatically invokes Compliance Reviewer (spec gate)
--> Implementation Planner
--> Implementation Planner automatically invokes Compliance Reviewer (plan gate)
--> Implementation Builder
--> API Tester (tests every API in output/{RUN_ID}/specify/spec.md when `API In Scope: YES`)
--> Functional Automation Test (tests every UI behavior in output/{RUN_ID}/specify/spec.md when `UI In Scope: YES`)
--> Technical Documenter (automatically invokes Compliance Reviewer as code gate before final documentation)
--> Traceability Manager
-```
-
-## Design Evidence Handling
-- Figma is optional when the story has no frontend task.
-- Figma failures (MCP error, rate limit, auth) never block. Technical Specifier falls back to Jira/Confluence screenshots or manual uploads, assigns `SCR-*` screen IDs, and records `Design Source: Manual upload (no Figma link)`.
-- Planning and implementation proceed with manual-upload design evidence and carry the design-source note forward.
-- Only a frontend story with no design evidence at all (`DESIGN_EVIDENCE_STATUS: PENDING_MANUAL_UPLOAD`) blocks planning and implementation until screenshots are added to `output/{RUN_ID}/specify/figma/png/screens/` and Technical Specifier is re-run.
-
-## Parallel Context Updates
-**At any point in the PDLC, a human may run Context Updater to:**
-- Sync technology versions and dependencies
-- Sync changes from Confluence pages or attached Word/PDF sources
-- Update client industry/domain context and user-provided standards
-- Update architectural guidance when code patterns evolve
-- Flag conflicts between detected state and approved specs/plans
-- Maintain alignment between project reality and documented standards
-
-## Domain-Specific Controls
-Apply regulatory and domain controls only when in scope:
-- Privacy controls (e.g., GDPR, PDPA, CCPA).
-- KYC and AML checks when applicable.
-- Customer risk profiling and suitability assessments.
-- Consent and disclosure capture.
-- Approval workflows (e.g., maker-checker).
-- Role-based access control and audit trails.
-- Regulatory reporting evidence and compliance.
-
-## Data Protection
-Never include real customer PII, sensitive account information, credentials, secrets, tokens, or production data in generated artifacts, examples, tests, commits, PR descriptions, or documentation.
+# Enterprise Standards Instructions
+ 
+## Purpose
+ 
+This repository uses centrally managed HVE Core agents.
+ 
+The HVE Core agent definitions MUST NOT be modified.
+ 
+Enterprise and project-specific standards are maintained in this
+repository and MUST be applied as additional context when generating
+or modifying artifacts.
+ 
+## Mandatory Standards for Requirement Agents
+ 
+The following HVE agents MUST apply the banking standards defined
+under `.github/rules`:
+ 
+- BRD Builder Agent
+- PRD Builder Agent
+- Jira BackLog Manager Agent
+ 
+Before generating or modifying an artifact, these agents MUST read:
+ 
+1. `.github/rules/bian-standards/*`
+2. `.github/rules/iso-20022-standards/*`
+ 
+Preserve centrally managed HVE agent definitions, canonical templates,
+stage boundaries, tracker permissions, and existing approval gates.
+ 
+Read [Financial Standards Routing](rules/financial-standards-routing.md)
+and load the references relevant to the current stage and artifact.
+Do not assume that a folder reference or wildcard loads its contents.
+ 
+### BIAN references
+ 
+For banking capability or Service Domain mapping, read:
+ 
+- [Validation framework](rules/bian-standards/references/bian-validation-framework.md)
+- [Concepts](rules/bian-standards/references/bian-concepts.md)
+- [Source registry](rules/bian-standards/references/bian-source-registry.md)
+- Relevant rules from [Rule catalogue](rules/bian-standards/references/bian-rule-catalog.md)
+- Relevant entries from [Service Domain API index](rules/bian-standards/references/bian-v14-service-domain-index.md)
+- Relevant [release changes](rules/bian-standards/references/bian-release-14-changes.md)
+ 
+Read the relevant example for formatting or assessment depth only.
+Examples are illustrative, not evidence of the project's requirements.
+ 
+### ISO 20022 references
+ 
+Start with [Master index](rules/iso-20022-Standards/ISO-20022-MASTER-INDEX.md).
+ 
+Then load only applicable material:
+ 
+- [Part 1: Architecture](rules/iso-20022-Standards/ISO-20022-Part1-Architecture.md)
+- [Part 2: Payments](rules/iso-20022-Standards/ISO-20022-Part2-Payments.md)
+- [Part 3: Cash management](rules/iso-20022-Standards/ISO-20022-Part3-CashMgmt.md)
+- [Part 4: Securities settlement](rules/iso-20022-Standards/ISO-20022-Part4-SecuritySettlement.md)
+- [Part 5: Testing](rules/iso-20022-Standards/ISO-20022-Part5-TestingGuide.md)
+  when defining or reviewing validation and tests.
+ 
+Treat these local documents as guidance. Verify standards-specific claims
+against the selected official definitions and approved usage profiles.
+Do not assume the local documents cover every ISO 20022 business area.
+ 
+## Establish Applicability and the Project Baseline
+ 
+Evaluate BIAN and ISO 20022 separately.
+ 
+Reuse an approved project baseline when available. Otherwise identify
+missing decisions and request confirmation of:
+ 
+- Banking process, participants, jurisdiction, and integration scope
+- Target BIAN release
+- Applicable ISO 20022 message definitions and exact versions
+- Market, scheme, or bank-specific usage profile
+ 
+The local BIAN references target v14.0; this is a reference baseline,
+not automatic approval to migrate or adopt that release.
+ 
+A local guide's document version is not an ISO message version.
+ 
+Record applicability, baseline, and their sources in existing supported
+artifact sections. Distinguish Not Applicable from insufficient evidence.
+ 
+## Apply BIAN by Responsibility, Not Name Similarity
+ 
+For each material banking capability:
+ 
+1. Identify the business outcome, behavior, asset, and lifecycle.
+2. Compare at least two plausible Service Domain candidates when available.
+   Explain rejected alternatives and any insufficient candidate evidence.
+3. Evaluate documented responsibilities, Control Record, Behavior Qualifiers,
+   and operations before selecting a mapping.
+4. Check renamed, obsolete, replaced, or unavailable artifacts against the
+   target release.
+5. Keep business capabilities, Service Domains, process steps, microservices,
+   and deployment units distinct.
+ 
+The Service Domain API index proves only the structural metadata it contains.
+It does not establish Business Area, Business Domain, Functional Pattern,
+capability relationships, or first-order connections.
+ 
+Cite authoritative evidence for those attributes or mark them Unverified.
+Label inference from Control Record names as BIAN-derived, not Official BIAN.
+Never fabricate endpoints for domains without published operations.
+ 
+BSE-* rule identifiers are internal catalogue identifiers, not BIAN IDs.
+ 
+## Apply ISO 20022 by Business Exchange and Selected Definition
+ 
+Identify the business exchange, sender, receiver, direction, trigger,
+and expected outcome before selecting a message or family.
+ 
+Verify the selected message identifier, version, namespace, root element,
+field paths, cardinality, data types, code lists, and header requirements
+against approved authoritative sources.
+ 
+Distinguish:
+ 
+- Message-schema requirements
+- Market or scheme usage-profile requirements
+- Regulatory requirements
+- Bank-specific business rules
+- Implementation recommendations
+ 
+Do not infer mandatory rules from examples, numerical message ranges,
+generic field tables, or test snippets.
+ 
+A BIAN-to-ISO mapping requires its own evidence. Use official ISO-extended
+BIAN annotations where applicable; otherwise label it a proposed integration
+mapping.
+ 
+## Standards Traceability and Validation
+ 
+Preserve existing requirement, AC, specification, task, and test identifiers.
+ 
+For each applicable mapping record:
+ 
+| Requirement / AC ID | Standard / release / profile | Mapping / element | Source locator | Evidence type | Validation status | Gap / decision |
+|---------------------|------------------------------|-------------------|----------------|---------------|-------------------|----------------|
+ 
+Use the established BIAN evidence and finding labels. Distinguish mapping
+status from demonstrated implementation alignment.
+ 
+Where relevant, include Business Area, Business Domain, Service Domain,
+Control Record, Behavior Qualifier, operation, ISO business concept,
+message definition, and exact element path. Do not guess missing fields.
+ 
+Acceptance criteria must state the condition, observable result,
+applicable rule source, and evidence required to pass. Add standards-related
+scenarios only within approved scope; raise proposed scope changes for review.
+ 
+Separate schema validation, usage-profile validation, business-semantic
+validation, and integration checks. Record tools, versions, inputs, results,
+and checks not executed. Schema success alone does not prove conformance.
+ 
+If evidence is missing, preserve:
+- BIAN Mapping: Requires Review
+- ISO 20022 Mapping: Requires Review
+ 
+Generic drafting may continue with explicit unresolved assumptions.
+Do not publish unresolved mappings as approved or claim unsupported conformance.
+ 
+Carry the baseline, mappings, evidence, deviations, and validation expectations
+through downstream handoffs. Pass relevant context explicitly to any permitted
+subagent; do not assume automatic inheritance.
+ 
+Internal alignment assessments are not BIAN certification or ISO 20022
+implementation conformance certification.

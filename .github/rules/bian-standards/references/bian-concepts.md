@@ -38,7 +38,7 @@ flowchart TB
 
 | Concept | Meaning (paraphrased) | Evidence | Source |
 |---|---|---|---|
-| Service Landscape | Reference structure that organises all Service Domains; different layouts (e.g. matrix, value chain) are possible. | Official | GUIDE §3.1; bian.org Service Landscape page |
+| Service Landscape | Reference structure that organises all Service Domains; different layouts (e.g. matrix, value chain) are possible. | Official | GUIDE §3.1; BIAN website Service Landscape page |
 | Business Area / Business Domain | Grouping levels above Service Domains used to arrange the landscape. v14.0 reports 38 Business Domains. | Official | GUIDE §3.1; RN14 §1 |
 | Business Capability (BCM) | What the bank does, in business terms. v14.0 reports 586 Business Capabilities; the Value Chain / Value Stream restructuring is **work in progress and not yet in the BIAN repository**. | Official | RN14 §1, §3 |
 | Service Domain (SD) | A distinct, elemental business responsibility: one Functional Pattern applied to one asset type for the full lifecycle. | Official | GUIDE §2.4, §3.2.1 |

@@ -2,7 +2,7 @@
 
 > **Status of this example:** *Illustrative.* The organisation API (`ACME Payments API v2`) is **fictional**. The BIAN side is **verified** against the official `PaymentOrderInitiation.yaml` (BIAN v14.0.0, `info.version: 14.0.0`) in `bian-official/public` @ commit `b58bf4c2c300dd018afc084e9bb24b7adaaa3500`, folder `release14.0.0/semantic-apis/oas3 /yamls/`, checked 2026-11-05. Nothing below is an official BIAN assessment, certification or score.
 >
-> **Pinned BIAN file:** `https://raw.githubusercontent.com/bian-official/public/b58bf4c2c300dd018afc084e9bb24b7adaaa3500/release14.0.0/semantic-apis/oas3%20/yamls/PaymentOrderInitiation.yaml`
+> **Pinned BIAN file:** repository `bian-official/public`, commit `b58bf4c2c300dd018afc084e9bb24b7adaaa3500`, path `release14.0.0/semantic-apis/oas3 /yamls/PaymentOrderInitiation.yaml`
 
 ## 1. Business purpose and target Service Domain
 `ACME Payments API v2` lets channels create a customer payment instruction, update it, read its status, and read funds/compliance results. The BIAN spec's `info.description` for **Payment Order Initiation** says it "provides a customer payment service. It captures the payer and payee details and other key properties of the payment and initiates the orchestration of the transaction. It provides support for repeating/scheduled payments." → the Service Domain fits the stated purpose.
